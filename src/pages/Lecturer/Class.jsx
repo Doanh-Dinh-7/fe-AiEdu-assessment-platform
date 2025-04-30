@@ -11,26 +11,21 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const initialData = [
-  { stt: 1, hocPhan: "Quản trị học", tinChi: 3, ngayTao: "12/04/2025" },
-  { stt: 2, hocPhan: "Kinh tế chính trị", tinChi: 3, ngayTao: "13/04/2025" },
-  { stt: 3, hocPhan: "Kinh doanh quốc tế", tinChi: 3, ngayTao: "14/04/2025" },
-  { stt: 4, hocPhan: "Cơ sở lập trình", tinChi: 3, ngayTao: "15/04/2025" },
+const initialClassData = [
+  { stt: 1, id: "QTH-47K21.1", name: "CSLT", time: "123 T6", quantity: 30 },
+  { stt: 2, id: "QTH-47K21.2", name: "QTH", time: "123 T7", quantity: 30 },
+  { stt: 3, id: "KTCT-47K21.1", name: "KTCT", time: "123 T2", quantity: 30 },
 ];
 
-const ExamBank = () => {
+const Class = () => {
+  const [data, setData] = useState(initialClassData);
   const location = useLocation();
   const navigate = useNavigate();
-  const [data, setData] = useState(initialData);
 
-  const handleNavigateForm = (mode, defaultData = {}) => {
-    navigate(`${location.pathname}/form`, { state: { mode, defaultData } });
-  };
-
-  // Hàm xoá (theo stt)
+  // Xử lý xoá lớp học phần (dựa vào stt)
   const handleDelete = (stt) => {
     setData((prev) =>
       prev
@@ -39,8 +34,14 @@ const ExamBank = () => {
     );
   };
 
+  const handleNavigateForm = (mode, defaultData = {}) => {
+    navigate(`${location.pathname}/class-form`, {
+      state: { mode, defaultData },
+    });
+  };
+
   return (
-    <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={8}>
+    <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
       <Flex
         w="100%"
         maxW="1200px"
@@ -49,8 +50,13 @@ const ExamBank = () => {
         mb={6}
       >
         <Center flex={1}>
-          <Heading fontWeight="bold" fontSize="xl" textAlign="center">
-            NGÂN HÀNG ĐỀ THI
+          <Heading
+            fontWeight="bold"
+            fontSize="xl"
+            textAlign="center"
+            textTransform="uppercase"
+          >
+            Lớp học phần
           </Heading>
         </Center>
         <Button
@@ -63,41 +69,42 @@ const ExamBank = () => {
           Thêm
         </Button>
       </Flex>
+
       <Table variant="simple" size="md" w="100%" maxW="1200px" bg="white">
         <Thead>
           <Tr>
             <Th>STT</Th>
-            <Th>Học phần</Th>
-            <Th>Số tín chỉ</Th>
-            <Th>Ngày tạo</Th>
-            <Th textAlign="center"> </Th>
-            <Th textAlign="center"> </Th>
-            <Th textAlign="center"> </Th>
+            <Th>Tên lớp học phần</Th>
+            <Th>Thời gian</Th>
+            <Th>Số lượng</Th>
+            <Th textAlign="center"></Th>
+            <Th textAlign="center"></Th>
+            <Th textAlign="center"></Th>
           </Tr>
         </Thead>
         <Tbody>
           {data.map((row) => (
             <Tr key={row.stt}>
               <Td>{row.stt}</Td>
-              <Td>{row.hocPhan}</Td>
-              <Td>{row.tinChi}</Td>
-              <Td>{row.ngayTao}</Td>
+              <Td>{row.name}</Td>
+              <Td>{row.time}</Td>
+              <Td>{row.quantity}</Td>
               <Td textAlign="center">
                 <Button
                   leftIcon={<FaEye />}
                   size="sm"
-                  colorScheme="yellow"
+                  colorScheme="blue"
                   variant="ghost"
-                  onClick={() => navigate(`${location.pathname}/${row.stt}`)}
+                  onClick={() => navigate(`/class/${row.id}`)}
                 >
-                  Xem chi tiết
+                  Xem
                 </Button>
               </Td>
               <Td textAlign="center">
                 <Button
                   leftIcon={<FaEdit />}
                   size="sm"
-                  colorScheme="blue"
+                  colorScheme="yellow"
                   variant="ghost"
                   onClick={() => handleNavigateForm("edit", row)}
                 >
@@ -123,4 +130,4 @@ const ExamBank = () => {
   );
 };
 
-export default ExamBank;
+export default Class;

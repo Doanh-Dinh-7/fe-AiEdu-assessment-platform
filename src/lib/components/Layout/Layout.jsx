@@ -15,9 +15,16 @@ const Layout = () => {
 
   const breadcrumbNameMap = {
     "exam-bank": "Ngân hàng đề thi",
-    "form": "Tạo ngân hàng đề thi",
-    "questions": "Danh sách câu hỏi",
-    "class": "Danh sách lớp học phần",
+    "exam-bank-form": "Tạo ngân hàng đề thi",
+    "class-form": "Tạo/Sửa lớp học phần",
+    questions: "Danh sách câu hỏi",
+    class: "Danh sách lớp học phần",
+    "create-question": "Tạo câu hỏi",
+    "upload-document-exam": "Danh sách tài liệu",
+    "exam-management": "Quản lý bài thi",
+    "exam-form": "Tạo/Sửa bài thi",
+    "exam-result": "Kết quả bài thi",
+    detail: "Chi tiết kết quả bài thi",
   };
 
   // // Tách id từ URL nếu có
@@ -38,9 +45,17 @@ const Layout = () => {
             let displayName = breadcrumbNameMap[name];
 
             if (!displayName) {
-              if (/^\d+$/.test(name)) {
-                // Nếu name là id số
+              if (/^\d+$/.test(name) && pathnames[idx - 1] === "exam-bank") {
+                // Nếu name là id số và phía trước là exam-bank
                 displayName = `Chi tiết ngân hàng đề thi ${name}`;
+              } else if (
+                /^\d+$/.test(name) &&
+                pathnames[idx - 1] === "questions"
+              ) {
+                // Nếu name là id số và phía trước là questions
+                displayName = `Chi tiết câu hỏi ${name}`;
+              } else if (pathnames[idx - 1] === "class") {
+                displayName = `Lớp học phần ${name}`;
               } else {
                 displayName = decodeURIComponent(name);
               }
@@ -65,6 +80,5 @@ const Layout = () => {
     </Flex>
   );
 };
-
 
 export default Layout;

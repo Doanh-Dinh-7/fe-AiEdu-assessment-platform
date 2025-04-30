@@ -33,7 +33,9 @@ const LoginPage = () => {
       minH="100vh"
     >
       <VStack spacing={4} p={8} borderWidth={1} borderRadius={8} boxShadow="lg">
-        <Heading size="lg">Đăng Nhập</Heading>
+        <Heading size="lg" textTransform="uppercase">
+          Đăng Nhập
+        </Heading>
         <FormControl>
           <FormLabel>Tài khoản</FormLabel>
           <Input

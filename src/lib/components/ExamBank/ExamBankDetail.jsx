@@ -13,7 +13,7 @@ import {
   IconButton,
   Center,
 } from "@chakra-ui/react";
-import { FaEye, FaPlus, FaUpload, FaEdit } from "react-icons/fa";
+import { FaEye, FaUpload, FaEdit } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 
 const data = [
@@ -50,7 +50,7 @@ const ExamBankDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   return (
-    <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={8}>
+    <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
       <Flex w="100%" maxW="1200px" direction="column" gap={4}>
         <Center flex={1}>
           <Heading fontSize="lg" mb={2} textTransform="uppercase">
@@ -131,7 +131,7 @@ const ExamBankDetail = () => {
                 <IconButton
                   leftIcon={<FaEye />}
                   size="sm"
-                  colorScheme="yellow"
+                  colorScheme="blue"
                   variant="ghost"
                   onClick={() => navigate(`/exam-bank/${id}/questions`)}
                 />
@@ -142,14 +142,16 @@ const ExamBankDetail = () => {
                   size="sm"
                   colorScheme="purple"
                   variant="ghost"
+                  onClick={() =>
+                    navigate(`/exam-bank/${id}/upload-document-exam`)
+                  }
                 />
               </Td>
               <Td textAlign="center">
                 <IconButton
                   icon={<FaEdit />}
-                  aria-label="Edit"
                   size="sm"
-                  colorScheme="blue"
+                  colorScheme="yellow"
                   variant="ghost"
                 />
               </Td>

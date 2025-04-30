@@ -40,7 +40,7 @@ const ExamBankForm = () => {
   };
 
   return (
-    <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={8}>
+    <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={5}>
       <Flex w="100%" maxW="1200px" direction="column" gap={4}>
         <Center flex={1}>
           <Heading fontSize="lg" mb={2} textTransform="uppercase">

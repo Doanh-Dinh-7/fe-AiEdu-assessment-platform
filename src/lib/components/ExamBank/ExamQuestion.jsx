@@ -49,12 +49,11 @@ const ExamQuestion = () => {
   const navigate = useNavigate();
 
   const handleNavigateQuestion = (q, mode, defaultData = {}) => {
-    navigate(`${location.pathname}/`, { state: { mode, defaultData } });
     navigate(`${location.pathname}/${q.stt}`, { state: { mode, defaultData } });
   };
 
   return (
-    <Box minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={8}>
+    <Box minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
       <Flex w="100%" maxW="1200px" direction="column" gap={4}>
         <Center flex={1}>
           <Heading fontSize="lg" mb={2} textTransform="uppercase">
@@ -68,7 +67,12 @@ const ExamQuestion = () => {
           hard={countLevel("Khó")}
         />
         <Flex justify="flex-end" mb={4}>
-          <Button colorScheme="blue">Tạo câu hỏi</Button>
+          <Button
+            colorScheme="blue"
+            onClick={() => navigate(`${location.pathname}/create-question`)}
+          >
+            Tạo câu hỏi
+          </Button>
         </Flex>
       </Flex>
       <Table variant="simple" bg="white">
@@ -94,7 +98,7 @@ const ExamQuestion = () => {
                 <Button
                   leftIcon={<FaEye />}
                   size="sm"
-                  colorScheme="yellow"
+                  colorScheme="blue"
                   variant="ghost"
                   onClick={() => handleNavigateQuestion(q, "view")}
                 ></Button>
@@ -103,7 +107,7 @@ const ExamQuestion = () => {
                 <Button
                   leftIcon={<FaEdit />}
                   size="sm"
-                  colorScheme="blue"
+                  colorScheme="yellow"
                   variant="ghost"
                   onClick={() => handleNavigateQuestion(q, "edit")}
                 ></Button>

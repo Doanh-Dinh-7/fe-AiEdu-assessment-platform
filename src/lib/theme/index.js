@@ -37,12 +37,21 @@ const theme = extendTheme({
   components: {
     Button: {
       variants: {
-        solid: {
-          bg: "blue.500",
-          color: "white",
-          _hover: {
-            bg: "blue.600",
-          },
+        solid: (props) => {
+          const { colorScheme } = props;
+
+          if (colorScheme === "blue") {
+            return {
+              bg: "blue.500",
+              color: "white",
+              _hover: {
+                bg: "blue.600",
+              },
+            };
+          }
+
+          // Trả về mặc định để Chakra tự xử lý các colorScheme khác
+          return {};
         },
       },
     },

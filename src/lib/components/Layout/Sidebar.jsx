@@ -57,57 +57,82 @@ const Sidebar = () => {
           onClick={() => setIsCollapsed(!isCollapsed)}
           mb={4}
         />
-        <Tooltip
-          label="Ngân hàng đề thi"
-          placement="right"
-          isDisabled={!isCollapsed}
-        >
-          <Button
-            leftIcon={<FaBook />}
-            bg="white"
-            color="black"
-            w="100%"
-            h="50px"
-            justifyContent={isCollapsed ? "center" : "flex-start"}
-            onClick={() => navigate("/exam-bank")}
-          >
-            {!isCollapsed && "Ngân hàng đề thi"}
-          </Button>
-        </Tooltip>
-        <Tooltip
-          label="Quản lý lớp học phần"
-          placement="right"
-          isDisabled={!isCollapsed}
-        >
-          <Button
-            leftIcon={<FaUsers />}
-            bg="white"
-            color="black"
-            w="100%"
-            h="50px"
-            justifyContent={isCollapsed ? "center" : "flex-start"}
-            onClick={() => navigate("/class")}
-          >
-            {!isCollapsed && "Quản lý lớp học phần"}
-          </Button>
-        </Tooltip>
-        <Tooltip
-          label="Quản lý bài thi"
-          placement="right"
-          isDisabled={!isCollapsed}
-        >
-          <Button
-            leftIcon={<FaFileAlt />}
-            bg="white"
-            color="black"
-            w="100%"
-            h="50px"
-            justifyContent={isCollapsed ? "center" : "flex-start"}
-          >
-            {!isCollapsed && "Quản lý bài thi"}
-          </Button>
-        </Tooltip>
+
+        {vaiTro === "lecturer" && (
+          <>
+            <Tooltip
+              label="Ngân hàng đề thi"
+              placement="right"
+              isDisabled={!isCollapsed}
+            >
+              <Button
+                leftIcon={<FaBook />}
+                bg="white"
+                color="black"
+                w="100%"
+                h="50px"
+                justifyContent={isCollapsed ? "center" : "flex-start"}
+                onClick={() => navigate("/exam-bank")}
+              >
+                {!isCollapsed && "Ngân hàng đề thi"}
+              </Button>
+            </Tooltip>
+
+            <Tooltip
+              label="Quản lý lớp học phần"
+              placement="right"
+              isDisabled={!isCollapsed}
+            >
+              <Button
+                leftIcon={<FaUsers />}
+                bg="white"
+                color="black"
+                w="100%"
+                h="50px"
+                justifyContent={isCollapsed ? "center" : "flex-start"}
+                onClick={() => navigate("/class")}
+              >
+                {!isCollapsed && "Quản lý lớp học phần"}
+              </Button>
+            </Tooltip>
+
+            <Tooltip
+              label="Quản lý bài thi"
+              placement="right"
+              isDisabled={!isCollapsed}
+            >
+              <Button
+                leftIcon={<FaFileAlt />}
+                bg="white"
+                color="black"
+                w="100%"
+                h="50px"
+                justifyContent={isCollapsed ? "center" : "flex-start"}
+                onClick={() => navigate("/exam-management")}
+              >
+                {!isCollapsed && "Quản lý bài thi"}
+              </Button>
+            </Tooltip>
+          </>
+        )}
+
+        {vaiTro === "student" && (
+          <Tooltip label="Cuộc thi" placement="right" isDisabled={!isCollapsed}>
+            <Button
+              leftIcon={<FaFileAlt />}
+              bg="white"
+              color="black"
+              w="100%"
+              h="50px"
+              justifyContent={isCollapsed ? "center" : "flex-start"}
+              onClick={() => navigate("/exams")}
+            >
+              {!isCollapsed && "Cuộc thi"}
+            </Button>
+          </Tooltip>
+        )}
       </VStack>
+
       <Menu>
         <MenuButton
           as={Button}
