@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import SidebarTaking from "../../lib/components/Exam/ExamTaking/SidebarTaking";
+import ConfirmModal from "../../lib/components/Exam/ExamTaking/ConfirmModal";
+import FinishModal from "../../lib/components/Exam/ExamTaking/FinishModal";
 import ResultTable from "../../lib/components/Exam/ExamTaking/ResultTable";
 import ChatArea from "../../lib/components/Exam/ExamTaking/ChatArea";
 
@@ -35,6 +37,8 @@ const ExamPractice = () => {
   const [answered, setAnswered] = useState([false, false, false]);
   const [timeLeft, setTimeLeft] = useState(60 * 60);
   const [showHint, setShowHint] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showFinish, setShowFinish] = useState(false);
 
   useEffect(() => {
     setMessages(
@@ -61,6 +65,9 @@ const ExamPractice = () => {
 
   const handleSend = () => {
     if (!input.trim()) return;
+    setShowConfirm(true);
+  };
+  const handleConfirm = () => {
     const timeStr = formatTime(60 * 60 - timeLeft);
     const nextIndex = current + 1;
 
@@ -88,10 +95,12 @@ const ExamPractice = () => {
     });
     setInput("");
     setShowHint(false);
+    setShowConfirm(false);
     if (mockQuestions[nextIndex]) setCurrent(nextIndex);
   };
 
-  const handleFinish = () => setFinished(true);
+  const handleFinish = () => setShowFinish(true);
+  const handleFinishConfirm = () => setFinished(true);
 
   if (finished) {
     return (
@@ -149,7 +158,7 @@ const ExamPractice = () => {
               colorScheme="blue"
               size="xl"
               fontWeight="bold"
-              fontSize="2xl"
+              fontSize="xl"
               p={8}
               onClick={() => setStarted(true)}
             >
@@ -184,12 +193,12 @@ const ExamPractice = () => {
                   >
                     Vui lòng kiểm tra câu trả lời và xác nhận hoàn thành bài thi
                   </Text>
-                  <Button colorScheme="green" size="lg" onClick={handleFinish}>
+                  <Button bg="green.300" size="lg" onClick={handleFinish}>
                     Xác nhận hoàn thành bài thi
                   </Button>
                 </Box>
               ) : (
-                <Button colorScheme="blue" size="lg" onClick={handleFinish}>
+                <Button bg="blue.300" size="lg" onClick={handleFinish}>
                   Xác nhận hoàn thành bài thi
                 </Button>
               )}
@@ -197,6 +206,12 @@ const ExamPractice = () => {
           </>
         )}
       </Box>
+      <ConfirmModal
+        isOpen={showConfirm}
+        onConfirm={handleConfirm}
+        onCancel={() => setShowConfirm(false)}
+      />
+      <FinishModal isOpen={showFinish} onConfirm={handleFinishConfirm} />
     </Flex>
   );
 };

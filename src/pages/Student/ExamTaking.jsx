@@ -155,7 +155,7 @@ const ExamTaking = () => {
               colorScheme="blue"
               size="xl"
               fontWeight="bold"
-              fontSize="2xl"
+              fontSize="xl"
               p={8}
               onClick={() => setStarted(true)}
             >
@@ -184,7 +184,7 @@ const ExamTaking = () => {
                   >
                     Vui lòng kiểm tra câu trả lời và xác nhận hoàn thành bài thi
                   </Text>
-                  <Button colorScheme="green" size="lg" onClick={handleFinish}>
+                  <Button bg="green.300" size="lg" onClick={handleFinish}>
                     Xác nhận hoàn thành bài thi
                   </Button>
                 </Box>

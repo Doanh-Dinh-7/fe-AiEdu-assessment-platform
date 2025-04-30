@@ -13,6 +13,12 @@ const Layout = () => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
 
+  // Ẩn sidebar và disable breadcrumb ở các route thi/luyện thi
+  const hideSidebar = ["/exams/taking", "/exams/practice"].includes(
+    location.pathname
+  );
+  const disableBreadcrumb = hideSidebar;
+
   const breadcrumbNameMap = {
     // Giảng viên
     "exam-bank": "Ngân hàng đề thi",
@@ -37,9 +43,11 @@ const Layout = () => {
 
   return (
     <Flex h="100vh" bg="gray.50">
-      <Flex>
-        <Sidebar />
-      </Flex>
+      {!hideSidebar && (
+        <Flex>
+          <Sidebar />
+        </Flex>
+      )}
       <Box flex="1" overflow="auto" p={4}>
         {/* Breadcrumb */}
         <Breadcrumb mb={2} fontWeight="medium" fontSize="md">
@@ -67,12 +75,22 @@ const Layout = () => {
             }
 
             return (
-              <BreadcrumbItem key={routeTo} isCurrentPage={isLast}>
+              <BreadcrumbItem
+                key={routeTo}
+                isCurrentPage={isLast || disableBreadcrumb}
+              >
                 <BreadcrumbLink
-                  as={RouterLink}
-                  to={routeTo}
+                  as={!disableBreadcrumb ? RouterLink : undefined}
+                  to={!disableBreadcrumb ? routeTo : undefined}
                   fontWeight={isLast ? "bold" : "medium"}
-                  color={isLast ? "blue.600" : undefined}
+                  color={
+                    disableBreadcrumb
+                      ? "gray.400"
+                      : isLast
+                      ? "blue.600"
+                      : undefined
+                  }
+                  pointerEvents={disableBreadcrumb ? "none" : undefined}
                 >
                   {displayName}
                 </BreadcrumbLink>
