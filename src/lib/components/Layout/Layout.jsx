@@ -14,6 +14,7 @@ const Layout = () => {
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   const breadcrumbNameMap = {
+    // Giảng viên
     "exam-bank": "Ngân hàng đề thi",
     "exam-bank-form": "Tạo ngân hàng đề thi",
     "class-form": "Tạo/Sửa lớp học phần",
@@ -25,6 +26,10 @@ const Layout = () => {
     "exam-form": "Tạo/Sửa bài thi",
     "exam-result": "Kết quả bài thi",
     detail: "Chi tiết kết quả bài thi",
+
+    // Sinh viên
+    exams: "Danh sách bài thi",
+    taking: "Thực hiện thi",
   };
 
   // // Tách id từ URL nếu có
@@ -37,7 +42,7 @@ const Layout = () => {
       </Flex>
       <Box flex="1" overflow="auto" p={4}>
         {/* Breadcrumb */}
-        <Breadcrumb mb={4} fontWeight="medium" fontSize="md">
+        <Breadcrumb mb={2} fontWeight="medium" fontSize="md">
           {pathnames.map((name, idx) => {
             const routeTo = `/${pathnames.slice(0, idx + 1).join("/")}`;
             const isLast = idx === pathnames.length - 1;

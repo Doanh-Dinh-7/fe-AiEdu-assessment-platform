@@ -36,7 +36,7 @@ const Sidebar = () => {
   };
 
   const maTaiKhoan = localStorage.getItem("MaTaiKhoan") || "Đinh Sỹ Quốc Doanh";
-  const vaiTro = localStorage.getItem("VaiTro") || "Giảng viên";
+  const vaiTro = localStorage.getItem("VaiTro") || "student";
 
   return (
     <Box
@@ -148,7 +148,7 @@ const Sidebar = () => {
                 {maTaiKhoan}
               </Text>
               <Text fontSize="sm" color="gray.500">
-                {vaiTro}
+                {vaiTro === "lecturer" ? "Giảng viên" : "Sinh viên"}
               </Text>
             </Box>
           </HStack>
