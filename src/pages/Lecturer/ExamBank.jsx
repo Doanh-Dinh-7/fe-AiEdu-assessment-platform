@@ -68,7 +68,6 @@ const ExamBank = () => {
     if (confirmDelete) {
       try {
         const data = await deleteCourse(MaHocPhan);
-        console.log("data", data);
 
         if (!data) {
           throw new Error("Failed to fetch course detail");

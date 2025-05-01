@@ -54,6 +54,25 @@ export const createCourse = async (courseData) => {
   }
 };
 
+export const updateCourse = async (courseData, MaHocPhan) => {
+  try {
+    const res = await fetch(BASE_URL + "/academic/course/" + MaHocPhan, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(courseData),
+    });
+
+    const data = await checkResponse(res);
+
+    return data;
+  } catch (error) {
+    console.log("Lỗi khi cập nhật học phần:", error);
+  }
+};
+
 export const deleteCourse = async (MaHocPhan) => {
   try {
     const res = await fetch(BASE_URL + "/academic/course/" + MaHocPhan, {

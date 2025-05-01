@@ -9,7 +9,6 @@ import {
   Th,
   Td,
   Input,
-  Select,
   Button,
   Textarea,
   Center,
@@ -18,6 +17,7 @@ import {
 import QuestionLevelBox from "./QuestionLevelBox";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import useAutoResizeTextarea from "../../hooks/useAutoResizeTextarea";
 
 // const questionDetailData = [
 //   {
@@ -42,6 +42,8 @@ const QuestionDetail = () => {
   const [answer, setAnswer] = useState(questionDetailData.DapAn[0].NoiDung);
   const keyPoints = questionDetailData.DapAn[0].YChinh;
   const isEdit = mode === "edit";
+  const questionRef = useAutoResizeTextarea(question);
+  const answerRef = useAutoResizeTextarea(answer);
 
   return (
     <Box minH="100vh" p={8}>
@@ -63,11 +65,7 @@ const QuestionDetail = () => {
               isReadOnly={!isEdit}
               resize="vertical"
               minH="100px"
-              onInput={(e) => {
-                const target = e.currentTarget;
-                target.style.height = "auto";
-                target.style.height = `${target.scrollHeight}px`;
-              }}
+              ref={questionRef}
             />
 
             <Text fontWeight="bold" mt={4} mb={1}>
@@ -79,11 +77,7 @@ const QuestionDetail = () => {
               isReadOnly={!isEdit}
               resize="vertical"
               minH="100px"
-              onInput={(e) => {
-                const target = e.currentTarget;
-                target.style.height = "auto";
-                target.style.height = `${target.scrollHeight}px`;
-              }}
+              ref={answerRef}
             />
           </Box>
         </Flex>

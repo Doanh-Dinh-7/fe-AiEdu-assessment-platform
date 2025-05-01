@@ -7,14 +7,18 @@ import {
   Textarea,
   Center,
   useToast,
+  FormErrorMessage,
+  FormControl,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { createCourse } from "../../controller/course";
-import { useState } from "react";
+import { createCourse, updateCourse } from "../../controller/course";
+import { useEffect, useState } from "react";
+import useAutoResizeTextarea from "../../hooks/useAutoResizeTextarea";
 
 const ExamBankForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const { mode, defaultData = {} } = location.state || {};
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -29,8 +33,24 @@ const ExamBankForm = () => {
     BacDaoTao: defaultData.BacDaoTao || "Chính quy",
   });
 
+  const { textareaRef } = useAutoResizeTextarea(formData.MoTaHocPhan);
+  const initialChapterCount = defaultData.SoChuong || 3;
+  const [chapterError, setChapterError] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "SoChuong") {
+      const numericValue = parseInt(value);
+      if (numericValue < initialChapterCount) {
+        setChapterError(
+          `Không được giảm số chương dưới ${initialChapterCount}`
+        );
+      } else {
+        setChapterError("");
+      }
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -42,17 +62,23 @@ const ExamBankForm = () => {
     try {
       if (mode === "edit") {
         // Call the API to update the course
-        // await updateCourse(formData);
-        // toast({
-        //   title: "Cập nhật ngân hàng đề thi thành công",
-        //   description: "Ngân hàng đề thi đã được cập nhật thành công.",
-        //   status: "success",
-        //   duration: 3000,
-        //   isClosable: true,
-        // });
+        const data = await updateCourse(formData, defaultData.MaHocPhan);
+        if (!data) {
+          throw new Error("Failed to fetch course detail");
+        }
+        toast({
+          title: "Cập nhật ngân hàng đề thi thành công",
+          description: "Ngân hàng đề thi đã được cập nhật thành công.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else {
         // Call the API to create a new course
-        await createCourse(formData);
+        const data = await createCourse(formData);
+        if (!data) {
+          throw new Error("Failed to fetch course detail");
+        }
         toast({
           title: "Tạo ngân hàng đề thi thành công",
           description: "Ngân hàng đề thi đã được tạo thành công.",
@@ -81,9 +107,11 @@ const ExamBankForm = () => {
       <Flex w="100%" maxW="1200px" direction="column" gap={4}>
         <Center flex={1}>
           <Heading fontSize="lg" mb={2} textTransform="uppercase">
-            {mode === "edit" ? "Cập nhật" : "Tạo"} ngân hàng đề thi Quản trị học
+            {mode === "edit" ? "Cập nhật" : "Tạo"} ngân hàng đề thi{" "}
+            {defaultData.TenHocPhan}
           </Heading>
         </Center>
+
         <Flex gridArea="2 / 2 / 1 / 1" direction="column" gap={4}>
           <Flex wrap="wrap" gap={4} align="center">
             <Text fontWeight="bold">Học phần:</Text>
@@ -115,16 +143,24 @@ const ExamBankForm = () => {
               w="80px"
               bg="white"
             />
+            <Flex>
+              <FormControl isInvalid={!!chapterError}>
+                <Flex gap={4} align="center">
+                  <Text fontWeight="bold">Số chương:</Text>
+                  <Input
+                    name="SoChuong"
+                    value={formData.SoChuong}
+                    onChange={handleChange}
+                    size="sm"
+                    w="80px"
+                    bg="white"
+                    isInvalid={!!chapterError}
+                  />
 
-            <Text fontWeight="bold">Số chương:</Text>
-            <Input
-              name="SoChuong"
-              value={formData.SoChuong}
-              onChange={handleChange}
-              size="sm"
-              w="80px"
-              bg="white"
-            />
+                  <FormErrorMessage>{chapterError}</FormErrorMessage>
+                </Flex>
+              </FormControl>
+            </Flex>
           </Flex>
           <Flex wrap="wrap" gap={4} align="center">
             <Text fontWeight="bold">Hình thức thi:</Text>
@@ -150,6 +186,7 @@ const ExamBankForm = () => {
         <Flex direction="column" gap={2}>
           <Text fontWeight="bold">Mô tả:</Text>
           <Textarea
+            ref={textareaRef}
             name="MoTaHocPhan"
             bg="white"
             p={3}
