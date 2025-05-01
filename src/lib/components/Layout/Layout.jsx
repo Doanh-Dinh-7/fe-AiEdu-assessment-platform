@@ -1,45 +1,17 @@
 // src/components/Layout/Layout.jsx
-import {
-  Box,
-  Flex,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Sidebar from "./Sidebar";
-import { Outlet, useLocation, Link as RouterLink } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import Breadcrumbs from "./Breadcrumbs";
 
 const Layout = () => {
   const location = useLocation();
-  const pathnames = location.pathname.split("/").filter((x) => x);
 
   // Ẩn sidebar và disable breadcrumb ở các route thi/luyện thi
   const hideSidebar = ["/exams/taking", "/exams/practice"].includes(
     location.pathname
   );
   const disableBreadcrumb = hideSidebar;
-
-  const breadcrumbNameMap = {
-    // Giảng viên
-    "exam-bank": "Ngân hàng đề thi",
-    "exam-bank-form": "Tạo ngân hàng đề thi",
-    "class-form": "Tạo/Sửa lớp học phần",
-    questions: "Danh sách câu hỏi",
-    class: "Danh sách lớp học phần",
-    "create-question": "Tạo câu hỏi",
-    "upload-document-exam": "Danh sách tài liệu",
-    "exam-management": "Quản lý bài thi",
-    "exam-form": "Tạo/Sửa bài thi",
-    "exam-result": "Kết quả bài thi",
-    detail: "Chi tiết kết quả bài thi",
-
-    // Sinh viên
-    exams: "Danh sách bài thi",
-    taking: "Thực hiện thi",
-  };
-
-  // // Tách id từ URL nếu có
-  // const id = pathnames.find((p) => /^\d+$/.test(p)); // id là số (ví dụ: "3")
 
   return (
     <Flex h="100vh" bg="gray.50">
@@ -50,54 +22,7 @@ const Layout = () => {
       )}
       <Box flex="1" overflow="auto" p={4}>
         {/* Breadcrumb */}
-        <Breadcrumb mb={2} fontWeight="medium" fontSize="md">
-          {pathnames.map((name, idx) => {
-            const routeTo = `/${pathnames.slice(0, idx + 1).join("/")}`;
-            const isLast = idx === pathnames.length - 1;
-
-            let displayName = breadcrumbNameMap[name];
-
-            if (!displayName) {
-              if (/^\d+$/.test(name) && pathnames[idx - 1] === "exam-bank") {
-                // Nếu name là id số và phía trước là exam-bank
-                displayName = `Chi tiết ngân hàng đề thi ${name}`;
-              } else if (
-                /^\d+$/.test(name) &&
-                pathnames[idx - 1] === "questions"
-              ) {
-                // Nếu name là id số và phía trước là questions
-                displayName = `Chi tiết câu hỏi ${name}`;
-              } else if (pathnames[idx - 1] === "class") {
-                displayName = `Lớp học phần ${name}`;
-              } else {
-                displayName = decodeURIComponent(name);
-              }
-            }
-
-            return (
-              <BreadcrumbItem
-                key={routeTo}
-                isCurrentPage={isLast || disableBreadcrumb}
-              >
-                <BreadcrumbLink
-                  as={!disableBreadcrumb ? RouterLink : undefined}
-                  to={!disableBreadcrumb ? routeTo : undefined}
-                  fontWeight={isLast ? "bold" : "medium"}
-                  color={
-                    disableBreadcrumb
-                      ? "gray.400"
-                      : isLast
-                      ? "blue.600"
-                      : undefined
-                  }
-                  pointerEvents={disableBreadcrumb ? "none" : undefined}
-                >
-                  {displayName}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            );
-          })}
-        </Breadcrumb>
+        <Breadcrumbs disableBreadcrumb={disableBreadcrumb} />
         <Outlet />
       </Box>
     </Flex>

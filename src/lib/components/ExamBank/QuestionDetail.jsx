@@ -13,49 +13,84 @@ import {
   Button,
   Textarea,
   Center,
+  Text,
 } from "@chakra-ui/react";
 import QuestionLevelBox from "./QuestionLevelBox";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 
-const answerData = [
-  {
-    stt: 1,
-    content: "Nội dung câu hỏi 1",
-    answer: "Nội dung đáp án 1",
-    level: "Dễ",
-    mainIdea: "Ý thứ nhất",
-    score: 1,
-    extraQuestion: "Câu hỏi cho ý 1",
-    extraAnswer: "Đáp án cho ý 1",
-  },
-  // ... thêm các dòng khác nếu cần
-];
+// const questionDetailData = [
+//   {
+//     stt: 1,
+//     content: "Nội dung câu hỏi 1",
+//     answer: "Nội dung đáp án 1",
+//     level: "Dễ",
+//     mainIdea: "Ý thứ nhất",
+//     score: 1,
+//     extraQuestion: "Câu hỏi cho ý 1",
+//     extraAnswer: "Đáp án cho ý 1",
+//   },
+//   // ... thêm các dòng khác nếu cần
+// ];
 
 const QuestionDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { id } = useParams();
-  const { mode = "view" } = location.state || {};
+  const { maCauHoi } = useParams();
+  const { mode, questionDetailData } = location.state || {};
+  const [question, setQuestion] = useState(questionDetailData.NoiDung);
+  const [answer, setAnswer] = useState(questionDetailData.DapAn[0].NoiDung);
+  const keyPoints = questionDetailData.DapAn[0].YChinh;
   const isEdit = mode === "edit";
 
   return (
     <Box minH="100vh" p={8}>
       <Flex w="100%" maxW="1200px" direction="column" gap={4}>
-        <Flex justify="space-between" align="center">
+        <Flex direction="column" justify="space-between" align="center">
           <Center flex={1}>
             <Heading fontSize="lg" mb={2} textTransform="uppercase">
-              Chi tiết câu hỏi {id}
+              Chi tiết câu hỏi {maCauHoi}
             </Heading>
           </Center>
           <QuestionLevelBox easy={10} medium={5} hard={5} />
+          <Box w="100%" mt={4}>
+            <Text fontWeight="bold" mb={1}>
+              Câu hỏi:
+            </Text>
+            <Textarea
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              isReadOnly={!isEdit}
+              resize="vertical"
+              minH="100px"
+              onInput={(e) => {
+                const target = e.currentTarget;
+                target.style.height = "auto";
+                target.style.height = `${target.scrollHeight}px`;
+              }}
+            />
+
+            <Text fontWeight="bold" mt={4} mb={1}>
+              Đáp án:
+            </Text>
+            <Textarea
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+              isReadOnly={!isEdit}
+              resize="vertical"
+              minH="100px"
+              onInput={(e) => {
+                const target = e.currentTarget;
+                target.style.height = "auto";
+                target.style.height = `${target.scrollHeight}px`;
+              }}
+            />
+          </Box>
         </Flex>
         <Table variant="simple" bg="white" mt={4}>
           <Thead>
             <Tr>
               <Th>STT</Th>
-              <Th>Câu hỏi</Th>
-              <Th>Đáp Án</Th>
-              <Th>Mức độ</Th>
               <Th>Ý chính</Th>
               <Th>Điểm số</Th>
               <Th>Câu hỏi bổ sung</Th>
@@ -63,41 +98,12 @@ const QuestionDetail = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {answerData.map((row, idx) => (
-              <Tr key={idx}>
-                <Td>{row.stt}</Td>
+            {keyPoints.map((row, index) => (
+              <Tr key={keyPoints.MaID}>
+                <Td>{index + 1}</Td>
                 <Td>
                   <Textarea
-                    defaultValue={row.content}
-                    isReadOnly={!isEdit}
-                    onInput={(e) => {
-                      const target = e.currentTarget;
-                      target.style.height = "auto";
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
-                  />
-                </Td>
-                <Td>
-                  <Textarea
-                    defaultValue={row.answer}
-                    isReadOnly={!isEdit}
-                    onInput={(e) => {
-                      const target = e.currentTarget;
-                      target.style.height = "auto";
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
-                  />
-                </Td>
-                <Td>
-                  <Select defaultValue={row.level} isDisabled={!isEdit}>
-                    <option value="Dễ">Dễ</option>
-                    <option value="Trung bình">Trung bình</option>
-                    <option value="Khó">Khó</option>
-                  </Select>
-                </Td>
-                <Td>
-                  <Textarea
-                    defaultValue={row.mainIdea}
+                    defaultValue={row.NoiDung}
                     isReadOnly={!isEdit}
                     onInput={(e) => {
                       const target = e.currentTarget;
@@ -109,14 +115,14 @@ const QuestionDetail = () => {
                 <Td>
                   <Input
                     type="number"
-                    defaultValue={row.score}
+                    defaultValue={row.TyLeDiem}
                     min={0}
                     isReadOnly={!isEdit}
                   />
                 </Td>
                 <Td>
                   <Textarea
-                    defaultValue={row.extraQuestion}
+                    defaultValue={row.CauHoiBoSung[0].NoiDung}
                     isReadOnly={!isEdit}
                     onInput={(e) => {
                       const target = e.currentTarget;
@@ -127,7 +133,7 @@ const QuestionDetail = () => {
                 </Td>
                 <Td>
                   <Textarea
-                    defaultValue={row.extraAnswer}
+                    defaultValue={row.CauHoiBoSung[0].DapAnBoSung}
                     isReadOnly={!isEdit}
                     onInput={(e) => {
                       const target = e.currentTarget;

@@ -2,41 +2,78 @@ import {
   Flex,
   Heading,
   Input,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Button,
   Text,
   Textarea,
   Center,
+  useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { createCourse } from "../../controller/course";
+import { useState } from "react";
 
 const ExamBankForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { mode = "create", defaultData = {} } = location.state || {};
+  const { mode, defaultData = {} } = location.state || {};
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
-  const [chapters, setChapters] = useState(defaultData.chapters || []);
+  const [formData, setFormData] = useState({
+    TenHocPhan: defaultData.TenHocPhan || "",
+    MoTaHocPhan: defaultData.MoTaHocPhan || "",
+    SoTinChi: defaultData.SoTinChi || 3,
+    SoChuong: defaultData.SoChuong || 3,
+    TongSoCau: defaultData.TongSoCau || 100,
+    HinhThucThi: defaultData.HinhThucThi || "Vấn đáp",
+    BacDaoTao: defaultData.BacDaoTao || "Chính quy",
+  });
 
-  const handleAddChapter = () => {
-    const newIndex = chapters.length + 1;
-    setChapters([
-      ...chapters,
-      {
-        name: `Chương ${newIndex}`,
-        createdAt: new Date().toLocaleDateString("vi-VN"),
-      },
-    ]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSave = () => {
-    // call API và chuyển hướng về trang danh sách ngân hàng đề thi
-    navigate("/exam-bank");
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      if (mode === "edit") {
+        // Call the API to update the course
+        // await updateCourse(formData);
+        // toast({
+        //   title: "Cập nhật ngân hàng đề thi thành công",
+        //   description: "Ngân hàng đề thi đã được cập nhật thành công.",
+        //   status: "success",
+        //   duration: 3000,
+        //   isClosable: true,
+        // });
+      } else {
+        // Call the API to create a new course
+        await createCourse(formData);
+        toast({
+          title: "Tạo ngân hàng đề thi thành công",
+          description: "Ngân hàng đề thi đã được tạo thành công.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      navigate("/exam-bank");
+    } catch (error) {
+      console.error("Error saving course:", error);
+      toast({
+        title: "Lưu ngân hàng đề thi thất bại",
+        description: "Có lỗi xảy ra khi lưu ngân hàng đề thi.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,30 +88,39 @@ const ExamBankForm = () => {
           <Flex wrap="wrap" gap={4} align="center">
             <Text fontWeight="bold">Học phần:</Text>
             <Input
-              value={defaultData.name || ""}
+              name="TenHocPhan"
+              value={formData.TenHocPhan}
+              onChange={handleChange}
               size="sm"
               w="180px"
               bg="white"
             />
-            <Text fontWeight="bold">Mã học phần:</Text>
+            <Text fontWeight="bold">Số tín chỉ:</Text>
             <Input
-              value={defaultData.code || ""}
+              name="SoTinChi"
+              value={formData.SoTinChi}
+              onChange={handleChange}
               size="sm"
-              w="60px"
+              w="80px"
               bg="white"
             />
           </Flex>
           <Flex wrap="wrap" gap={4} align="center">
             <Text fontWeight="bold">Tổng số câu hỏi:</Text>
             <Input
-              value={defaultData.totalQuestions || 100}
+              name="TongSoCau"
+              value={formData.TongSoCau}
+              onChange={handleChange}
               size="sm"
               w="80px"
               bg="white"
             />
-            <Text fontWeight="bold">Số tín chỉ:</Text>
+
+            <Text fontWeight="bold">Số chương:</Text>
             <Input
-              value={defaultData.creditHours || 3}
+              name="SoChuong"
+              value={formData.SoChuong}
+              onChange={handleChange}
               size="sm"
               w="80px"
               bg="white"
@@ -83,14 +129,18 @@ const ExamBankForm = () => {
           <Flex wrap="wrap" gap={4} align="center">
             <Text fontWeight="bold">Hình thức thi:</Text>
             <Input
-              value={defaultData.examType || "Vấn đáp"}
+              name="HinhThucThi"
+              value={formData.HinhThucThi}
+              onChange={handleChange}
               size="sm"
               w="180px"
               bg="white"
             />
             <Text fontWeight="bold">Bậc đào tạo:</Text>
             <Input
-              value={defaultData.educationLevel || "Chính quy"}
+              name="BacDaoTao"
+              value={formData.BacDaoTao}
+              onChange={handleChange}
               size="sm"
               w="180px"
               bg="white"
@@ -100,51 +150,16 @@ const ExamBankForm = () => {
         <Flex direction="column" gap={2}>
           <Text fontWeight="bold">Mô tả:</Text>
           <Textarea
+            name="MoTaHocPhan"
             bg="white"
             p={3}
             borderRadius="md"
             fontSize="sm"
             whiteSpace="pre-line"
-            value={defaultData.description || ""}
+            value={formData.MoTaHocPhan}
+            onChange={handleChange}
           />
         </Flex>
-      </Flex>
-      <Flex
-        w="100%"
-        justify="space-between"
-        align="center"
-        mb={6}
-        maxW="1200px"
-      >
-        <Center flex={1}>
-          <Table variant="simple" size="md" mt={4}>
-            <Thead>
-              <Tr>
-                <Th>STT</Th>
-                <Th>Chương</Th>
-                <Th>Ngày tạo</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {chapters.map((chapter, idx) => (
-                <Tr key={idx}>
-                  <Td>{idx + 1}</Td>
-                  <Td>{chapter.name}</Td>
-                  <Td>{chapter.createdAt}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </Center>
-        <Button
-          align="right"
-          ml={4}
-          px={8}
-          colorScheme="blue"
-          onClick={handleAddChapter}
-        >
-          Thêm chương
-        </Button>
       </Flex>
       <Flex w="100%" justify="flex-end" align="center" mb={6}>
         <Button mt={4} ml={4} colorScheme="green" onClick={handleSave}>

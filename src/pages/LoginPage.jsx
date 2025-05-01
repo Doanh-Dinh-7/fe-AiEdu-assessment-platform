@@ -19,7 +19,7 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     const data = await login(username, password);
-    localStorage.setItem("accessToken", data.access_token);
+    // localStorage.setItem("accessToken", data.access_token);
     localStorage.setItem("VaiTro", data.VaiTro);
     localStorage.setItem("MaTaiKhoan", data.MaTaiKhoan);
     navigate("/");
@@ -55,12 +55,12 @@ const LoginPage = () => {
         <Button colorScheme="blue" width="full" onClick={handleLogin}>
           Đăng Nhập
         </Button>
-        <Text>
+        {/* <Text>
           Bạn chưa có tài khoản?{" "}
           <Button variant="link" colorScheme="blue">
             Đăng ký
           </Button>
-        </Text>
+        </Text> */}
       </VStack>
     </Box>
   );

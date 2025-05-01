@@ -44,8 +44,9 @@ export const checkResponse = async (response) => {
   if (!response.ok) {
     if (response.status === 401) {
       // Nếu mã lỗi là 401, xóa token và chuyển hướng đến trang đăng nhập
-      localStorage.removeItem("accessToken");
+      // localStorage.removeItem("accessToken");
       localStorage.removeItem("VaiTro");
+      localStorage.removeItem("MaTaiKhoan");
 
       window.location.href = "/login"; // Chuyển hướng đến trang đăng nhập
     }
