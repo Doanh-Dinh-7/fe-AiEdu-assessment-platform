@@ -1,51 +1,123 @@
 import {
   Box,
   Button,
+  Center,
   Flex,
   Heading,
   Input,
+  Spinner,
   Text,
-  Textarea,
   useToast,
 } from "@chakra-ui/react";
+import { Select } from "chakra-react-select";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClass, updateClass } from "../../controller/class";
+import { getCoursesList } from "../../controller/course";
 
 const ClassForm = () => {
   const navigate = useNavigate();
   const toast = useToast();
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
-  const { mode = "create", defaultData = {} } = location.state || {};
+  const { mode, defaultData = {} } = location.state || {};
 
-  const [className, setClassName] = useState(defaultData.name || "");
-  const [classCode, setClassCode] = useState(defaultData.code || "");
-  const [description, setDescription] = useState(defaultData.description || "");
+  const [formData, setFormData] = useState({
+    MaLopHocPhan: defaultData.MaLopHocPhan || "",
+    TenLopHocPhan: defaultData.TenLopHocPhan || "",
+    ThoiGianHoc: defaultData.ThoiGianHoc || "",
+    MaHocPhan: defaultData.MaHocPhan || [],
+  });
 
-  const handleSave = () => {
-    if (!className || !classCode) {
+  const [courseOptions, setCourseOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoading(true);
+      try {
+        const data = await getCoursesList();
+        if (!data) throw new Error("Error fetching courses");
+        if (data && Array.isArray(data)) {
+          setCourseOptions(
+            data.map((c) => ({ label: c.TenHocPhan, value: c.MaHocPhan }))
+          );
+        }
+      } catch (error) {
+        toast({
+          title: "Lỗi khi lấy danh sách lớp học phần",
+          description: "Không thể lấy dữ liệu lớp học phần. Vui lòng thử lại!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        setCourseOptions([]);
+        console.log("error", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourses();
+  }, [toast]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      if (mode === "edit") {
+        // Call the API to update the course
+        const data = await updateClass(formData, defaultData.MaLopHocPhan);
+        if (!data) {
+          throw new Error("Failed to fetch class detail");
+        }
+        toast({
+          title: "Cập nhật lớp học phần thành công",
+          description: "Lớp học phần đã được cập nhật thành công.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        // Call the API to create a new class
+        const data = await createClass(formData);
+        if (!data) {
+          throw new Error("Failed to fetch class detail");
+        }
+        toast({
+          title: "Tạo lớp học phần thành công",
+          description: "Lớp học phần đã được tạo thành công.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      navigate("/class");
+    } catch (error) {
+      console.error("Error saving course:", error);
       toast({
-        title: "Vui lòng điền đầy đủ thông tin.",
-        status: "warning",
+        title: "Lưu lớp học phần thất bại",
+        description: "Có lỗi xảy ra khi lưu lớp học phần.",
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    // TODO: Gọi API tạo/cập nhật lớp học phần
-
-    toast({
-      title:
-        mode === "edit" ? "Đã cập nhật lớp học phần." : "Đã tạo lớp học phần.",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-    });
-
-    navigate("/class");
   };
 
-  return (
+  return loading ? (
+    <Center minH="200px">
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+    </Center>
+  ) : (
     <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={5}>
       <Box
         w="100%"
@@ -70,34 +142,44 @@ const ClassForm = () => {
               Tên lớp học phần
             </Text>
             <Input
+              name="TenLopHocPhan"
               placeholder="VD: Quản trị học 48K21.2"
-              value={className}
-              onChange={(e) => setClassName(e.target.value)}
+              value={formData.TenLopHocPhan}
+              onChange={handleChange}
               bg="gray.50"
             />
           </Flex>
 
           <Flex direction="column">
             <Text fontWeight="bold" mb={1}>
-              Mã lớp học phần
+              Thời gian học
             </Text>
             <Input
-              placeholder="VD: QTH-01"
-              value={classCode}
-              onChange={(e) => setClassCode(e.target.value)}
+              name="ThoiGianHoc"
+              placeholder="VD: 123 T6"
+              value={formData.ThoiGianHoc}
+              onChange={handleChange}
               bg="gray.50"
             />
           </Flex>
 
           <Flex direction="column">
             <Text fontWeight="bold" mb={1}>
-              Mô tả (tuỳ chọn)
+              Học phần
             </Text>
-            <Textarea
-              placeholder="Mô tả nội dung hoặc lưu ý về lớp học phần này..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              bg="gray.50"
+            <Select
+              placeholder="Chọn học phần"
+              isMulti
+              options={courseOptions}
+              value={courseOptions.filter((c) =>
+                formData.MaHocPhan.includes(c.value)
+              )}
+              onChange={(options) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  MaHocPhan: options ? options.map((opt) => opt.value) : [],
+                }))
+              }
             />
           </Flex>
         </Flex>

@@ -4,15 +4,15 @@ import { useLocation, Link as RouterLink } from "react-router-dom";
 const breadcrumbNameMap = {
   // Giảng viên
   "exam-bank": "Ngân hàng đề thi",
-  "exam-bank-form": "Tạo ngân hàng đề thi",
-  "class-form": "Tạo/Sửa lớp học phần",
+  "exam-bank-form": "Tạo-Sửa ngân hàng đề thi",
+  "class-form": "Tạo-Sửa lớp học phần",
   qestions: "Danh sách câu hỏi",
   "detail-questions": "Chi tiết câu hỏi",
   class: "Danh sách lớp học phần",
   "create-question": "Tạo câu hỏi",
   "upload-document-exam": "Danh sách tài liệu",
-  "exam-management": "Quản lý bài thi",
-  "exam-form": "Tạo/Sửa bài thi",
+  "exam-management": "Quản lý cuộc thi",
+  "exam-form": "Tạo-Sửa bài thi",
   "exam-result": "Kết quả bài thi",
   detail: "Chi tiết kết quả bài thi",
 
@@ -45,22 +45,36 @@ const Breadcrumbs = ({ disableBreadcrumb = false }) => {
 
         // Xử lý động cho các tham số id, maChuong, maCauHoi
         if (!displayName) {
-          // Nếu là exam-bank/:id
-          if (filteredPathnames[0] === "exam-bank" && idx === 1) {
-            displayName = "Chi tiết ngân hàng đề thi";
+          // Với path bắt đầu bằng "exam-bank"
+          if (filteredPathnames[0] === "exam-bank") {
+            if (idx === 1) {
+              displayName = "Chi tiết ngân hàng đề thi";
+            } else if (idx === 2) {
+              displayName = "Danh sách câu hỏi";
+            } else if (
+              idx === filteredPathnames.length - 1 &&
+              filteredPathnames.length > 3
+            ) {
+              displayName = "Chi tiết câu hỏi";
+            }
           }
-          // Nếu là exam-bank/:id/questions/:maChuong
-          else if (filteredPathnames[0] === "exam-bank" && idx === 2) {
-            displayName = "Danh sách câu hỏi";
+
+          // Với path bắt đầu bằng "class"
+          else if (filteredPathnames[0] === "class") {
+            if (idx === 1) {
+              displayName = "Lớp học phần";
+            }
           }
-          // Nếu là mã câu hỏi (thường là cuối cùng)
-          else if (
-            filteredPathnames[0] === "exam-bank" &&
-            idx === filteredPathnames.length - 1 &&
-            filteredPathnames.length > 3
-          ) {
-            displayName = "Chi tiết câu hỏi";
-          } else {
+
+          // Với path bắt đầu bằng "class"
+          else if (filteredPathnames[0] === "exam-management") {
+            if (idx === 1) {
+              displayName = "Kết quả bài thi";
+            }
+          }
+
+          // Fallback chung: chuyển path thành dạng đọc được
+          else {
             displayName = decodeURIComponent(name)
               .replace(/-/g, " ")
               .replace(/\b\w/g, (char) => char.toUpperCase());

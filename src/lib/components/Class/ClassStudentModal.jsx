@@ -25,39 +25,35 @@ const ClassStudentModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {isEdit ? "Chỉnh sửa sinh viên" : "Thêm sinh viên"}
+          {isEdit ? "Chỉnh sửa sinh viên" : "Thêm sinh viên"}{" "}
+          {student.MaSinhVien}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl mb={3}>
-            <FormLabel>Mã sinh viên</FormLabel>
-            <Input
-              value={student.mssv}
-              onChange={(e) => setStudent({ ...student, mssv: e.target.value })}
-            />
-          </FormControl>
-          <FormControl mb={3}>
             <FormLabel>Tên sinh viên</FormLabel>
             <Input
-              value={student.name}
-              onChange={(e) => setStudent({ ...student, name: e.target.value })}
+              value={student.TenSinhVien}
+              onChange={(e) =>
+                setStudent({ ...student, TenSinhVien: e.target.value })
+              }
             />
           </FormControl>
           <FormControl mb={3}>
             <FormLabel>Lớp</FormLabel>
             <Input
-              value={student.class}
+              value={student.LopSinhHoat}
               onChange={(e) =>
-                setStudent({ ...student, class: e.target.value })
+                setStudent({ ...student, LopSinhHoat: e.target.value })
               }
             />
           </FormControl>
           <FormControl>
             <FormLabel>Tên đăng nhập</FormLabel>
             <Input
-              value={student.username}
+              value={student.TenDangNhap}
               onChange={(e) =>
-                setStudent({ ...student, username: e.target.value })
+                setStudent({ ...student, TenDangNhap: e.target.value })
               }
             />
           </FormControl>

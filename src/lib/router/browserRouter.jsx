@@ -35,20 +35,32 @@ const lecturerRoutes = {
     { path: "/exam-bank/exam-bank-form", element: <ExamBankForm /> },
     { path: "/exam-bank/:maHocPhan", element: <ExamBankDetail /> },
     { path: "/exam-bank/:maHocPhan/:maChuong", element: <ExamQuestion /> },
-    { path: "/exam-bank/:maHocPhan/:maChuong/:maCauHoi", element: <QuestionDetail />, },
-    { path: "/exam-bank/:maHocPhan/:maChuong/create-question", element: <CreateQuestion />, },
-    { path: "/exam-bank/:maHocPhan/:maChuong/upload-document-exam", element: <ExamDocuments />, },
+    {
+      path: "/exam-bank/:maHocPhan/:maChuong/:maCauHoi",
+      element: <QuestionDetail />,
+    },
+    {
+      path: "/exam-bank/:maHocPhan/:maChuong/create-question",
+      element: <CreateQuestion />,
+    },
+    {
+      path: "/exam-bank/:maHocPhan/:maChuong/upload-document-exam",
+      element: <ExamDocuments />,
+    },
 
     // Quản lý lớp học phần
     { path: "/class", element: <Class /> },
-    { path: "/class/:id", element: <ClassDetail /> },
+    { path: "/class/:maLopHocPhan", element: <ClassDetail /> },
     { path: "/class/class-form", element: <ClassForm /> },
 
-    // Quản lý bài thi
+    // Quản lý cuộc thi
     { path: "/exam-management", element: <ExamManagement /> },
     { path: "/exam-management/exam-form", element: <ExamForm /> },
     { path: "/exam-management/exam-result", element: <ExamResult /> },
-    { path: "/exam-management/exam-result/detail", element: <ExamResultDetail />, },
+    {
+      path: "/exam-management/exam-result/detail",
+      element: <ExamResultDetail />,
+    },
   ],
 };
 

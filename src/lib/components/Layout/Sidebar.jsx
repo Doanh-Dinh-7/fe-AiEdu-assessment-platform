@@ -97,7 +97,7 @@ const Sidebar = () => {
             </Tooltip>
 
             <Tooltip
-              label="Quản lý bài thi"
+              label="Quản lý cuộc thi"
               placement="right"
               isDisabled={!isCollapsed}
             >
@@ -110,7 +110,7 @@ const Sidebar = () => {
                 justifyContent={isCollapsed ? "center" : "flex-start"}
                 onClick={() => navigate("/exam-management")}
               >
-                {!isCollapsed && "Quản lý bài thi"}
+                {!isCollapsed && "Quản lý cuộc thi"}
               </Button>
             </Tooltip>
           </>

@@ -13,38 +13,75 @@ import {
   Center,
   IconButton,
   useDisclosure,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaEdit, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import ClassStudentModal from "./ClassStudentModal";
+import { ProgressContext } from "../Layout/ProgressContext";
+import {
+  getClassStudenList,
+  importFileStudentList,
+} from "../../controller/class";
 
-const initialStudents = [
-  {
-    stt: 1,
-    mssv: "22112152138",
-    name: "Nguyễn Văn Quang",
-    class: "48K21.2",
-    username: "221121521238",
-  },
-];
+// const initialStudents = [
+//   {
+//     MaSinhVien: "22112152138",
+//     TenSinhVien: "Nguyễn Văn Quang",
+//     LopSinhHoat : "48K21.2",
+//     TenDangNhap: "221121521238",
+//   },
+// ];
 
 const ClassDetail = () => {
-  const { id } = useParams();
-  const [students, setStudents] = useState(initialStudents);
+  const { maLopHocPhan } = useParams();
+  const [nameClass, setNameClass] = useState("");
+  const [students, setStudents] = useState([]);
+  const [selectedFile, setSelectedFile] = useState();
+  const [loading, setLoading] = useState(true);
+  const toast = useToast();
+  const { setShowProgress } = useContext(ProgressContext);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      setLoading(true);
+      try {
+        const data = await getClassStudenList(maLopHocPhan);
+        if (!data) throw new Error("Error fetching classes");
+        setNameClass(data.ten_lop_hoc_phan);
+        setStudents(data.sinh_vien);
+      } catch (error) {
+        toast({
+          title: "Lỗi khi lấy danh sách sinh viên lớp học phần",
+          description:
+            "Không thể lấy dữ liệu sinh viên lớp học phần. Vui lòng thử lại!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        setStudents([]);
+        console.log("error", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStudents();
+  }, [maLopHocPhan, toast]);
+
   const [editIndex, setEditIndex] = useState(null);
   const [student, setStudent] = useState({
-    mssv: "",
-    name: "",
-    class: "",
-    username: "",
+    TenSinhVien: "",
+    LopSinhHoat: "",
+    TenDangNhap: "",
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isEdit, setIsEdit] = useState(false);
 
   const openAddModal = () => {
-    setStudent({ mssv: "", name: "", class: "", username: "" });
+    setStudent({ TenSinhVien: "", LopSinhHoat: "", TenDangNhap: "" });
     setIsEdit(false);
     onOpen();
   };
@@ -78,26 +115,53 @@ const ClassDetail = () => {
     setStudents(updated.map((sv, i) => ({ ...sv, stt: i + 1 })));
   };
 
-  const handleImport = () => {
-    setStudents((prev) => [
-      ...prev,
-      {
-        stt: prev.length + 1,
-        mssv: "22112159999",
-        name: "Nguyễn Văn B",
-        class: "48K21.2",
-        username: "22112159999",
-      },
-    ]);
+  const handleImport = async () => {
+    const fileData = new FormData();
+    fileData.append("file", selectedFile);
+
+    try {
+      onClose();
+      setShowProgress(true);
+      localStorage.setItem("showProgress", "true");
+      const data = await importFileStudentList(maLopHocPhan, fileData);
+      if (!data) {
+        throw new Error("Failed to import studentsList");
+      }
+      setSelectedFile();
+      setShowProgress(false);
+      localStorage.setItem("showProgress", "false");
+      toast({
+        title: "Cập nhật tài liệu chương thành công",
+        description: "Đã cập nhật tài liệu chương thành công.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      setShowProgress(false);
+      localStorage.setItem("showProgress", "false");
+      toast({
+        title: "Cập nhật tài liệu thất bại",
+        description: "Có lỗi xảy ra khi cập nhật tài liệu chương.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.error(error);
+    }
   };
 
-  return (
+  return loading ? (
+    <Center minH="200px">
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+    </Center>
+  ) : (
     <Box minH="100vh" bg="#F5F9FF" pt={5}>
       <Flex direction="column" align="center" maxW="1200px" mx="auto">
         <Flex w="100%" justify="space-between" align="center" mb={4} gap={4}>
           <Center flex={1}>
             <Heading fontSize="lg" mb={2} textTransform="uppercase">
-              Lớp học phần {id}
+              Lớp học phần {nameClass}
             </Heading>
           </Center>
           <IconButton
@@ -129,20 +193,20 @@ const ClassDetail = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {students.map((sv, index) => (
-              <Tr key={index}>
-                <Td>{sv.stt}</Td>
-                <Td>{sv.mssv}</Td>
-                <Td fontWeight="bold">{sv.name}</Td>
-                <Td>{sv.class}</Td>
-                <Td>{sv.username}</Td>
+            {students.map((sinhVien, index) => (
+              <Tr key={sinhVien.MaSinhVien}>
+                <Td>{index + 1}</Td>
+                <Td>{sinhVien.MaSinhVien}</Td>
+                <Td fontWeight="bold">{sinhVien.TenSinhVien}</Td>
+                <Td>{sinhVien.LopSinhHoat}</Td>
+                <Td>{sinhVien.TenDangNhap}</Td>
                 <Td>
                   <IconButton
                     icon={<FaEdit />}
                     size="sm"
                     colorScheme="yellow"
                     variant="ghost"
-                    onClick={() => openEditModal(sv, index)}
+                    onClick={() => openEditModal(sinhVien, sinhVien.MaSinhVien)}
                   />
                 </Td>
                 <Td>
@@ -151,7 +215,7 @@ const ClassDetail = () => {
                     size="sm"
                     colorScheme="red"
                     variant="ghost"
-                    onClick={() => handleDeleteStudent(index)}
+                    onClick={() => handleDeleteStudent(sinhVien.MaSinhVien)}
                   />
                 </Td>
               </Tr>

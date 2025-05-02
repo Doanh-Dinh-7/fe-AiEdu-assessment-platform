@@ -9,29 +9,83 @@ import {
   Center,
   Flex,
   Heading,
+  Spinner,
 } from "@chakra-ui/react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
+import { getClassList } from "../../lib/controller/class";
+import { deleteClass } from "../../lib/controller/class";
 
-const initialClassData = [
-  { stt: 1, id: "QTH-47K21.1", name: "CSLT", time: "123 T6", quantity: 30 },
-  { stt: 2, id: "QTH-47K21.2", name: "QTH", time: "123 T7", quantity: 30 },
-  { stt: 3, id: "KTCT-47K21.1", name: "KTCT", time: "123 T2", quantity: 30 },
-];
+// const initialClassData = [
+//   { stt: 1, id: "QTH-47K21.1", name: "CSLT", time: "123 T6", quantity: 30 },
+//   { stt: 2, id: "QTH-47K21.2", name: "QTH", time: "123 T7", quantity: 30 },
+//   { stt: 3, id: "KTCT-47K21.1", name: "KTCT", time: "123 T2", quantity: 30 },
+// ];
 
 const Class = () => {
-  const [data, setData] = useState(initialClassData);
   const location = useLocation();
   const navigate = useNavigate();
+  const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const toast = useToast();
 
-  // Xử lý xoá lớp học phần (dựa vào stt)
-  const handleDelete = (stt) => {
-    setData((prev) =>
-      prev
-        .filter((item) => item.stt !== stt)
-        .map((item, idx) => ({ ...item, stt: idx + 1 }))
+  useEffect(() => {
+    const fetchClasses = async () => {
+      setLoading(true);
+      try {
+        const data = await getClassList();
+        if (!data) throw new Error("Error fetching classes");
+        setClasses(data);
+      } catch (error) {
+        toast({
+          title: "Lỗi khi lấy danh sách lớp học phần",
+          description: "Không thể lấy dữ liệu lớp học phần. Vui lòng thử lại!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        setClasses([]);
+        console.log("error", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchClasses();
+  }, [toast]);
+
+  const handleDelete = async (MaLopHocPhan) => {
+    const confirmDelete = window.confirm(
+      `Bạn có chắc chắn muốn xóa lớp học phần ${MaLopHocPhan} này không?`
     );
+    if (confirmDelete) {
+      try {
+        const data = await deleteClass(MaLopHocPhan);
+        if (!data) {
+          throw new Error("Failed to delete class");
+        }
+        toast({
+          title: "Xoá lớp học phần thành công",
+          description: "Đã xoá lớp học phần thành công.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        setClasses(
+          classes.filter((item) => item.MaLopHocPhan !== MaLopHocPhan)
+        );
+      } catch (error) {
+        toast({
+          title: "Xoá lớp học phần thất bại",
+          description: "Có lỗi xảy ra khi xoá lớp học phần.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        console.error(error);
+      }
+    }
   };
 
   const handleNavigateForm = (mode, defaultData = {}) => {
@@ -40,7 +94,11 @@ const Class = () => {
     });
   };
 
-  return (
+  return loading ? (
+    <Center minH="200px">
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+    </Center>
+  ) : (
     <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
       <Flex
         w="100%"
@@ -56,7 +114,7 @@ const Class = () => {
             textAlign="center"
             textTransform="uppercase"
           >
-            Lớp học phần
+            Danh sách lớp học phần
           </Heading>
         </Center>
         <Button
@@ -83,19 +141,19 @@ const Class = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((row) => (
-            <Tr key={row.stt}>
-              <Td>{row.stt}</Td>
-              <Td>{row.name}</Td>
-              <Td>{row.time}</Td>
-              <Td>{row.quantity}</Td>
+          {classes.map((clas, index) => (
+            <Tr key={clas.MaLopHocPhan}>
+              <Td>{index + 1}</Td>
+              <Td>{clas.TenLopHocPhan}</Td>
+              <Td>{clas.ThoiGianHoc}</Td>
+              <Td>{clas.SoLuongThamGia}</Td>
               <Td textAlign="center">
                 <Button
                   leftIcon={<FaEye />}
                   size="sm"
                   colorScheme="blue"
                   variant="ghost"
-                  onClick={() => navigate(`/class/${row.id}`)}
+                  onClick={() => navigate(`/class/${clas.MaLopHocPhan}`)}
                 >
                   Xem
                 </Button>
@@ -106,7 +164,7 @@ const Class = () => {
                   size="sm"
                   colorScheme="yellow"
                   variant="ghost"
-                  onClick={() => handleNavigateForm("edit", row)}
+                  onClick={() => handleNavigateForm("edit", clas)}
                 >
                   Sửa
                 </Button>
@@ -117,7 +175,7 @@ const Class = () => {
                   size="sm"
                   colorScheme="red"
                   variant="ghost"
-                  onClick={() => handleDelete(row.stt)}
+                  onClick={() => handleDelete(clas.MaLopHocPhan)}
                 >
                   Xóa
                 </Button>

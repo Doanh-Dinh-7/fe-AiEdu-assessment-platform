@@ -24,10 +24,10 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { FaEye, FaUpload, FaEdit } from "react-icons/fa";
+import { FaEye, FaUpload, FaEdit, FaTrash } from "react-icons/fa";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { getCourseDetail } from "../../controller/course";
-import { updateChapter } from "../../controller/chapter";
+import { deleteChapter, updateChapter } from "../../controller/chapter";
 
 // const data = [
 //   {
@@ -120,7 +120,6 @@ const ExamBankDetail = () => {
         selectedChapter.MaChuong,
         formData
       );
-      console.log("data", data);
 
       if (!data) {
         throw new Error("Failed to update chapter");
@@ -150,6 +149,44 @@ const ExamBankDetail = () => {
         isClosable: true,
       });
       console.error(error);
+    }
+  };
+
+  const handleDeleteChapter = async (chuong) => {
+    const confirmDelete = window.confirm(
+      `Bạn có chắc chắn muốn xóa chương ${chuong.TenChuong} này không?`
+    );
+    if (confirmDelete) {
+      try {
+        const data = await deleteChapter(maHocPhan, chuong.MaChuong);
+
+        if (!data) {
+          throw new Error("Failed to delete chapter");
+        }
+        setIsOpen(false);
+        toast({
+          title: "Xoá chương thành công",
+          description: `Đã Xoá chương thành công.`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        setCourseDetail((prev) => ({
+          ...prev,
+          DanhSachChuong: prev.DanhSachChuong.filter(
+            (chuongs) => chuongs.MaChuong !== chuong.MaChuong
+          ),
+        }));
+      } catch (error) {
+        toast({
+          title: "Xoá chương thất bại",
+          description: "Có lỗi xảy ra khi Xoá chương.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        console.error(error);
+      }
     }
   };
 
@@ -243,7 +280,7 @@ const ExamBankDetail = () => {
             <Th textAlign="center"></Th>
             <Th textAlign="center"></Th>
             <Th textAlign="center"></Th>
-            {/* <Th textAlign="center"></Th> */}
+            <Th textAlign="center"></Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -284,6 +321,15 @@ const ExamBankDetail = () => {
                   colorScheme="yellow"
                   variant="ghost"
                   onClick={() => openEditModal(chuong)}
+                />
+              </Td>
+              <Td textAlign="center">
+                <IconButton
+                  icon={<FaTrash />}
+                  size="sm"
+                  colorScheme="red"
+                  variant="ghost"
+                  onClick={() => handleDeleteChapter(chuong)}
                 />
               </Td>
             </Tr>

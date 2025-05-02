@@ -9,6 +9,7 @@ import {
   useToast,
   FormErrorMessage,
   FormControl,
+  Spinner,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createCourse, updateCourse } from "../../controller/course";
@@ -20,7 +21,7 @@ const ExamBankForm = () => {
   const location = useLocation();
 
   const { mode, defaultData = {} } = location.state || {};
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const toast = useToast();
 
   const [formData, setFormData] = useState({
@@ -102,7 +103,11 @@ const ExamBankForm = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <Center minH="200px">
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+    </Center>
+  ) : (
     <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={5}>
       <Flex w="100%" maxW="1200px" direction="column" gap={4}>
         <Center flex={1}>

@@ -29,7 +29,7 @@ const ExamBank = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const toast = useToast();
-  const [loading, setLoading] = useState(false); // Trạng thái loading
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Lấy dữ liệu từ API getCoursesList
@@ -37,6 +37,7 @@ const ExamBank = () => {
       setLoading(true);
       try {
         const data = await getCoursesList();
+        if (!data) throw new Error("Error fetching courses");
         setCourses(data);
       } catch (error) {
         toast({

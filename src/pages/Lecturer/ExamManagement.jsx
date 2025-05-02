@@ -50,7 +50,7 @@ const ExamManagement = () => {
             textAlign="center"
             textTransform="uppercase"
           >
-            Quản lý bài thi
+            Quản lý cuộc thi
           </Heading>
         </Center>
         <Button

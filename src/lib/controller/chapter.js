@@ -38,3 +38,23 @@ export const getDocumentChapter = async (MaHocPhan, MaChuong) => {
     console.log("Lỗi khi lấy danh sách tài liệu chương:", error);
   }
 };
+
+export const deleteChapter = async (MaHocPhan, MaChuong) => {
+  try {
+    const res = await fetch(
+      BASE_URL + "/academic/chapter/" + MaHocPhan + "/" + MaChuong,
+      {
+        method: "DELETE", // Nếu API cần gửi dữ liệu, hãy đặt method DELETE
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await checkResponse(res);
+
+    return data;
+  } catch (error) {
+    console.log("Lỗi khi xoá liệu chương:", error);
+  }
+};
