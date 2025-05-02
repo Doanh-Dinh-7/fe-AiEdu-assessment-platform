@@ -1,9 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
-  Center,
-  Checkbox,
   Flex,
   Input,
   Table,
@@ -14,401 +12,481 @@ import {
   Tr,
   Text,
   Heading,
+  useToast,
+  Checkbox,
 } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Select } from "chakra-react-select";
+import {
+  createExam,
+  updateExam,
+  getExamDetail,
+} from "../../controller/examManagement";
+import { getCoursesList, getCourseDetail } from "../../controller/course";
+import { getClassList } from "../../controller/class";
 
-const mockChapters = [
-  { id: 1, name: "Chương 1" },
-  { id: 2, name: "Chương 2" },
-  { id: 3, name: "Chương 3" },
-];
-const mockClasses = [
-  { id: "A", name: "Lớp 48K21.1" },
-  { id: "B", name: "Lớp 48K21.2" },
-  { id: "C", name: "Lớp 48K21.3" },
-];
-const mockSubjects = [
-  { id: "ktct", name: "Kinh tế chính trị" },
-  { id: "qth", name: "Quản trị học" },
+// // Giả lập dữ liệu chương và lớp học phần (cần thay bằng API thực tế)
+// const mockChapters = [
+//   { MaChuong: "C714768", TenChuong: "Chương 1" },
+//   { MaChuong: "C022853", TenChuong: "Chương 2" },
+//   { MaChuong: "C999999", TenChuong: "Chương 3" },
+// ];
+// const mockClasses = [
+//   { MaLopHocPhan: "LHP770804", TenLopHocPhan: "Lớp 47K29.1" },
+//   { MaLopHocPhan: "LHP671978", TenLopHocPhan: "Lớp 47K29.2" },
+// ];
+const mucDoOptions = [
+  { label: "Dễ", value: "dễ" },
+  { label: "Trung bình", value: "trung bình" },
+  { label: "Khó", value: "khó" },
 ];
 
-const getDefaultDetail = (defaultDetail) => {
-  if (defaultDetail && Array.isArray(defaultDetail) && defaultDetail.length > 0)
-    return defaultDetail;
-  return mockChapters.map((c) => ({
-    chapter: c.id,
-    easy: 1,
-    medium: 1,
-    hard: 1,
-  }));
-};
-const getDefaultScores = (defaultScores) => {
-  if (defaultScores) return defaultScores;
-  return { easy: 2, medium: 3, hard: 5 };
-};
+// Chuyển đổi datetime-local thành 'YYYY-MM-DD HH:MM:SS'
+function formatDateTimeLocal(str) {
+  if (!str) return "";
+  const [date, time] = str.split("T");
+  const timeWithSec = time.length === 5 ? time + ":00" : time;
+  return `${date} ${timeWithSec}`;
+}
 
 const ExamForm = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { mode = "create", defaultData = {} } = location.state || {};
+  const location = useLocation();
+  const { mode = "create" } = location.state || {};
+  const toast = useToast();
 
+  const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
-  const [info, setInfo] = useState({
-    name: defaultData.name || "",
-    subject: defaultData.subject || "",
-    duration: defaultData.duration || "",
-    password: defaultData.password || "",
-    classes: defaultData.classes || [],
-    practice: defaultData.practice || false,
-  });
-  const [detail, setDetail] = useState(getDefaultDetail(defaultData.detail));
-  const [scores, setScores] = useState(getDefaultScores(defaultData.scores));
+  const [editExamId, setEditExamId] = useState(null);
 
-  const handleInfoChange = (field, value) => {
-    setInfo((prev) => ({ ...prev, [field]: value }));
+  // Bước 1: Chọn học phần, lớp học phần, nhập thông tin cơ bản
+  const [courses, setCourses] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [filteredClasses, setFilteredClasses] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState([]);
+  const [TenCuocThi, setTenCuocThi] = useState("");
+  const [ThoiGianBatDau, setThoiGianBatDau] = useState("");
+  const [ThoiGianKetThuc, setThoiGianKetThuc] = useState("");
+  const [trangThai, setTrangThai] = useState("có");
+
+  // Bước 2: Cấu trúc đề thi và điểm
+  const [cauTrucDeThi, setCauTrucDeThi] = useState([]);
+  const [DiemCauDe, setDiemCauDe] = useState(0);
+  const [DiemCauTrungBinh, setDiemCauTrungBinh] = useState(0);
+  const [DiemCauKho, setDiemCauKho] = useState(0);
+  const [DiemCauBoSung, setDiemCauBoSung] = useState(0);
+
+  // Load courses và classes khi mount
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [courseRes, classRes] = await Promise.all([
+          getCoursesList(),
+          getClassList(),
+        ]);
+        setCourses(courseRes || []);
+        setClasses(classRes || []);
+      } catch (error) {
+        toast({
+          title: "Lỗi khi tải dữ liệu",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        console.log(
+          "Lỗi khi bắt 2 API getCoursesList và getClassList: ",
+          error
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [toast]);
+
+  // Khi chọn học phần, lọc lại danh sách lớp học phần
+  useEffect(() => {
+    if (!selectedCourse) {
+      setFilteredClasses([]);
+      setSelectedClasses([]);
+      return;
+    }
+    const filtered = classes.filter((c) =>
+      (c.MaHocPhan || []).includes(selectedCourse.value)
+    );
+    setFilteredClasses(filtered);
+    setSelectedClasses([]);
+  }, [selectedCourse, classes]);
+
+  // Nếu là edit, load dữ liệu bài thi
+  useEffect(() => {
+    if (mode === "edit" && location.state?.maCuocThi) {
+      setLoading(true);
+      getExamDetail(location.state.maCuocThi)
+        .then((data) => {
+          if (!data) throw new Error("Không lấy được dữ liệu bài thi");
+          setEditExamId(data.MaCuocThi);
+          setTenCuocThi(data.TenCuocThi || "");
+          setThoiGianBatDau(
+            data.ThoiGianBatDau
+              ? data.ThoiGianBatDau.replace("T", " ").slice(0, 16)
+              : ""
+          );
+          setThoiGianKetThuc(
+            data.ThoiGianKetThuc
+              ? data.ThoiGianKetThuc.replace("T", " ").slice(0, 16)
+              : ""
+          );
+          setTrangThai(data.TrangThai || "có");
+          setSelectedCourse(
+            data.MaHocPhan
+              ? {
+                  label:
+                    courses.find((c) => c.MaHocPhan === data.MaHocPhan)
+                      ?.TenHocPhan || "",
+                  value: data.MaHocPhan,
+                }
+              : null
+          );
+          setSelectedClasses(
+            (data.LopHocPhan || []).map((lop) => ({
+              label: lop.TenLopHocPhan,
+              value: lop.MaLopHocPhan,
+            }))
+          );
+
+          // Cấu trúc đề thi
+          setCauTrucDeThi(
+            (data.CauTrucDeThi || []).map((item) => ({
+              MaChuong: item.MaChuong,
+              TenChuong: item.TenChuong,
+              MucDo: item.MucDo,
+              SoLuongCauHoi: item.SoLuongCauHoi,
+            }))
+          );
+          setDiemCauDe(data.NoiDungDiem[0].DiemCauDe || 0);
+          setDiemCauTrungBinh(data.NoiDungDiem[0].DiemCauTrungBinh || 0);
+          setDiemCauKho(data.NoiDungDiem[0].DiemCauKho || 0);
+          setDiemCauBoSung(data.NoiDungDiem[0].DiemCauBoSung || 0);
+          setStep(2);
+        })
+        .catch((error) => {
+          toast({
+            title: "Lỗi khi lấy dữ liệu bài thi",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+          console.log("Lỗi khi lấy dữ liệu bài thi", error);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [mode, location.state, courses, toast]);
+
+  // Khi chọn học phần, lọc lại danh sách lớp học phần
+  useEffect(() => {
+    if (!selectedCourse) {
+      setFilteredClasses([]);
+      setSelectedClasses([]);
+      return;
+    }
+    const filtered = classes.filter((c) =>
+      (c.MaHocPhan || []).includes(selectedCourse.value)
+    );
+    setFilteredClasses(filtered);
+    setSelectedClasses([]);
+  }, [selectedCourse, classes]);
+
+  // Khi xác nhận bước 1, lấy chi tiết học phần (danh sách chương)
+  const handleNextStep = async () => {
+    if (
+      !selectedCourse ||
+      !TenCuocThi ||
+      !ThoiGianBatDau ||
+      !ThoiGianKetThuc ||
+      selectedClasses.length === 0
+    ) {
+      toast({
+        title: "Vui lòng nhập đầy đủ thông tin",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    setLoading(true);
+    try {
+      const detail = await getCourseDetail(selectedCourse.value);
+      if (!detail || !detail.DanhSachChuong)
+        throw new Error("Không lấy được danh sách chương");
+      // Tạo cấu trúc đề thi mặc định: mỗi chương có 3 mức độ
+      const defaultCauTruc = [];
+      detail.DanhSachChuong.forEach((chuong) => {
+        mucDoOptions.forEach((mucdo) => {
+          defaultCauTruc.push({
+            MaChuong: chuong.MaChuong,
+            TenChuong: chuong.TenChuong,
+            MucDo: mucdo.value,
+            SoLuongCauHoi: 0,
+          });
+        });
+      });
+      setCauTrucDeThi(defaultCauTruc);
+      setStep(2);
+    } catch (error) {
+      toast({
+        title: "Lỗi khi lấy chi tiết học phần",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.log("Lỗi khi bắt API getCourseDetail: ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDetailChange = (idx, level, value) => {
-    setDetail((prev) =>
+  // Xử lý nhập số câu hỏi cho từng chương/mức độ
+  const handleCauTrucChange = (idx, value) => {
+    setCauTrucDeThi((prev) =>
       prev.map((item, i) =>
-        i === idx ? { ...item, [level]: Number(value) } : item
+        i === idx ? { ...item, SoLuongCauHoi: value } : item
       )
     );
   };
 
-  const handleScoreChange = (level, value) => {
-    setScores((prev) => ({ ...prev, [level]: Number(value) }));
+  // Tạo bài thi
+  const handleCreateOrUpdateExam = async () => {
+    setLoading(true);
+
+    try {
+      const examData = {
+        TenCuocThi,
+        ThoiGianBatDau: formatDateTimeLocal(ThoiGianBatDau),
+        ThoiGianKetThuc: formatDateTimeLocal(ThoiGianKetThuc),
+        MaLopHocPhan: selectedClasses.map((c) => c.value),
+        CauTrucDeThi: cauTrucDeThi
+          .filter((c) => Number(c.SoLuongCauHoi) > 0)
+          .map((c) => ({
+            MaChuong: c.MaChuong,
+            MucDo: c.MucDo,
+            SoLuongCauHoi: Number(c.SoLuongCauHoi),
+          })),
+        trang_thai: trangThai,
+        DiemCauDe: Number(DiemCauDe),
+        DiemCauTrungBinh: Number(DiemCauTrungBinh),
+        DiemCauKho: Number(DiemCauKho),
+        DiemCauBoSung: Number(DiemCauBoSung),
+      };
+      let data;
+      console.log("examData", examData);
+
+      if (mode === "edit" && editExamId) {
+        data = await updateExam(editExamId, examData);
+      } else {
+        data = await createExam(examData);
+      }
+      if (!data)
+        throw new Error(
+          mode === "edit" ? "Cập nhật bài thi thất bại" : "Tạo bài thi thất bại"
+        );
+      toast({
+        title:
+          mode === "edit"
+            ? "Cập nhật bài thi thành công!"
+            : "Tạo bài thi thành công!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate("/exam-management");
+    } catch (error) {
+      toast({
+        title:
+          mode === "edit"
+            ? "Cập nhật bài thi thất bại!"
+            : "Tạo bài thi thất bại!",
+        description: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const subjectOptions = mockSubjects.map((s) => ({
-    label: s.name,
-    value: s.id,
-  }));
-
-  const classOptions = mockClasses.map((c) => ({
-    label: c.name,
-    value: c.id,
-  }));
-
-  const handleSave = () => {
-    navigate("/exam-management");
-  };
-
-  if (step === 3) {
-    return (
-      <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={5}>
-        <Flex direction="column" w="100%" maxW="1200px" align="center" pt={5}>
-          <Center flex={1}>
-            <Heading fontSize="lg" mb={2} textTransform="uppercase">
-              {mode === "edit" ? "Cập nhật" : "Tạo"} bài thi
-            </Heading>
-          </Center>
-          <Flex
-            direction="column"
-            bg="white"
-            p={8}
-            borderRadius="md"
-            maxW="1000px"
-            w="100%"
-            mb={6}
-          >
-            <Text fontWeight="bold" mb={2}>
-              Thông tin chung
-            </Text>
-            <Text>Tên cuộc thi: {info.name}</Text>
-            <Text>
-              Học phần:{" "}
-              {mockSubjects.find((s) => s.id === info.subject)?.name || ""}
-            </Text>
-            <Text>Tổng thời gian làm bài: {info.duration} phút</Text>
-            <Text>Mật khẩu đề thi: {info.password}</Text>
-            <Text>
-              Lớp học phần:{" "}
-              {mockClasses
-                .filter((c) => info.classes.includes(c.id))
-                .map((c) => c.name)
-                .join(", ")}
-            </Text>
-            <Text>Luyện thi: {info.practice ? "Có" : "Không"}</Text>
-            <Box h={4} />
-            <Text fontWeight="bold" mb={2}>
-              Thông tin chi tiết
-            </Text>
-            <Table size="md" mb={4}>
-              <Thead>
-                <Tr>
-                  <Th>Chương</Th>
-                  <Th>Dễ</Th>
-                  <Th>Trung bình</Th>
-                  <Th>Khó</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {detail.map((row) => (
-                  <Tr key={row.chapter}>
-                    <Td>{row.chapter}</Td>
-                    <Td>{row.easy}</Td>
-                    <Td>{row.medium}</Td>
-                    <Td>{row.hard}</Td>
-                  </Tr>
-                ))}
-                <Tr fontWeight="bold">
-                  <Td>Tổng</Td>
-                  <Td>{detail.reduce((a, b) => a + b.easy, 0)}</Td>
-                  <Td>{detail.reduce((a, b) => a + b.medium, 0)}</Td>
-                  <Td>{detail.reduce((a, b) => a + b.hard, 0)}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-            <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th>Loại câu</Th>
-                  <Th>Điểm</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>Dễ</Td>
-                  <Td>{scores.easy}</Td>
-                </Tr>
-                <Tr>
-                  <Td>Trung bình</Td>
-                  <Td>{scores.medium}</Td>
-                </Tr>
-                <Tr>
-                  <Td>Khó</Td>
-                  <Td>{scores.hard}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </Flex>
-          <Flex gap={4} mt={4} mb={8}>
-            <Button
-              colorScheme="gray"
-              size="lg"
-              onClick={() => setStep((prev) => prev - 1)}
-            >
-              Quay lại
-            </Button>
-            <Button colorScheme="blue" size="lg" onClick={handleSave}>
-              {mode === "edit" ? "Cập nhật" : "Xác nhận"}
-            </Button>
-          </Flex>
-        </Flex>
-      </Flex>
-    );
-  }
 
   return (
     <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={5}>
-      <Flex
-        direction="column"
+      <Box
+        bg="white"
         w="100%"
-        maxW="1200px"
-        align="center"
-        pt={5}
-        gap={5}
+        maxW="900px"
+        p={8}
+        borderRadius="md"
+        boxShadow="md"
       >
-        {step >= 1 && step <= 2 && (
-          <>
-            <Center flex={1}>
-              <Heading fontSize="lg" mb={2} textTransform="uppercase">
-                {mode === "edit" ? "Cập nhật" : "Tạo"} bài thi - THÔNG TIN CHUNG
-              </Heading>
-            </Center>
-            <Box
-              bg="white"
-              w="100%"
-              p={8}
-              borderRadius="md"
-              maxW="1200px"
-              mb={6}
-            >
-              <Input
-                placeholder="Tên cuộc thi"
-                mb={3}
-                value={info.name}
-                onChange={(e) => handleInfoChange("name", e.target.value)}
+        <Heading
+          fontSize="lg"
+          mb={4}
+          textAlign="center"
+          textTransform="uppercase"
+        >
+          Tạo bài thi
+        </Heading>
+        {step === 1 && (
+          <Flex direction="column" gap={4}>
+            <Input
+              placeholder="Tên cuộc thi"
+              value={TenCuocThi}
+              onChange={(e) => setTenCuocThi(e.target.value)}
+            />
+            <Flex gap={3}>
+              <Box flex={1}>
+                <Text mb={1}>Thời gian bắt đầu</Text>
+                <Input
+                  type="datetime-local"
+                  value={ThoiGianBatDau}
+                  onChange={(e) => setThoiGianBatDau(e.target.value)}
+                />
+              </Box>
+              <Box flex={1}>
+                <Text mb={1}>Thời gian kết thúc</Text>
+                <Input
+                  type="datetime-local"
+                  value={ThoiGianKetThuc}
+                  onChange={(e) => setThoiGianKetThuc(e.target.value)}
+                />
+              </Box>
+            </Flex>
+            <Box>
+              <Text mb={1}>Chọn học phần</Text>
+              <Select
+                options={courses.map((c) => ({
+                  label: c.TenHocPhan,
+                  value: c.MaHocPhan,
+                }))}
+                value={selectedCourse}
+                onChange={(option) => setSelectedCourse(option)}
+                isClearable
               />
-              <Flex gap={3} mb={3} direction="column">
-                <Select
-                  placeholder="Học phần"
-                  options={subjectOptions}
-                  value={subjectOptions.find((s) => s.value === info.subject)}
-                  onChange={(option) =>
-                    handleInfoChange("subject", option?.value)
-                  }
-                />
-
-                <Select
-                  placeholder="Chọn lớp học phần"
-                  isMulti
-                  options={classOptions}
-                  value={classOptions.filter((c) =>
-                    info.classes.includes(c.value)
-                  )}
-                  onChange={(options) =>
-                    handleInfoChange(
-                      "classes",
-                      options ? options.map((opt) => opt.value) : []
-                    )
-                  }
-                />
-              </Flex>
-              <Flex gap={3} mb={3}>
-                <Input
-                  placeholder="Tổng thời gian làm bài (phút)"
-                  value={info.duration}
-                  onChange={(e) => handleInfoChange("duration", e.target.value)}
-                />
-                <Input
-                  placeholder="Mật khẩu đề thi"
-                  value={info.password}
-                  onChange={(e) => handleInfoChange("password", e.target.value)}
-                />
-              </Flex>
-              <Checkbox
-                isChecked={info.practice}
-                onChange={(e) => handleInfoChange("practice", e.target.checked)}
-                mb={3}
-              >
-                Luyện thi
-              </Checkbox>
             </Box>
-          </>
+            <Box>
+              <Text mb={1}>Chọn lớp học phần</Text>
+              <Select
+                isMulti
+                options={filteredClasses.map((c) => ({
+                  label: c.TenLopHocPhan,
+                  value: c.MaLopHocPhan,
+                }))}
+                value={selectedClasses}
+                onChange={(options) => setSelectedClasses(options || [])}
+              />
+            </Box>
+            <Checkbox
+              isChecked={trangThai === "có"}
+              onChange={(e) => setTrangThai(e.target.checked ? "có" : "không")}
+            >
+              Trạng thái hoạt động
+            </Checkbox>
+            <Flex justify="flex-end" mt={6} gap={4}>
+              <Button
+                colorScheme="blue"
+                onClick={handleNextStep}
+                isLoading={loading}
+              >
+                Xác nhận
+              </Button>
+            </Flex>
+          </Flex>
         )}
         {step === 2 && (
-          <>
-            <Center flex={1}>
-              <Heading fontSize="lg" mb={2} textTransform="uppercase">
-                {mode === "edit" ? "Cập nhật" : "Tạo"} bài thi - THÔNG TIN CHI
-                TIẾT
-              </Heading>
-            </Center>
-            <Box
-              bg="white"
-              w="100%"
-              p={8}
-              borderRadius="md"
-              maxW="1200px"
-              mb={6}
-            >
-              <Table size="sm" mb={4}>
-                <Thead>
-                  <Tr>
-                    <Th>Chương</Th>
-                    <Th>Dễ</Th>
-                    <Th>Trung bình</Th>
-                    <Th>Khó</Th>
+          <Flex direction="column" gap={4}>
+            <Text fontWeight="bold" mb={2} mt={4}>
+              Cấu trúc đề thi
+            </Text>
+            <Table size="sm" mb={2}>
+              <Thead>
+                <Tr>
+                  <Th>Chương</Th>
+                  <Th>Mức độ</Th>
+                  <Th>Số lượng câu hỏi</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {cauTrucDeThi.map((row, idx) => (
+                  <Tr key={row.MaChuong + row.MucDo}>
+                    <Td>{row.TenChuong}</Td>
+                    <Td>{row.MucDo}</Td>
+                    <Td>
+                      <Input
+                        type="number"
+                        min={0}
+                        value={row.SoLuongCauHoi}
+                        onChange={(e) =>
+                          handleCauTrucChange(idx, e.target.value)
+                        }
+                        w="80px"
+                      />
+                    </Td>
                   </Tr>
-                </Thead>
-                <Tbody>
-                  {detail.map((row, idx) => (
-                    <Tr key={row.chapter}>
-                      <Td>{row.chapter}</Td>
-                      <Td>
-                        <Input
-                          type="number"
-                          min={0}
-                          value={row.easy}
-                          onChange={(e) =>
-                            handleDetailChange(idx, "easy", e.target.value)
-                          }
-                          w="60px"
-                        />
-                      </Td>
-                      <Td>
-                        <Input
-                          type="number"
-                          min={0}
-                          value={row.medium}
-                          onChange={(e) =>
-                            handleDetailChange(idx, "medium", e.target.value)
-                          }
-                          w="60px"
-                        />
-                      </Td>
-                      <Td>
-                        <Input
-                          type="number"
-                          min={0}
-                          value={row.hard}
-                          onChange={(e) =>
-                            handleDetailChange(idx, "hard", e.target.value)
-                          }
-                          w="60px"
-                        />
-                      </Td>
-                    </Tr>
-                  ))}
-                  <Tr fontWeight="bold">
-                    <Td>Tổng</Td>
-                    <Td>{detail.reduce((a, b) => a + b.easy, 0)}</Td>
-                    <Td>{detail.reduce((a, b) => a + b.medium, 0)}</Td>
-                    <Td>{detail.reduce((a, b) => a + b.hard, 0)}</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-              <Table size="sm">
-                <Thead>
-                  <Tr>
-                    <Th>Loại câu</Th>
-                    <Th>Điểm</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {["easy", "medium", "hard"].map((level) => (
-                    <Tr key={level}>
-                      <Td>
-                        {level === "easy"
-                          ? "Dễ"
-                          : level === "medium"
-                          ? "Trung bình"
-                          : "Khó"}
-                      </Td>
-                      <Td>
-                        <Input
-                          type="number"
-                          min={0}
-                          value={scores[level]}
-                          onChange={(e) =>
-                            handleScoreChange(level, e.target.value)
-                          }
-                          w="60px"
-                        />
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </Box>
-          </>
+                ))}
+              </Tbody>
+            </Table>
+            <Text fontWeight="bold" mb={2} mt={4}>
+              Thiết lập điểm cho từng loại câu hỏi
+            </Text>
+            <Flex gap={3}>
+              <Box flex={1}>
+                <Text mb={1}>Điểm câu dễ</Text>
+                <Input
+                  type="number"
+                  value={DiemCauDe}
+                  onChange={(e) => setDiemCauDe(e.target.value)}
+                />
+              </Box>
+              <Box flex={1}>
+                <Text mb={1}>Điểm câu trung bình</Text>
+                <Input
+                  type="number"
+                  value={DiemCauTrungBinh}
+                  onChange={(e) => setDiemCauTrungBinh(e.target.value)}
+                />
+              </Box>
+              <Box flex={1}>
+                <Text mb={1}>Điểm câu khó</Text>
+                <Input
+                  type="number"
+                  value={DiemCauKho}
+                  onChange={(e) => setDiemCauKho(e.target.value)}
+                />
+              </Box>
+              <Box flex={1}>
+                <Text mb={1}>Điểm câu bổ sung</Text>
+                <Input
+                  type="number"
+                  value={DiemCauBoSung}
+                  onChange={(e) => setDiemCauBoSung(e.target.value)}
+                />
+              </Box>
+            </Flex>
+            <Flex justify="flex-end" mt={6} gap={4}>
+              <Button colorScheme="gray" onClick={() => setStep(1)}>
+                Quay lại
+              </Button>
+              <Button
+                colorScheme="blue"
+                onClick={handleCreateOrUpdateExam}
+                isLoading={loading}
+              >
+                {mode === "edit" ? "Cập nhật" : "Tạo"}
+              </Button>
+            </Flex>
+          </Flex>
         )}
-      </Flex>
-      {/* Nút điều hướng / xác nhận */}
-      <Flex gap={4} mt={4} mb={8}>
-        {step > 1 && (
-          <Button
-            colorScheme="gray"
-            size="lg"
-            onClick={() => setStep((prev) => prev - 1)}
-          >
-            Quay lại
-          </Button>
-        )}
-
-        {step < 3 && (
-          <Button
-            colorScheme="blue"
-            size="lg"
-            onClick={() => setStep((prev) => prev + 1)}
-          >
-            Tiếp tục
-          </Button>
-        )}
-      </Flex>
+      </Box>
     </Flex>
   );
 };

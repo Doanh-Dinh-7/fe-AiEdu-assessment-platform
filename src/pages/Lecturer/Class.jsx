@@ -55,7 +55,7 @@ const Class = () => {
     fetchClasses();
   }, [toast]);
 
-  const handleDelete = async (MaLopHocPhan) => {
+  const handleDeleteClass = async (MaLopHocPhan) => {
     const confirmDelete = window.confirm(
       `Bạn có chắc chắn muốn xóa lớp học phần ${MaLopHocPhan} này không?`
     );
@@ -175,7 +175,7 @@ const Class = () => {
                   size="sm"
                   colorScheme="red"
                   variant="ghost"
-                  onClick={() => handleDelete(clas.MaLopHocPhan)}
+                  onClick={() => handleDeleteClass(clas.MaLopHocPhan)}
                 >
                   Xóa
                 </Button>

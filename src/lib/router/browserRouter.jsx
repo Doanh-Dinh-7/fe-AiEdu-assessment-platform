@@ -16,6 +16,7 @@ import ClassDetail from "../components/Class/ClassDetail";
 import ClassForm from "../components/Class/ClassForm";
 
 import ExamManagement from "../../pages/Lecturer/ExamManagement";
+import ExamDetail from "../components/ExamManagement/ExamDetail";
 import ExamForm from "../components/ExamManagement/ExamForm";
 import ExamResult from "../components/ExamManagement/ExamResult";
 import ExamResultDetail from "../components/ExamManagement/ExamResultDetail";
@@ -55,6 +56,7 @@ const lecturerRoutes = {
 
     // Quản lý cuộc thi
     { path: "/exam-management", element: <ExamManagement /> },
+    { path: "/exam-management/:maCuocThi", element: <ExamDetail /> },
     { path: "/exam-management/exam-form", element: <ExamForm /> },
     { path: "/exam-management/exam-result", element: <ExamResult /> },
     {

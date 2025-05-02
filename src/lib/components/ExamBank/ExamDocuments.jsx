@@ -59,7 +59,7 @@ const ExamDocuments = () => {
     if (maHocPhan && maChuong) fetchDocs();
   }, [maHocPhan, maChuong, toast]);
 
-  const handleDelete = async (maTaiLieu) => {
+  const handleDeleteDocument = async (maTaiLieu) => {
     const confirmDelete = window.confirm(
       `Bạn có chắc chắn muốn xóa học phần ${maTaiLieu} này không?`
     );
@@ -133,7 +133,7 @@ const ExamDocuments = () => {
                     colorScheme="red"
                     variant="ghost"
                     ml={2}
-                    onClick={() => handleDelete(doc.MaTaiLieu)}
+                    onClick={() => handleDeleteDocument(doc.MaTaiLieu)}
                   >
                     Xóa
                   </Button>

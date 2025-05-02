@@ -9,32 +9,96 @@ import {
   Td,
   Heading,
   Button,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { MdDocumentScanner } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
-import ExamViewModal from "../../lib/components/ExamManagement/ExamViewModal";
+import { deleteExam, getExamsList } from "../../lib/controller/examManagement";
 
-const initialExams = [
-  { stt: 1, name: "CSLT GK", time: "07:00", date: "20/04/2024" },
-  { stt: 2, name: "QTH CK", time: "07:00", date: "20/04/2024" },
-  { stt: 3, name: "KTCT CK", time: "07:00", date: "20/04/2024" },
-];
+// const initialExams = [
+//   { stt: 1, name: "CSLT GK", time: "07:00", date: "20/04/2024" },
+//   { stt: 2, name: "QTH CK", time: "07:00", date: "20/04/2024" },
+//   { stt: 3, name: "KTCT CK", time: "07:00", date: "20/04/2024" },
+// ];
 
 const ExamManagement = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [exams] = useState(initialExams);
-  const [viewModal, setViewModal] = useState({ isOpen: false, data: null });
+  const [exams, setExams] = useState([]);
 
-  const handleNavigateForm = (mode, defaultData = {}) => {
+  const toast = useToast();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Lấy dữ liệu từ API getExamsList
+    const fetchExams = async () => {
+      setLoading(true);
+      try {
+        const data = await getExamsList();
+        if (!data) throw new Error("Error fetching Exams");
+        setExams(data);
+      } catch (error) {
+        toast({
+          title: "Lấy danh sách cuộc thi thất bại",
+          description: "Có lỗi xảy ra khi lấy danh sách cuộc thi.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        console.error("Error fetching Exams:", error);
+        setExams([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchExams();
+  }, [toast]);
+
+  const handleNavigateForm = (mode, maCuocThi = {}) => {
     navigate(`${location.pathname}/exam-form`, {
-      state: { mode, defaultData },
+      state: { mode, maCuocThi },
     });
   };
 
-  return (
+  const handleDeleteExam = async (MaCuocThi) => {
+    const confirmDelete = window.confirm(
+      `Bạn có chắc chắn muốn xóa cuộc thi ${MaCuocThi} này không?`
+    );
+    if (confirmDelete) {
+      try {
+        const data = await deleteExam(MaCuocThi);
+        if (!data) {
+          throw new Error("Failed to delete class");
+        }
+        toast({
+          title: "Xoá cuộc thi thành công",
+          description: "Đã xoá cuộc thi thành công.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        setExams(exams.filter((item) => item.MaCuocThi !== MaCuocThi));
+      } catch (error) {
+        toast({
+          title: "Xoá cuộc thi thất bại",
+          description: "Có lỗi xảy ra khi xoá cuộc thi.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        console.error(error);
+      }
+    }
+  };
+
+  return loading ? (
+    <Center minH="200px">
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+    </Center>
+  ) : (
     <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
       <Flex
         w="100%"
@@ -78,19 +142,32 @@ const ExamManagement = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {exams.map((row) => (
-            <Tr key={row.stt}>
-              <Td>{row.stt}</Td>
-              <Td>{row.name}</Td>
-              <Td>{row.time}</Td>
-              <Td>{row.date}</Td>
+          {exams.map((exam, idx) => (
+            <Tr key={exam.MaCuocThi}>
+              <Td>{idx + 1}</Td>
+              <Td>{exam.TenCuocThi}</Td>
+              <Td>
+                {exam.ThoiGianBatDau
+                  ? new Date(exam.ThoiGianBatDau).toLocaleTimeString("vi-VN", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : ""}
+              </Td>
+              <Td>
+                {exam.NgayTao
+                  ? new Date(exam.NgayTao).toLocaleDateString("vi-VN")
+                  : ""}
+              </Td>
               <Td textAlign="center">
                 <Button
                   leftIcon={<FaEye />}
                   size="sm"
                   colorScheme="blue"
                   variant="ghost"
-                  onClick={() => setViewModal({ isOpen: true, data: row })}
+                  onClick={() =>
+                    navigate(`${location.pathname}/${exam.MaCuocThi}`)
+                  }
                 >
                   Xem
                 </Button>
@@ -112,7 +189,7 @@ const ExamManagement = () => {
                   size="sm"
                   colorScheme="yellow"
                   variant="ghost"
-                  onClick={() => handleNavigateForm("edit", row)}
+                  onClick={() => handleNavigateForm("edit", exam.MaCuocThi)}
                 >
                   Sửa
                 </Button>
@@ -123,7 +200,7 @@ const ExamManagement = () => {
                   size="sm"
                   colorScheme="red"
                   variant="ghost"
-                  // onClick={() => handleDelete(row.stt)}
+                  onClick={() => handleDeleteExam(exam.MaCuocThi)}
                 >
                   Xóa
                 </Button>
@@ -132,11 +209,6 @@ const ExamManagement = () => {
           ))}
         </Tbody>
       </Table>
-      <ExamViewModal
-        isOpen={viewModal.isOpen}
-        onClose={() => setViewModal({ isOpen: false, data: null })}
-        examData={viewModal.data}
-      />
     </Flex>
   );
 };

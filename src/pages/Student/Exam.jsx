@@ -9,27 +9,58 @@ import {
   Td,
   Heading,
   Button,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDocumentScanner } from "react-icons/md";
 import ExamStartModal from "../../lib/components/Exam/ExamStartModal";
+import { getExamsStudentList } from "../../lib/controller/examStudent";
 
-const initialExams = [
-  { stt: 1, name: "CSLT GK", time: "07:00", date: "20/04/2024" },
-  { stt: 2, name: "QTH CK", time: "07:00", date: "20/04/2024" },
-  { stt: 3, name: "KTCT CK", time: "07:00", date: "20/04/2024" },
-];
+// const initialExams = [
+//   { stt: 1, name: "CSLT GK", time: "07:00", date: "20/04/2024" },
+//   { stt: 2, name: "QTH CK", time: "07:00", date: "20/04/2024" },
+//   { stt: 3, name: "KTCT CK", time: "07:00", date: "20/04/2024" },
+// ];
 
 const Exam = () => {
-  const [exams] = useState(initialExams);
+  const [exams, setExams] = useState([]);
   const [startModal, setStartModal] = useState({
     isOpen: false,
     data: null,
     mode: "exam",
   });
+  const [loading, setLoading] = useState(true);
+  const toast = useToast();
 
-  return (
+  useEffect(() => {
+    const fetchExams = async () => {
+      setLoading(true);
+      try {
+        const data = await getExamsStudentList();
+        setExams(data || []);
+      } catch {
+        setExams([]);
+        toast({
+          title: "Lỗi khi lấy danh sách cuộc thi",
+          description: "Không thể lấy dữ liệu cuộc thi. Vui lòng thử lại!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchExams();
+  }, [toast]);
+
+  return loading ? (
+    <Center minH="200px">
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+    </Center>
+  ) : (
     <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
       <Flex
         w="100%"
@@ -62,24 +93,41 @@ const Exam = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {exams.map((row) => (
-            <Tr key={row.stt}>
-              <Td>{row.stt}</Td>
-              <Td>{row.name}</Td>
-              <Td>{row.time}</Td>
-              <Td>{row.date}</Td>
+          {exams.map((exam, idx) => (
+            <Tr key={exam.ma_cuoc_thi}>
+              <Td>{idx + 1}</Td>
+              <Td>{exam.ten_cuoc_thi}</Td>
+              <Td>
+                {exam.thoi_gian_bat_dau
+                  ? new Date(exam.thoi_gian_bat_dau).toLocaleTimeString(
+                      "vi-VN",
+                      { hour: "2-digit", minute: "2-digit" }
+                    )
+                  : ""}
+              </Td>
+              <Td>
+                {exam.thoi_gian_bat_dau
+                  ? new Date(exam.thoi_gian_bat_dau).toLocaleDateString("vi-VN")
+                  : ""}
+              </Td>
               <Td textAlign="center">
-                <Button
-                  leftIcon={<FaEdit />}
-                  size="sm"
-                  colorScheme="yellow"
-                  variant="ghost"
-                  onClick={() =>
-                    setStartModal({ isOpen: true, data: row, mode: "practice" })
-                  }
-                >
-                  Luyện thi
-                </Button>
+                {exam.trang_thai_luyen_thi === "có" && (
+                  <Button
+                    leftIcon={<FaEdit />}
+                    size="sm"
+                    colorScheme="yellow"
+                    variant="ghost"
+                    onClick={() =>
+                      setStartModal({
+                        isOpen: true,
+                        data: exam,
+                        mode: "practice",
+                      })
+                    }
+                  >
+                    Luyện thi
+                  </Button>
+                )}
               </Td>
               <Td textAlign="center">
                 <Button
@@ -88,7 +136,7 @@ const Exam = () => {
                   colorScheme="green"
                   variant="ghost"
                   onClick={() =>
-                    setStartModal({ isOpen: true, data: row, mode: "exam" })
+                    setStartModal({ isOpen: true, data: exam, mode: "exam" })
                   }
                 >
                   Thi

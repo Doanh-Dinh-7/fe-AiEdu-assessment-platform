@@ -62,7 +62,7 @@ const ExamBank = () => {
     });
   };
 
-  const handleDelete = async (MaHocPhan, TenHocPhan) => {
+  const handleDeleteCourse = async (MaHocPhan, TenHocPhan) => {
     const confirmDelete = window.confirm(
       `Bạn có chắc chắn muốn xóa học phần ${TenHocPhan} này không?`
     );
@@ -178,7 +178,7 @@ const ExamBank = () => {
                   colorScheme="red"
                   variant="ghost"
                   onClick={() =>
-                    handleDelete(course.MaHocPhan, course.TenHocPhan)
+                    handleDeleteCourse(course.MaHocPhan, course.TenHocPhan)
                   }
                 >
                   Xóa

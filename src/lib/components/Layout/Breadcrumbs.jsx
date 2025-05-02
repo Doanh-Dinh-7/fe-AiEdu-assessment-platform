@@ -69,7 +69,7 @@ const Breadcrumbs = ({ disableBreadcrumb = false }) => {
           // Với path bắt đầu bằng "class"
           else if (filteredPathnames[0] === "exam-management") {
             if (idx === 1) {
-              displayName = "Kết quả bài thi";
+              displayName = "Thông tin cuộc thi";
             }
           }
 
