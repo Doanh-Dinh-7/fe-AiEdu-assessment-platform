@@ -37,7 +37,7 @@ const lecturerRoutes = {
     { path: "/exam-bank/:maHocPhan/:maChuong", element: <ExamQuestion /> },
     { path: "/exam-bank/:maHocPhan/:maChuong/:maCauHoi", element: <QuestionDetail />, },
     { path: "/exam-bank/:maHocPhan/:maChuong/create-question", element: <CreateQuestion />, },
-    { path: "/exam-bank/:maHocPhan/upload-document-exam", element: <ExamDocuments />, },
+    { path: "/exam-bank/:maHocPhan/:maChuong/upload-document-exam", element: <ExamDocuments />, },
 
     // Quản lý lớp học phần
     { path: "/class", element: <Class /> },

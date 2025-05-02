@@ -14,6 +14,6 @@ export const getQuestionList = async (MaChuong) => {
 
     return data;
   } catch (error) {
-    console.log("Lỗi khi lấy danh sách học phần:", error);
+    console.log("Lỗi khi lấy danh sách câu hỏi:", error);
   }
 };

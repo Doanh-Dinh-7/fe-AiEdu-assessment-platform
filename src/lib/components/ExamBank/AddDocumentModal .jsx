@@ -15,11 +15,20 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import PropTypes from "prop-types";
+import { ProgressContext } from "../Layout/ProgressContext";
 
-const AddDocumentModal = ({ isOpen, onClose, docs, setDocs }) => {
+const AddDocumentModal = ({
+  isOpen,
+  onClose,
+  maHocPhan,
+  maChuong,
+  updateChapter,
+}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const toast = useToast();
+  const { setShowProgress } = useContext(ProgressContext);
 
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -34,26 +43,41 @@ const AddDocumentModal = ({ isOpen, onClose, docs, setDocs }) => {
     setSelectedFiles(selectedFiles.filter((file) => file.name !== fileName));
   };
 
-  const handleAddDocuments = () => {
-    if (selectedFiles.length === 0) {
+  const handleAddFilesChapter = async () => {
+    const filesData = new FormData();
+    selectedFiles.forEach((file) => {
+      filesData.append("files", file);
+    });
+    try {
+      onClose();
+      setShowProgress(true);
+      localStorage.setItem("showProgress", "true");
+      const data = await updateChapter(maHocPhan, maChuong, filesData);
+      if (!data) {
+        throw new Error("Failed to update chapter");
+      }
+      setSelectedFiles([]);
+      setShowProgress(false);
+      localStorage.setItem("showProgress", "false");
       toast({
-        title: "Vui lòng chọn ít nhất một tài liệu.",
-        status: "warning",
+        title: "Cập nhật tài liệu chương thành công",
+        description: "Đã cập nhật tài liệu chương thành công.",
+        status: "success",
         duration: 3000,
         isClosable: true,
       });
-      return;
+    } catch (error) {
+      setShowProgress(false);
+      localStorage.setItem("showProgress", "false");
+      toast({
+        title: "Cập nhật tài liệu thất bại",
+        description: "Có lỗi xảy ra khi cập nhật tài liệu chương.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.error(error);
     }
-
-    const newDocs = selectedFiles.map((file, index) => ({
-      stt: docs.length + index + 1,
-      name: file.name,
-      date: new Date().toLocaleDateString("vi-VN"),
-    }));
-
-    setDocs([...docs, ...newDocs]);
-    setSelectedFiles([]);
-    onClose();
   };
 
   return (
@@ -96,7 +120,7 @@ const AddDocumentModal = ({ isOpen, onClose, docs, setDocs }) => {
           <Button
             colorScheme="blue"
             mr={3}
-            onClick={handleAddDocuments}
+            onClick={handleAddFilesChapter}
             isDisabled={selectedFiles.length === 0}
           >
             Xác nhận
@@ -108,6 +132,14 @@ const AddDocumentModal = ({ isOpen, onClose, docs, setDocs }) => {
       </ModalContent>
     </Modal>
   );
+};
+
+AddDocumentModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  maHocPhan: PropTypes.string.isRequired,
+  maChuong: PropTypes.string.isRequired,
+  updateChapter: PropTypes.func.isRequired,
 };
 
 export default AddDocumentModal;

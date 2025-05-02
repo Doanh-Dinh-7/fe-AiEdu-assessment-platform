@@ -14,11 +14,20 @@ import {
   Center,
   Spinner,
   useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaEye, FaUpload, FaEdit } from "react-icons/fa";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { getCourseDetail } from "../../controller/course";
+import { updateChapter } from "../../controller/chapter";
 
 // const data = [
 //   {
@@ -59,10 +68,18 @@ const ExamBankDetail = () => {
   const toast = useToast();
   const [loading, setLoading] = useState(true);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedChapter, setSelectedChapter] = useState(null);
+  const [newChapterName, setNewChapterName] = useState("");
+
   useEffect(() => {
     const fetchDetail = async () => {
+      setLoading(true);
       try {
         const data = await getCourseDetail(maHocPhan);
+        if (!data) {
+          throw new Error("Failed to get chapter");
+        }
         setCourseDetail(data);
       } catch (error) {
         toast({
@@ -85,6 +102,56 @@ const ExamBankDetail = () => {
     (acc, cur) => acc + (cur.SoCauHoi || 0),
     0
   );
+
+  const openEditModal = (chuong) => {
+    setSelectedChapter(chuong);
+    setNewChapterName(chuong.TenChuong);
+    setIsOpen(true);
+  };
+
+  const handleUpdateNameChapter = async () => {
+    if (!selectedChapter) return;
+    const formData = new FormData();
+    formData.append("ten_chuong_moi", newChapterName);
+
+    try {
+      const data = await updateChapter(
+        maHocPhan,
+        selectedChapter.MaChuong,
+        formData
+      );
+      console.log("data", data);
+
+      if (!data) {
+        throw new Error("Failed to update chapter");
+      }
+      setIsOpen(false);
+      toast({
+        title: "Cập nhật chương thành công",
+        description: `Đã cập nhật tên chương thành công.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setCourseDetail((prev) => ({
+        ...prev,
+        DanhSachChuong: prev.DanhSachChuong.map((chuong) =>
+          chuong.MaChuong === selectedChapter.MaChuong
+            ? { ...chuong, TenChuong: newChapterName }
+            : chuong
+        ),
+      }));
+    } catch (error) {
+      toast({
+        title: "Cập nhật chương thất bại",
+        description: "Có lỗi xảy ra khi cập nhật tên chương.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.error(error);
+    }
+  };
 
   return loading ? (
     <Center minH="200px">
@@ -204,7 +271,9 @@ const ExamBankDetail = () => {
                   colorScheme="purple"
                   variant="ghost"
                   onClick={() =>
-                    navigate(`${location.pathname}/upload-document-exam`)
+                    navigate(
+                      `${location.pathname}/${chuong.MaChuong}/upload-document-exam`
+                    )
                   }
                 />
               </Td>
@@ -214,12 +283,37 @@ const ExamBankDetail = () => {
                   size="sm"
                   colorScheme="yellow"
                   variant="ghost"
+                  onClick={() => openEditModal(chuong)}
                 />
               </Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            Đổi tên chương: {selectedChapter?.TenChuong}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input
+              value={newChapterName}
+              onChange={(e) => setNewChapterName(e.target.value)}
+              placeholder="Nhập tên chương mới"
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleUpdateNameChapter}>
+              Lưu
+            </Button>
+            <Button variant="ghost" onClick={() => setIsOpen(false)}>
+              Hủy
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 };

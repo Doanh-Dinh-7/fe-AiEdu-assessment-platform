@@ -64,7 +64,6 @@ const QuestionDetail = () => {
               onChange={(e) => setQuestion(e.target.value)}
               isReadOnly={!isEdit}
               resize="vertical"
-              minH="100px"
               ref={questionRef}
             />
 
@@ -76,7 +75,6 @@ const QuestionDetail = () => {
               onChange={(e) => setAnswer(e.target.value)}
               isReadOnly={!isEdit}
               resize="vertical"
-              minH="100px"
               ref={answerRef}
             />
           </Box>
