@@ -74,3 +74,23 @@ export const joinPracticeExam = async (MaCuocThi) => {
     console.log("Lỗi khi tham gia LUYỆN thi:", error);
   }
 };
+
+export const speechToText = async (MaCuocThi) => {
+  try {
+    const res = await fetch(
+      BASE_URL + "/pratice/tham-gia-luyen-thi/" + MaCuocThi,
+      {
+        method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const data = await checkResponse(res);
+
+    return data.data;
+  } catch (error) {
+    console.log("Lỗi khi đang chuyển GIỌNG NÓI thành VĂN BẢN thi:", error);
+  }
+};
