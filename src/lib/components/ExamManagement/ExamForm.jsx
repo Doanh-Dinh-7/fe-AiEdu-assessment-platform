@@ -45,7 +45,14 @@ const mucDoOptions = [
 function formatDateTimeLocal(str) {
   if (!str) return "";
   const [date, time] = str.split("T");
-  const timeWithSec = time.length === 5 ? time + ":00" : time;
+  let timeWithSec = "";
+
+  if (date && time) {
+    timeWithSec = time.length === 5 ? time + ":00" : time;
+    return `${date} ${timeWithSec}`;
+  } else if (date && !time) {
+    return `${date}:00`;
+  }
   return `${date} ${timeWithSec}`;
 }
 
@@ -117,14 +124,20 @@ const ExamForm = () => {
       (c.MaHocPhan || []).includes(selectedCourse.value)
     );
     setFilteredClasses(filtered);
-    setSelectedClasses([]);
+
+    // Giữ lại các lớp học phần đã chọn nếu chúng vẫn thuộc học phần đang chọn
+    setSelectedClasses((prev) =>
+      (prev || []).filter((c) =>
+        filtered.some((f) => f.MaLopHocPhan === c.value)
+      )
+    );
   }, [selectedCourse, classes]);
 
   // Nếu là edit, load dữ liệu bài thi
   useEffect(() => {
     if (mode === "edit" && location.state?.maCuocThi) {
       setLoading(true);
-      getExamDetail(location.state.maCuocThi)
+      getExamDetail(location.state.maCuocThi) // Call API
         .then((data) => {
           if (!data) throw new Error("Không lấy được dữ liệu bài thi");
           setEditExamId(data.MaCuocThi);
@@ -185,20 +198,6 @@ const ExamForm = () => {
     }
   }, [mode, location.state, courses, toast]);
 
-  // Khi chọn học phần, lọc lại danh sách lớp học phần
-  useEffect(() => {
-    if (!selectedCourse) {
-      setFilteredClasses([]);
-      setSelectedClasses([]);
-      return;
-    }
-    const filtered = classes.filter((c) =>
-      (c.MaHocPhan || []).includes(selectedCourse.value)
-    );
-    setFilteredClasses(filtered);
-    setSelectedClasses([]);
-  }, [selectedCourse, classes]);
-
   // Khi xác nhận bước 1, lấy chi tiết học phần (danh sách chương)
   const handleNextStep = async () => {
     if (
@@ -216,6 +215,13 @@ const ExamForm = () => {
       });
       return;
     }
+
+    // Nếu mã học phần không đổi, chỉ chuyển bước, không gọi API
+    if (cauTrucDeThi.length > 0) {
+      setStep(2);
+      return;
+    }
+
     setLoading(true);
     try {
       const detail = await getCourseDetail(selectedCourse.value);
@@ -257,10 +263,9 @@ const ExamForm = () => {
     );
   };
 
-  // Tạo bài thi
+  // Tạo/Sửa bài thi
   const handleCreateOrUpdateExam = async () => {
     setLoading(true);
-
     try {
       const examData = {
         TenCuocThi,
@@ -281,7 +286,6 @@ const ExamForm = () => {
         DiemCauBoSung: Number(DiemCauBoSung),
       };
       let data;
-      console.log("examData", examData);
 
       if (mode === "edit" && editExamId) {
         data = await updateExam(editExamId, examData);
@@ -334,7 +338,7 @@ const ExamForm = () => {
           textAlign="center"
           textTransform="uppercase"
         >
-          Tạo bài thi
+          {mode === "edit" ? "Sửa " : "Tạo "}bài thi
         </Heading>
         {step === 1 && (
           <Flex direction="column" gap={4}>
@@ -436,7 +440,7 @@ const ExamForm = () => {
               </Tbody>
             </Table>
             <Text fontWeight="bold" mb={2} mt={4}>
-              Thiết lập điểm cho từng loại câu hỏi
+              Thiết lập điểm cho từng loại câu hỏi <i>(Bắt buộc)</i>
             </Text>
             <Flex gap={3}>
               <Box flex={1}>

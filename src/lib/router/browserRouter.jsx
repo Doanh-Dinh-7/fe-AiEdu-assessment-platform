@@ -71,8 +71,8 @@ const studentRoutes = {
   element: <RoleProtectedRoute allowedRoles={["student"]} />,
   children: [
     { path: "/exams", element: <Exam /> },
-    { path: "/exams/taking", element: <ExamTaking /> },
-    { path: "/exams/practice", element: <ExamPractice /> },
+    { path: "/exams/taking/:maCuocThi", element: <ExamTaking /> },
+    { path: "/exams/practice/:maCuocThi", element: <ExamPractice /> },
   ],
 };
 

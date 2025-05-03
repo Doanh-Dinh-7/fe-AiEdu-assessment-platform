@@ -8,14 +8,19 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-const ConfirmModal = ({ isOpen, onConfirm, onCancel }) => (
+const ConfirmModal = ({ isOpen, onConfirm, onCancel, isLoading }) => (
   <Modal isOpen={isOpen} onClose={onCancel} isCentered>
     <ModalOverlay />
     <ModalContent>
       <ModalHeader>Xác nhận trả lời</ModalHeader>
       <ModalBody>Bạn có chắc chắn muốn gửi câu trả lời này?</ModalBody>
       <ModalFooter>
-        <Button colorScheme="green" mr={3} onClick={onConfirm}>
+        <Button
+          isLoading={isLoading}
+          colorScheme="green"
+          mr={3}
+          onClick={onConfirm}
+        >
           Xác nhận
         </Button>
         <Button colorScheme="red" onClick={onCancel}>

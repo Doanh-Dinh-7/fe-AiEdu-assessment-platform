@@ -120,7 +120,7 @@ const Exam = () => {
                     onClick={() =>
                       setStartModal({
                         isOpen: true,
-                        data: exam,
+                        maCuocThi: exam.ma_cuoc_thi,
                         mode: "practice",
                       })
                     }
@@ -136,7 +136,11 @@ const Exam = () => {
                   colorScheme="green"
                   variant="ghost"
                   onClick={() =>
-                    setStartModal({ isOpen: true, data: exam, mode: "exam" })
+                    setStartModal({
+                      isOpen: true,
+                      maCuocThi: exam.ma_cuoc_thi,
+                      mode: "exam",
+                    })
                   }
                 >
                   Thi
@@ -149,9 +153,9 @@ const Exam = () => {
       <ExamStartModal
         isOpen={startModal.isOpen}
         onClose={() =>
-          setStartModal({ isOpen: false, data: null, mode: "exam" })
+          setStartModal({ isOpen: false, maCuocThi: null, mode: "exam" })
         }
-        examData={startModal.data}
+        maCuocThi={startModal.maCuocThi}
         mode={startModal.mode}
       />
     </Flex>

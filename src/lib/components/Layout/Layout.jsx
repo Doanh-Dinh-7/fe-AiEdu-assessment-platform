@@ -11,9 +11,9 @@ const Layout = () => {
   const { showProgress } = useContext(ProgressContext);
 
   // Ẩn sidebar và disable breadcrumb ở các route thi/luyện thi
-  const hideSidebar = ["/exams/taking", "/exams/practice"].includes(
-    location.pathname
-  );
+  const hideSidebar =
+    location.pathname.startsWith("/exams/taking") ||
+    location.pathname.startsWith("/exams/practice");
   const disableBreadcrumb = hideSidebar;
 
   return (

@@ -24,6 +24,7 @@ import { ProgressContext } from "../Layout/ProgressContext";
 import {
   getClassStudenList,
   importFileStudentList,
+  updateClass,
 } from "../../controller/class";
 
 // const initialStudents = [
@@ -39,7 +40,6 @@ const ClassDetail = () => {
   const { maLopHocPhan } = useParams();
   const [nameClass, setNameClass] = useState("");
   const [students, setStudents] = useState([]);
-  const [selectedFile, setSelectedFile] = useState();
   const [loading, setLoading] = useState(true);
   const toast = useToast();
   const { setShowProgress } = useContext(ProgressContext);
@@ -110,26 +110,91 @@ const ClassDetail = () => {
     onClose();
   };
 
-  const handleDeleteStudent = (index) => {
-    const updated = students.filter((_, i) => i !== index);
-    setStudents(updated.map((sv, i) => ({ ...sv, stt: i + 1 })));
+  const [loadingAddStudent, setLoadingAddStudent] = useState(false);
+
+  const handleAddStudent = async (maSinhVien) => {
+    setLoadingAddStudent(true);
+    try {
+      const body = {
+        ma_sinh_vien_them: [maSinhVien],
+      };
+      const res = await updateClass(body, maLopHocPhan);
+      if (!res) throw new Error("Không thêm được sinh viên");
+      // Sau khi thêm thành công, reload lại danh sách sinh viên
+      const data = await getClassStudenList(maLopHocPhan);
+      setStudents(data.sinh_vien);
+      onClose();
+      toast({
+        title: "Thêm sinh viên thành công",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Thêm sinh viên thất bại",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      console.log("Lỗi khi thêm sinh viên: ", error);
+    } finally {
+      setLoadingAddStudent(false);
+    }
   };
 
-  const handleImport = async () => {
+  const handleDeleteStudent = async (maSinhVien) => {
+    const confirmDelete = window.confirm(
+      `Bạn có chắc chắn muốn xóa sinh viên ${maSinhVien} này không?`
+    );
+    if (confirmDelete) {
+      try {
+        const body = {
+          ma_sinh_vien_xoa: [maSinhVien],
+        };
+        const res = await updateClass(body, maLopHocPhan);
+        if (!res) throw new Error("Không xóa được sinh viên");
+        // Sau khi xóa thành công, reload lại danh sách sinh viên
+        const data = await getClassStudenList(maLopHocPhan);
+        setStudents(data.sinh_vien);
+        toast({
+          title: "Xóa sinh viên thành công",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+      } catch (error) {
+        toast({
+          title: "Xóa sinh viên thất bại",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+        console.log("Lỗi khi xoá sinh viên: ", error);
+      }
+    }
+  };
+
+  const handleImport = async (e) => {
+    const file = e.target.files?.[0];
+
     const fileData = new FormData();
-    fileData.append("file", selectedFile);
+    fileData.append("file", file);
 
     try {
       onClose();
       setShowProgress(true);
       localStorage.setItem("showProgress", "true");
-      const data = await importFileStudentList(maLopHocPhan, fileData);
-      if (!data) {
+      const res = await importFileStudentList(maLopHocPhan, fileData);
+      if (!res) {
         throw new Error("Failed to import studentsList");
       }
-      setSelectedFile();
       setShowProgress(false);
       localStorage.setItem("showProgress", "false");
+      if (!res) throw new Error("Không xóa được sinh viên");
+      // Sau khi thêm thành công, reload lại danh sách sinh viên
+      const data = await getClassStudenList(maLopHocPhan);
+      setStudents(data.sinh_vien);
       toast({
         title: "Cập nhật tài liệu chương thành công",
         description: "Đã cập nhật tài liệu chương thành công.",
@@ -175,7 +240,7 @@ const ClassDetail = () => {
               type="file"
               accept=".csv,.xlsx"
               display="none"
-              onChange={handleImport}
+              onChange={(e) => handleImport(e)}
             />
           </Button>
         </Flex>
@@ -188,7 +253,7 @@ const ClassDetail = () => {
               <Th>Tên sinh viên</Th>
               <Th>Lớp</Th>
               <Th>Tên đăng nhập</Th>
-              <Th></Th>
+              {/* <Th></Th> */}
               <Th></Th>
             </Tr>
           </Thead>
@@ -200,7 +265,7 @@ const ClassDetail = () => {
                 <Td fontWeight="bold">{sinhVien.TenSinhVien}</Td>
                 <Td>{sinhVien.LopSinhHoat}</Td>
                 <Td>{sinhVien.TenDangNhap}</Td>
-                <Td>
+                {/* <Td>
                   <IconButton
                     icon={<FaEdit />}
                     size="sm"
@@ -208,7 +273,7 @@ const ClassDetail = () => {
                     variant="ghost"
                     onClick={() => openEditModal(sinhVien, sinhVien.MaSinhVien)}
                   />
-                </Td>
+                </Td> */}
                 <Td>
                   <IconButton
                     icon={<FaTrash />}
@@ -244,6 +309,8 @@ const ClassDetail = () => {
         student={student}
         setStudent={setStudent}
         onSubmit={handleSubmit}
+        onAddStudent={handleAddStudent}
+        loading={loadingAddStudent}
       />
     </Box>
   );

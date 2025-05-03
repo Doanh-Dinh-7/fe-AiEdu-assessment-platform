@@ -21,7 +21,7 @@ const ExamBankForm = () => {
   const location = useLocation();
 
   const { mode, defaultData = {} } = location.state || {};
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
 
   const [formData, setFormData] = useState({

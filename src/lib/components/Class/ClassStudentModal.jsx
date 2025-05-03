@@ -11,56 +11,41 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
-const ClassStudentModal = ({
-  isOpen,
-  onClose,
-  isEdit,
-  student,
-  setStudent,
-  onSubmit,
-}) => {
+const ClassStudentModal = ({ isOpen, onClose, onAddStudent, loading }) => {
+  const [maSinhVien, setMaSinhVien] = useState("");
+
+  const handleSubmit = () => {
+    if (!maSinhVien.trim()) return;
+    onAddStudent(maSinhVien.trim());
+    setMaSinhVien("");
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          {isEdit ? "Chỉnh sửa sinh viên" : "Thêm sinh viên"}{" "}
-          {student.MaSinhVien}
-        </ModalHeader>
+        <ModalHeader>Thêm sinh viên</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl mb={3}>
-            <FormLabel>Tên sinh viên</FormLabel>
+            <FormLabel>Mã sinh viên</FormLabel>
             <Input
-              value={student.TenSinhVien}
-              onChange={(e) =>
-                setStudent({ ...student, TenSinhVien: e.target.value })
-              }
-            />
-          </FormControl>
-          <FormControl mb={3}>
-            <FormLabel>Lớp</FormLabel>
-            <Input
-              value={student.LopSinhHoat}
-              onChange={(e) =>
-                setStudent({ ...student, LopSinhHoat: e.target.value })
-              }
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Tên đăng nhập</FormLabel>
-            <Input
-              value={student.TenDangNhap}
-              onChange={(e) =>
-                setStudent({ ...student, TenDangNhap: e.target.value })
-              }
+              value={maSinhVien}
+              onChange={(e) => setMaSinhVien(e.target.value)}
+              placeholder="Nhập mã sinh viên"
             />
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onSubmit}>
-            {isEdit ? "Lưu" : "Thêm"}
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={handleSubmit}
+            isLoading={loading}
+          >
+            Thêm
           </Button>
           <Button variant="ghost" onClick={onClose}>
             Hủy

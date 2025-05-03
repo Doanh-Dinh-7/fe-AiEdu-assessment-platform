@@ -45,6 +45,8 @@ const AddDocumentModal = ({
 
   const handleAddFilesChapter = async () => {
     const filesData = new FormData();
+    console.log("file", selectedFiles);
+
     selectedFiles.forEach((file) => {
       filesData.append("files", file);
     });
@@ -87,7 +89,13 @@ const AddDocumentModal = ({
         <ModalHeader>Thêm tài liệu</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Input type="file" multiple onChange={handleFileChange} mb={4} />
+          <Input
+            type="file"
+            accept=".doc, .docx, .pdf"
+            multiple
+            onChange={handleFileChange}
+            mb={4}
+          />
 
           {selectedFiles.length > 0 ? (
             <Box borderWidth="1px" borderRadius="md" p={3}>
