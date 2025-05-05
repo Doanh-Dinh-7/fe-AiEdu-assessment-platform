@@ -1,4 +1,4 @@
-import { BASE_URL } from "../config/config";
+import { BASE_URL, MOCKUP_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getExamTakingDetail = async (MaCuocThi) => {
@@ -18,9 +18,10 @@ export const getExamTakingDetail = async (MaCuocThi) => {
   }
 };
 
+// sài URL MOCKUP
 export const checkAnswerExamTaking = async (MaCuocThi, answerData) => {
   try {
-    const res = await fetch(BASE_URL + `/exam/process/${MaCuocThi}/answer`, {
+    const res = await fetch(MOCKUP_URL + `/exam/process/${MaCuocThi}/answer`, {
       method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
       headers: {
         "Content-Type": "application/json",
@@ -33,5 +34,26 @@ export const checkAnswerExamTaking = async (MaCuocThi, answerData) => {
     return data.data;
   } catch (error) {
     console.log("Lỗi khi xử lý đáp án cuộc thi:", error);
+  }
+};
+
+// sài URL MOCKUP
+export const finishedExamTaking = async (MaCuocThi) => {
+  try {
+    const res = await fetch(
+      MOCKUP_URL + `/exam/process/${MaCuocThi}/complete`,
+      {
+        method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const data = await checkResponse(res);
+
+    return data.data;
+  } catch (error) {
+    console.log("Lỗi khi hoàn thành cuộc thi:", error);
   }
 };

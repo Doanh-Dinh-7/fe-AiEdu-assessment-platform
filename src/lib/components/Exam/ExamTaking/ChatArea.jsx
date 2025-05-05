@@ -8,10 +8,6 @@ const ChatArea = ({
   input,
   setInput,
   disabled,
-  onShowHint,
-  showHint,
-  isHintDisabled,
-  hintText,
   isPracticeMode,
 }) => {
   const ref = useRef(null);
@@ -53,36 +49,7 @@ const ChatArea = ({
           </Flex>
         ))}
       </Box>
-      {/* Hiển thị gợi ý chỉ khi ở chế độ luyện thi */}
-      {isPracticeMode && (
-        <>
-          <Flex justify="flex-end" mb={1}>
-            <Button
-              colorScheme="teal"
-              variant="outline"
-              size="sm"
-              onClick={onShowHint}
-              isDisabled={isHintDisabled}
-            >
-              Cho câu hỏi gợi ý
-            </Button>
-          </Flex>
 
-          {showHint && hintText && (
-            <Box
-              mt={1}
-              mb={2}
-              p={3}
-              bg="#e3f2fd"
-              borderRadius="md"
-              color="#1976d2"
-            >
-              <Text fontWeight="bold">Gợi ý:</Text>
-              <Text>{hintText}</Text>
-            </Box>
-          )}
-        </>
-      )}
       <Flex
         as="form"
         onSubmit={(e) => {

@@ -10,6 +10,7 @@ export const getClassList = async () => {
       },
       credentials: "include",
     });
+    console.log("res: ", res);
     const data = await checkResponse(res);
 
     return data;

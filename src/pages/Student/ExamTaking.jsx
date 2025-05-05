@@ -19,6 +19,7 @@ import ChatArea from "../../lib/components/Exam/ExamTaking/ChatArea";
 import {
   getExamTakingDetail,
   checkAnswerExamTaking,
+  finishedExamTaking,
 } from "../../lib/controller/examTaking";
 
 // const mockQuestions = [
@@ -56,6 +57,7 @@ const ExamTaking = () => {
   const [currentSupplement, setCurrentSupplement] = useState(null); // { MaCauBoSung, NoiDung, ... }
   const [lastCheckResult, setLastCheckResult] = useState(null); // Lưu kết quả chấm điểm gần nhất
   const [loadingCheck, setLoadingCheck] = useState(false);
+  const [resultData, setResultData] = useState(null);
 
   // Khôi phục state từ localStorage nếu có
   useEffect(() => {
@@ -299,8 +301,14 @@ const ExamTaking = () => {
   };
 
   const handleFinish = () => setShowFinish(true);
-  const handleFinishConfirm = () => {
-    setFinished(true);
+  const handleFinishConfirm = async () => {
+    try {
+      const res = await finishedExamTaking(maCuocThi);
+      setResultData(res); // res là object trả về từ API
+      setFinished(true);
+    } catch {
+      alert("Có lỗi khi hoàn thành bài thi!");
+    }
   };
 
   const handleOutExam = () => {
@@ -324,13 +332,17 @@ const ExamTaking = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <ResultTable
-            questions={questions.map((q, idx) => ({
-              ...q,
-              answer: messages[idx]?.[0]?.text || "",
-              score: "",
-            }))}
-          />
+          {finished && resultData ? (
+            <ResultTable examHistory={resultData.ExamHistory} />
+          ) : (
+            <ResultTable
+              questions={questions.map((q, idx) => ({
+                ...q,
+                answer: messages[idx]?.[0]?.text || "",
+                score: "",
+              }))}
+            />
+          )}
         </Box>
         <Button
           colorScheme="blackAlpha"
