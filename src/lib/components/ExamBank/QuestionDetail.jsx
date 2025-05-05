@@ -34,16 +34,28 @@ import useAutoResizeTextarea from "../../hooks/useAutoResizeTextarea";
 // ];
 
 const QuestionDetail = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const { maCauHoi } = useParams();
-  const { mode, questionDetailData } = location.state || {};
-  const [question, setQuestion] = useState(questionDetailData.NoiDung);
-  const [answer, setAnswer] = useState(questionDetailData.DapAn[0].NoiDung);
-  const keyPoints = questionDetailData.DapAn[0].YChinh;
+  const { mode, questionDetailData, easy, medium, hard } = location.state || {};
+
+  // Luôn gọi hook ở đầu
+  const [question, setQuestion] = useState(questionDetailData?.NoiDung || "");
+  const [answer, setAnswer] = useState(
+    questionDetailData?.DapAn?.[0]?.NoiDung || ""
+  );
+  const keyPoints = questionDetailData?.DapAn?.[0]?.YChinh || [];
   const isEdit = mode === "edit";
   const questionRef = useAutoResizeTextarea(question);
   const answerRef = useAutoResizeTextarea(answer);
+
+  // Nếu không có dữ liệu thì báo lỗi
+  if (!questionDetailData) {
+    return (
+      <Box p={8}>
+        <Text color="red.500">Không tìm thấy dữ liệu câu hỏi.</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box minH="100vh" p={8}>
@@ -54,7 +66,7 @@ const QuestionDetail = () => {
               Chi tiết câu hỏi {maCauHoi}
             </Heading>
           </Center>
-          <QuestionLevelBox easy={10} medium={5} hard={5} />
+          <QuestionLevelBox easy={easy} medium={medium} hard={hard} />
           <Box w="100%" mt={4}>
             <Text fontWeight="bold" mb={1}>
               Câu hỏi:
@@ -91,11 +103,11 @@ const QuestionDetail = () => {
           </Thead>
           <Tbody>
             {keyPoints.map((row, index) => (
-              <Tr key={keyPoints.MaID}>
+              <Tr key={row?.MaID || index}>
                 <Td>{index + 1}</Td>
                 <Td>
                   <Textarea
-                    defaultValue={row.NoiDung}
+                    defaultValue={row?.NoiDung || ""}
                     isReadOnly={!isEdit}
                     onInput={(e) => {
                       const target = e.currentTarget;
@@ -107,32 +119,50 @@ const QuestionDetail = () => {
                 <Td>
                   <Input
                     type="number"
-                    defaultValue={row.TyLeDiem}
+                    defaultValue={row?.TyLeDiem || 0}
                     min={0}
                     isReadOnly={!isEdit}
                   />
                 </Td>
-                <Td>
-                  <Textarea
-                    defaultValue={row.CauHoiBoSung[0].NoiDung}
-                    isReadOnly={!isEdit}
-                    onInput={(e) => {
-                      const target = e.currentTarget;
-                      target.style.height = "auto";
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
-                  />
-                </Td>
-                <Td>
-                  <Textarea
-                    defaultValue={row.CauHoiBoSung[0].DapAnBoSung}
-                    isReadOnly={!isEdit}
-                    onInput={(e) => {
-                      const target = e.currentTarget;
-                      target.style.height = "auto";
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
-                  />
+                <Td colSpan={2}>
+                  {row?.CauHoiBoSung?.length > 0 ? (
+                    row.CauHoiBoSung.map((cbs, i) => (
+                      <Flex
+                        key={cbs?.MaCauBoSung || i}
+                        gap={2}
+                        mb={2}
+                        align="flex-start"
+                      >
+                        <Box flex={1}>
+                          <Textarea
+                            defaultValue={cbs?.NoiDung || ""}
+                            isReadOnly={!isEdit}
+                            mb={1}
+                            onInput={(e) => {
+                              const target = e.currentTarget;
+                              target.style.height = "auto";
+                              target.style.height = `${target.scrollHeight}px`;
+                            }}
+                          />
+                        </Box>
+                        <Box flex={1}>
+                          <Textarea
+                            defaultValue={cbs?.DapAnBoSung || ""}
+                            isReadOnly={!isEdit}
+                            onInput={(e) => {
+                              const target = e.currentTarget;
+                              target.style.height = "auto";
+                              target.style.height = `${target.scrollHeight}px`;
+                            }}
+                          />
+                        </Box>
+                      </Flex>
+                    ))
+                  ) : (
+                    <Text color="gray.400" fontStyle="italic">
+                      Không có
+                    </Text>
+                  )}
                 </Td>
               </Tr>
             ))}

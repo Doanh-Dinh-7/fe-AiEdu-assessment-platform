@@ -13,10 +13,11 @@ const SidebarTaking = ({
   answered,
   timeLeft,
   onSelect,
+  examName,
 }) => (
   <Box bg="white" borderRadius="md" p={4} minW="260px" maxW="260px" h="80vh">
     <Text mb={4} fontWeight="bold" fontSize="lg" textTransform="uppercase">
-      Bài thi Quản trị học
+      Bài thi {examName}
     </Text>
 
     <Text fontWeight="bold" mb={2}>

@@ -1,10 +1,10 @@
 import { BASE_URL, MOCKUP_URL } from "../config/config";
 import { checkResponse } from "./jwt";
-// sài URL MOCKUP
+
 export const getExamPracticeDetail = async (MaCuocThi) => {
   try {
     const res = await fetch(
-      MOCKUP_URL + `/pratice/bat-dau-luyen-thi/` + MaCuocThi,
+      BASE_URL + `/pratice/bat-dau-luyen-thi/` + MaCuocThi,
       {
         method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
         headers: {
@@ -30,7 +30,7 @@ export const checkAnswerExamPractice = async (MaLuyenThi, answerData) => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        // credentials: "include",
         body: JSON.stringify(answerData),
       }
     );
@@ -52,7 +52,7 @@ export const finishedExamPractice = async (MaLuyenThi) => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        // credentials: "include",
       }
     );
     const data = await checkResponse(res);

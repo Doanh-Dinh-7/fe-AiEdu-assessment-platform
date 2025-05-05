@@ -41,6 +41,7 @@ const ExamTaking = () => {
   const { maCuocThi } = useParams();
   const navigate = useNavigate();
   const storageKey = `exam-taking-${maCuocThi}`;
+  const [examName, setExamName] = useState("");
   const [started, setStarted] = useState(false);
   const [finished, setFinished] = useState(false);
   const [current, setCurrent] = useState(0);
@@ -143,6 +144,7 @@ const ExamTaking = () => {
     try {
       const data = await getExamTakingDetail(maCuocThi);
       if (data && data.NoiDungBoDeThi) {
+        setExamName(data.TenCuocThi);
         const qs = data.NoiDungBoDeThi.map((item) => ({
           id: item.cau_hoi.MaCauHoi,
           text: item.cau_hoi.NoiDung,
@@ -325,6 +327,7 @@ const ExamTaking = () => {
           answered={answered}
           timeLeft={timeLeft}
           onSelect={setCurrent}
+          examName={examName}
         />
         <Box
           flex={1}
@@ -368,6 +371,7 @@ const ExamTaking = () => {
         answered={answered}
         timeLeft={timeLeft}
         onSelect={setCurrent}
+        examName={examName}
       />
       <Box flex={1} px={8}>
         {!started ? (
@@ -403,7 +407,7 @@ const ExamTaking = () => {
               }
             />
             {/* Hiển thị kết quả chấm điểm từng ý chính nếu có */}
-            {lastCheckResult && lastCheckResult.ChiTietKetQua && (
+            {/* {lastCheckResult && lastCheckResult.ChiTietKetQua && (
               <Box mt={4} bg="white" borderRadius="md" p={4} boxShadow="sm">
                 <Text fontWeight="bold" mb={2} color="blue.600">
                   Kết quả chấm ý chính:
@@ -434,7 +438,7 @@ const ExamTaking = () => {
                   {lastCheckResult.TyLeDiem})
                 </Text>
               </Box>
-            )}
+            )} */}
             <Flex justify="center" mt={6}>
               {answered.every(Boolean) ? (
                 <Box textAlign="center" w="100%">

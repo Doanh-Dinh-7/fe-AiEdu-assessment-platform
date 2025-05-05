@@ -72,7 +72,13 @@ const ExamQuestion = () => {
 
   const handleNavigateQuestion = (q, mode) => {
     navigate(`${location.pathname}/${q.MaCauHoi}`, {
-      state: { mode, questionDetailData: q },
+      state: {
+        mode,
+        questionDetailData: q,
+        easy: countLevel("dễ"),
+        medium: countLevel("trung bình"),
+        hard: countLevel("khó"),
+      },
     });
   };
 
@@ -97,7 +103,15 @@ const ExamQuestion = () => {
         <Flex justify="flex-end" mb={4}>
           <Button
             colorScheme="blue"
-            onClick={() => navigate(`${location.pathname}/create-question`)}
+            onClick={() =>
+              navigate(`${location.pathname}/create-question`, {
+                state: {
+                  easy: countLevel("dễ"),
+                  medium: countLevel("trung bình"),
+                  hard: countLevel("khó"),
+                },
+              })
+            }
           >
             Tạo câu hỏi
           </Button>

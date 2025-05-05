@@ -97,10 +97,10 @@ export const getExamResult = async (MaCuocThi) => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      // credentials: "include",
     });
     const data = await checkResponse(res);
-    console.log("data", data);
+
     return data.data;
   } catch (error) {
     console.log("Lỗi khi lấy danh sách kết quả cuộc thi:", error);
@@ -117,7 +117,7 @@ export const getExamResultDetail = async (MaCuocThi, MaSinhVien) => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        // credentials: "include",
       }
     );
     const data = await checkResponse(res);

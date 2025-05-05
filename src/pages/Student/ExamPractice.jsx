@@ -95,7 +95,7 @@ const ExamPractice = () => {
   const handleStartPractice = async () => {
     setLoading(true);
     try {
-      const res = await getExamPracticeDetail("ma_cuoc_thi");
+      const res = await getExamPracticeDetail(maCuocThi);
       if (res?.ma_phien_luyen_thi) {
         setMaPhienLuyenThi(res.ma_phien_luyen_thi);
         localStorage.setItem("ma_phien_luyen_thi", res.ma_phien_luyen_thi);

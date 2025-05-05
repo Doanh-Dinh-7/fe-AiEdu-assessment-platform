@@ -9,8 +9,14 @@ import {
   Text,
   VStack,
   Divider,
+  useToast,
 } from "@chakra-ui/react";
 import QuestionLevelBox from "./QuestionLevelBox";
+import {
+  createQuestion,
+  getQuestionSuggestion,
+} from "../../controller/question";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const LEVELS = [
   { label: "Dễ", value: "Dễ" },
@@ -19,6 +25,8 @@ const LEVELS = [
 ];
 
 const CreateQuestion = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [level, setLevel] = useState(LEVELS[0].value);
   const [question, setQuestion] = useState("");
@@ -35,7 +43,11 @@ const CreateQuestion = () => {
   ]);
   const [currentIdea, setCurrentIdea] = useState(0);
   const [showNextIdea, setShowNextIdea] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const { maHocPhan, maChuong } = useParams();
+  const { easy, medium, hard } = location.state || {};
+  const toast = useToast();
 
   const handleLevelConfirm = () => setStep(1);
   const handleQuestionConfirm = () => setStep(2);
@@ -57,9 +69,74 @@ const CreateQuestion = () => {
     setShowNextIdea(false);
   };
 
-  const handleSave = () => {
-    setIsSaved(true);
-    // TODO: gửi dữ liệu lên server
+  const handleSave = async () => {
+    setLoading(true);
+    const questionData = {
+      NoiDung: question,
+      DapAn: answer,
+      MucDo: level.toLowerCase(),
+      cau_hoi_phu: ideas
+        .filter(
+          (item) =>
+            item.idea?.trim() !== "" &&
+            item.subQuestion?.trim() !== "" &&
+            item.subAnswer?.trim() !== ""
+        )
+        .map((item) => ({
+          YChinh: item.idea,
+          TyLeDiem: 1 / ideas.length,
+          CauHoiBoSung: item.subQuestion,
+          DapAnBoSung: item.subAnswer,
+        })),
+    };
+
+    try {
+      await createQuestion(maChuong, questionData);
+      toast({
+        title: "Lưu thành công!",
+        description: "Câu hỏi đã được lưu vào ngân hàng đề.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      navigate(-1);
+    } catch (error) {
+      toast({
+        title: "Lưu thất bại!",
+        description: "Có lỗi xảy ra khi lưu câu hỏi. Vui lòng thử lại.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchSuggestion = async (body) => {
+    try {
+      const res = await getQuestionSuggestion(maHocPhan, maChuong, body);
+      if (Array.isArray(res) && res.length > 0) {
+        console.log("res", res[0]);
+        return res[0];
+      }
+
+      return null;
+    } catch (error) {
+      toast({
+        title: "Lỗi!",
+        description: "Không thể lấy gợi ý. Vui lòng thử lại.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      console.log("error", error);
+      return null;
+    }
   };
 
   // Helpers: Kiểm tra điều kiện hiển thị các bước con
@@ -73,9 +150,9 @@ const CreateQuestion = () => {
     <Box minH="100vh" direction="column" bg="#F5F9FF" pt={5}>
       <Flex direction="column" align="center" maxW="1200px" mx="auto">
         <Heading fontSize="xl" mb={4} textTransform="uppercase">
-          Tạo câu hỏi chương 1
+          Tạo câu hỏi chương {maChuong}
         </Heading>
-        <QuestionLevelBox easy={10} medium={5} hard={5} />
+        <QuestionLevelBox easy={easy} medium={medium} hard={hard} />
 
         <Flex justify="space-between" align="center" w="100%" mb={6}>
           {["Mức độ", "Câu hỏi", "Trả lời", "Tách ý và Câu hỏi phụ"].map(
@@ -140,7 +217,22 @@ const CreateQuestion = () => {
             mb={2}
           />
           {step === 1 && (
-            <>
+            <Flex justify="flex-end" gap={2}>
+              <Button
+                colorScheme="yellow"
+                mt={2}
+                isLoading={loading}
+                onClick={async () => {
+                  const suggestion = await fetchSuggestion({
+                    MucDo: level.toLowerCase(),
+                  });
+                  if (suggestion && suggestion.CauHoi) {
+                    setQuestion(suggestion.CauHoi);
+                  }
+                }}
+              >
+                Tạo lại
+              </Button>
               <Button
                 colorScheme="green"
                 mt={2}
@@ -149,10 +241,7 @@ const CreateQuestion = () => {
               >
                 Xác nhận
               </Button>
-              <Button colorScheme="yellow" mt={2} isDisabled={!question}>
-                Tạo lại
-              </Button>
-            </>
+            </Flex>
           )}
         </Box>
 
@@ -169,7 +258,23 @@ const CreateQuestion = () => {
             mb={2}
           />
           {step === 2 && (
-            <>
+            <Flex justify="flex-end" gap={2}>
+              <Button
+                colorScheme="yellow"
+                mt={2}
+                isLoading={loading}
+                onClick={async () => {
+                  const suggestion = await fetchSuggestion({
+                    MucDo: level.toLowerCase(),
+                    CauHoi: question,
+                  });
+                  if (suggestion && suggestion.DapAn) {
+                    setAnswer(suggestion.DapAn);
+                  }
+                }}
+              >
+                Tạo lại
+              </Button>
               <Button
                 colorScheme="green"
                 mt={2}
@@ -178,10 +283,7 @@ const CreateQuestion = () => {
               >
                 Xác nhận
               </Button>
-              <Button colorScheme="yellow" mt={2} isDisabled={!answer}>
-                Tạo lại
-              </Button>
-            </>
+            </Flex>
           )}
         </Box>
 
@@ -210,27 +312,41 @@ const CreateQuestion = () => {
                   isDisabled={item.confirmed}
                   mb={2}
                 />
-                <Button
-                  colorScheme="green"
-                  size="sm"
-                  onClick={() => {
-                    const updated = [...ideas];
-                    updated[idx].confirmed = true;
-                    setIdeas(updated);
-                  }}
-                  isDisabled={!item.idea || item.confirmed}
-                  mb={2}
-                >
-                  Xác nhận
-                </Button>
-                <Button
-                  colorScheme="yellow"
-                  size="sm"
-                  mb={2}
-                  isDisabled={item.confirmed}
-                >
-                  Tạo lại
-                </Button>
+                <Flex justify="flex-end" gap={2}>
+                  <Button
+                    colorScheme="yellow"
+                    size="sm"
+                    mb={2}
+                    isLoading={loading}
+                    onClick={async () => {
+                      const suggestion = await fetchSuggestion({
+                        MucDo: level.toLowerCase(),
+                        CauHoi: question,
+                        DapAn: answer,
+                      });
+                      if (suggestion && suggestion.YChinh) {
+                        const updated = [...ideas];
+                        updated[idx].idea = suggestion.YChinh;
+                        setIdeas(updated);
+                      }
+                    }}
+                  >
+                    Tạo lại
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    size="sm"
+                    onClick={() => {
+                      const updated = [...ideas];
+                      updated[idx].confirmed = true;
+                      setIdeas(updated);
+                    }}
+                    isDisabled={!item.idea || item.confirmed}
+                    mb={2}
+                  >
+                    Xác nhận
+                  </Button>
+                </Flex>
 
                 {canShowSubQuestion(item) && (
                   <Box mt={2}>
@@ -246,32 +362,44 @@ const CreateQuestion = () => {
                       isDisabled={item.subQuestionConfirmed}
                       mb={2}
                     />
-                    <Button
-                      colorScheme="green"
-                      size="sm"
-                      onClick={() => {
-                        const updated = [...ideas];
-                        updated[idx].subQuestionConfirmed = true;
-                        setIdeas(updated);
-                      }}
-                      isDisabled={
-                        !item.subQuestion || item.subQuestionConfirmed
-                      }
-                      mb={2}
-                    >
-                      Xác nhận
-                    </Button>
-
-                    <Button
-                      colorScheme="yellow"
-                      size="sm"
-                      isDisabled={
-                        !item.subQuestion || item.subQuestionConfirmed
-                      }
-                      mb={2}
-                    >
-                      Tạo lại
-                    </Button>
+                    <Flex justify="flex-end" gap={2}>
+                      <Button
+                        colorScheme="yellow"
+                        size="sm"
+                        mb={2}
+                        isLoading={loading}
+                        onClick={async () => {
+                          const suggestion = await fetchSuggestion({
+                            MucDo: level.toLowerCase(),
+                            CauHoi: question,
+                            DapAn: answer,
+                            YChinh: item.idea,
+                          });
+                          if (suggestion && suggestion.CauHoiBoSung) {
+                            const updated = [...ideas];
+                            updated[idx].subQuestion = suggestion.CauHoiBoSung;
+                            setIdeas(updated);
+                          }
+                        }}
+                      >
+                        Tạo lại
+                      </Button>
+                      <Button
+                        colorScheme="green"
+                        size="sm"
+                        onClick={() => {
+                          const updated = [...ideas];
+                          updated[idx].subQuestionConfirmed = true;
+                          setIdeas(updated);
+                        }}
+                        isDisabled={
+                          !item.subQuestion || item.subQuestionConfirmed
+                        }
+                        mb={2}
+                      >
+                        Xác nhận
+                      </Button>
+                    </Flex>
                   </Box>
                 )}
 
@@ -289,28 +417,44 @@ const CreateQuestion = () => {
                       isDisabled={item.subAnswerConfirmed}
                       mb={2}
                     />
-                    <Button
-                      colorScheme="green"
-                      size="sm"
-                      onClick={() => {
-                        const updated = [...ideas];
-                        updated[idx].subAnswerConfirmed = true;
-                        setIdeas(updated);
-                        setShowNextIdea(true);
-                      }}
-                      isDisabled={!item.subAnswer || item.subAnswerConfirmed}
-                      mb={2}
-                    >
-                      Xác nhận
-                    </Button>
-                    <Button
-                      colorScheme="yellow"
-                      size="sm"
-                      isDisabled={!item.subAnswer || item.subAnswerConfirmed}
-                      mb={2}
-                    >
-                      Tạo lại
-                    </Button>
+                    <Flex justify="flex-end" gap={2}>
+                      <Button
+                        colorScheme="yellow"
+                        size="sm"
+                        mb={2}
+                        isLoading={loading}
+                        onClick={async () => {
+                          const suggestion = await fetchSuggestion({
+                            MucDo: level.toLowerCase(),
+                            CauHoi: question,
+                            DapAn: answer,
+                            YChinh: item.idea,
+                            CauHoiBoSung: item.subQuestion,
+                          });
+                          if (suggestion && suggestion.DapAnBoSung) {
+                            const updated = [...ideas];
+                            updated[idx].subAnswer = suggestion.DapAnBoSung;
+                            setIdeas(updated);
+                          }
+                        }}
+                      >
+                        Tạo lại
+                      </Button>
+                      <Button
+                        colorScheme="green"
+                        size="sm"
+                        onClick={() => {
+                          const updated = [...ideas];
+                          updated[idx].subAnswerConfirmed = true;
+                          setIdeas(updated);
+                          setShowNextIdea(true);
+                        }}
+                        isDisabled={!item.subAnswer || item.subAnswerConfirmed}
+                        mb={2}
+                      >
+                        Xác nhận
+                      </Button>
+                    </Flex>
                   </Box>
                 )}
               </Box>
@@ -335,14 +479,10 @@ const CreateQuestion = () => {
                 onClick={handleSave}
                 w="200px"
                 alignSelf="center"
+                isLoading={loading}
               >
                 Lưu
               </Button>
-              {isSaved && (
-                <Text color="green.500" align="center">
-                  Đã lưu thành công!
-                </Text>
-              )}
             </>
           )}
         </VStack>
