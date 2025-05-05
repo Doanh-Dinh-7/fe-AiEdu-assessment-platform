@@ -20,8 +20,11 @@ const ResultTable = ({ examHistory }) => {
             <Tr key={q.MaCauHoi + q.MaCauBoSung}>
               <Td>{idx + 1}</Td>
               <Td>
-                {q.MaCauHoi}
-                {q.MaCauBoSung ? ` (${q.MaCauBoSung})` : ""}
+                {q.MaCauBoSung
+                  ? `(Bổ sung) ${q.NoiDungCauHoi}`
+                  : q.NoiDungCauHoi
+                  ? q.NoiDungCauHoi
+                  : ""}
               </Td>
               <Td>{q.CauTraLoi}</Td>
               <Td>{q.TongDiem}</Td>

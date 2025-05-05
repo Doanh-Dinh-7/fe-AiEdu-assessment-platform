@@ -1,4 +1,4 @@
-import { BASE_URL } from "../config/config";
+import { BASE_URL, MOCKUP_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getExamsList = async () => {
@@ -86,5 +86,44 @@ export const getExamDetail = async (MaCuocThi) => {
     return data.data;
   } catch (error) {
     console.log("Lỗi khi lấy thông tin chi tiết cuộc thi:", error);
+  }
+};
+
+// sài URL MOCKUP
+export const getExamResult = async (MaCuocThi) => {
+  try {
+    const res = await fetch(MOCKUP_URL + "/result/" + MaCuocThi + "/gv", {
+      method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const data = await checkResponse(res);
+    console.log("data", data);
+    return data.data;
+  } catch (error) {
+    console.log("Lỗi khi lấy danh sách kết quả cuộc thi:", error);
+  }
+};
+
+// sài URL MOCKUP
+export const getExamResultDetail = async (MaCuocThi, MaSinhVien) => {
+  try {
+    const res = await fetch(
+      MOCKUP_URL + "/result/" + MaCuocThi + "/chitiet/" + MaSinhVien + "/gv",
+      {
+        method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const data = await checkResponse(res);
+
+    return data.data;
+  } catch (error) {
+    console.log("Lỗi khi lấy danh sách kết quả cuộc thi:", error);
   }
 };

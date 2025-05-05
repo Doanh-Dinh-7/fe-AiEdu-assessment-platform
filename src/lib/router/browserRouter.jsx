@@ -58,9 +58,9 @@ const lecturerRoutes = {
     { path: "/exam-management", element: <ExamManagement /> },
     { path: "/exam-management/:maCuocThi", element: <ExamDetail /> },
     { path: "/exam-management/exam-form", element: <ExamForm /> },
-    { path: "/exam-management/exam-result", element: <ExamResult /> },
+    { path: "/exam-management/result/:maCuocThi", element: <ExamResult /> },
     {
-      path: "/exam-management/exam-result/detail",
+      path: "/exam-management/result/:maCuocThi/:maSinhVien",
       element: <ExamResultDetail />,
     },
   ],

@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-
+import PropTypes from "prop-types";
 export const ProgressContext = createContext();
 
 export const ProgressProvider = ({ children }) => {
@@ -16,4 +16,7 @@ export const ProgressProvider = ({ children }) => {
       {children}
     </ProgressContext.Provider>
   );
+};
+ProgressProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

@@ -178,7 +178,9 @@ const ExamManagement = () => {
                   size="sm"
                   colorScheme="green"
                   variant="ghost"
-                  onClick={() => navigate(`${location.pathname}/exam-result`)}
+                  onClick={() =>
+                    navigate(`${location.pathname}/result/${exam.MaCuocThi}`)
+                  }
                 >
                   Xem kết quả
                 </Button>

@@ -1,5 +1,6 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { useLocation, Link as RouterLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const breadcrumbNameMap = {
   // Giảng viên
@@ -66,10 +67,29 @@ const Breadcrumbs = ({ disableBreadcrumb = false }) => {
             }
           }
 
-          // Với path bắt đầu bằng "class"
+          // Với path bắt đầu bằng "exam-management"
           else if (filteredPathnames[0] === "exam-management") {
-            if (idx === 1) {
+            // /exam-management/result/:maCuocThi
+            if (
+              filteredPathnames[1] === "result" &&
+              filteredPathnames.length === 3 &&
+              idx === 2
+            ) {
               displayName = "Thông tin cuộc thi";
+            }
+            // /exam-management/result/:maCuocThi/:maSinhVien
+            else if (
+              filteredPathnames[1] === "result" &&
+              filteredPathnames.length === 4 &&
+              idx === 3
+            ) {
+              displayName = "Chi tiết kết quả bài thi";
+            } else if (idx === 1) {
+              displayName = "Thông tin cuộc thi";
+            } else if (idx === 2) {
+              displayName = "Kết quả bài thi";
+            } else if (idx === 3) {
+              displayName = "Chi tiết kết quả bài thi";
             }
           }
 
@@ -102,6 +122,10 @@ const Breadcrumbs = ({ disableBreadcrumb = false }) => {
       })}
     </Breadcrumb>
   );
+};
+
+Breadcrumbs.propTypes = {
+  disableBreadcrumb: PropTypes.bool,
 };
 
 export default Breadcrumbs;
