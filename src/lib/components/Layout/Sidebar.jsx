@@ -42,20 +42,28 @@ const Sidebar = () => {
     <Box
       w={isCollapsed ? "70px" : "250px"}
       h="100vh"
-      bg="blue.300"
+      bg="background"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
       alignItems="center"
       p={4}
       transition="width 0.2s"
+      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+      borderRadius="12px"
+      fontFamily="Inter, sans-serif"
     >
       <VStack spacing={4} align="stretch" w="100%">
         <IconButton
-          icon={<FaBars />}
+          icon={<FaBars color="#4A90E2" />}
           aria-label="Toggle sidebar"
           onClick={() => setIsCollapsed(!isCollapsed)}
           mb={4}
+          bg="surface"
+          color="primary"
+          _hover={{ bg: "primary", color: "white" }}
+          borderRadius="12px"
+          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
         />
 
         {vaiTro === "lecturer" && (
@@ -66,13 +74,18 @@ const Sidebar = () => {
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaBook />}
-                bg="white"
-                color="black"
+                leftIcon={<FaBook color="#4A90E2" />}
+                bg="surface"
+                color="textPrimary"
                 w="100%"
                 h="50px"
+                fontWeight="medium"
+                borderRadius="12px"
+                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                 justifyContent={isCollapsed ? "center" : "flex-start"}
                 onClick={() => navigate("/exam-bank")}
+                _hover={{ bg: "primary", color: "white" }}
+                _active={{ bg: "primary", color: "white" }}
               >
                 {!isCollapsed && "Ngân hàng đề thi"}
               </Button>
@@ -84,33 +97,43 @@ const Sidebar = () => {
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaUsers />}
-                bg="white"
-                color="black"
+                leftIcon={<FaUsers color="#4A90E2" />}
+                bg="surface"
+                color="textPrimary"
                 w="100%"
                 h="50px"
+                fontWeight="medium"
+                borderRadius="12px"
+                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                 justifyContent={isCollapsed ? "center" : "flex-start"}
                 onClick={() => navigate("/class")}
+                _hover={{ bg: "primary", color: "white" }}
+                _active={{ bg: "primary", color: "white" }}
               >
                 {!isCollapsed && "Quản lý lớp học phần"}
               </Button>
             </Tooltip>
 
             <Tooltip
-              label="Quản lý cuộc thi"
+              label="Quản lý kỳ thi"
               placement="right"
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaFileAlt />}
-                bg="white"
-                color="black"
+                leftIcon={<FaFileAlt color="#4A90E2" />}
+                bg="surface"
+                color="textPrimary"
                 w="100%"
                 h="50px"
+                fontWeight="medium"
+                borderRadius="12px"
+                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                 justifyContent={isCollapsed ? "center" : "flex-start"}
                 onClick={() => navigate("/exam-management")}
+                _hover={{ bg: "primary", color: "white" }}
+                _active={{ bg: "primary", color: "white" }}
               >
-                {!isCollapsed && "Quản lý cuộc thi"}
+                {!isCollapsed && "Quản lý kỳ thi"}
               </Button>
             </Tooltip>
           </>
@@ -119,13 +142,18 @@ const Sidebar = () => {
         {vaiTro === "student" && (
           <Tooltip label="Cuộc thi" placement="right" isDisabled={!isCollapsed}>
             <Button
-              leftIcon={<FaFileAlt />}
-              bg="white"
-              color="black"
+              leftIcon={<FaFileAlt color="#4A90E2" />}
+              bg="surface"
+              color="textPrimary"
               w="100%"
               h="50px"
+              fontWeight="medium"
+              borderRadius="12px"
+              boxShadow="0 2px 6px rgba(0,0,0,0.08)"
               justifyContent={isCollapsed ? "center" : "flex-start"}
               onClick={() => navigate("/exams")}
+              _hover={{ bg: "primary", color: "white" }}
+              _active={{ bg: "primary", color: "white" }}
             >
               {!isCollapsed && "Cuộc thi"}
             </Button>
@@ -136,25 +164,49 @@ const Sidebar = () => {
       <Menu>
         <MenuButton
           as={Button}
-          bg="white"
+          bg="surface"
           w="100%"
           h="60px"
-          rightIcon={<FaChevronDown />}
+          rightIcon={<FaChevronDown color="#4A90E2" />}
+          color="textPrimary"
+          fontWeight="bold"
+          borderRadius="12px"
+          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+          _hover={{ bg: "primary", color: "white" }}
         >
           <HStack>
-            <Avatar size="sm" bg="gray.300" name={maTaiKhoan} />
+            <Avatar
+              size="sm"
+              bg="gray.200"
+              name={maTaiKhoan}
+              color="textPrimary"
+            />
             <Box textAlign="left" isTruncated>
-              <Text fontWeight="bold" color="black" fontSize="md" isTruncated>
+              <Text
+                fontWeight="bold"
+                color="textPrimary"
+                fontSize="md"
+                isTruncated
+              >
                 {maTaiKhoan}
               </Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" color="textSecondary">
                 {vaiTro === "lecturer" ? "Giảng viên" : "Sinh viên"}
               </Text>
             </Box>
           </HStack>
         </MenuButton>
-        <MenuList>
-          <MenuItem color="red.500" onClick={handleLogout}>
+        <MenuList
+          bg="surface"
+          borderRadius="12px"
+          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        >
+          <MenuItem
+            color="red"
+            _hover={{ bg: "red", color: "white" }}
+            borderRadius="12px"
+            onClick={handleLogout}
+          >
             Đăng Xuất
           </MenuItem>
         </MenuList>

@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { FaEdit, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
+import { FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import ClassStudentModal from "./ClassStudentModal";
 import { ProgressContext } from "../Layout/ProgressContext";
 import {
@@ -83,13 +83,6 @@ const ClassDetail = () => {
   const openAddModal = () => {
     setStudent({ TenSinhVien: "", LopSinhHoat: "", TenDangNhap: "" });
     setIsEdit(false);
-    onOpen();
-  };
-
-  const openEditModal = (student, index) => {
-    setStudent(student);
-    setEditIndex(index);
-    setIsEdit(true);
     onOpen();
   };
 
@@ -218,24 +211,53 @@ const ClassDetail = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
     </Center>
   ) : (
-    <Box minH="100vh" bg="#F5F9FF" pt={5}>
-      <Flex direction="column" align="center" maxW="1200px" mx="auto">
-        <Flex w="100%" justify="space-between" align="center" mb={4} gap={4}>
-          <Center flex={1}>
-            <Heading fontSize="lg" mb={2} textTransform="uppercase">
-              Lớp học phần {nameClass}
-            </Heading>
-          </Center>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      pt={8}
+      bg="background"
+      borderRadius="12px"
+      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+      px={{ base: 2, md: 8 }}
+      fontFamily="Inter, sans-serif"
+    >
+      <Flex
+        w="100%"
+        maxW="1200px"
+        justify="space-between"
+        align="center"
+        mb={6}
+      >
+        <Center flex={1}>
+          <Heading
+            fontSize="20px"
+            mb={2}
+            textTransform="uppercase"
+            color="primary"
+          >
+            Lớp học phần {nameClass}
+          </Heading>
+        </Center>
+        <Flex gap={2} mr={3}>
           <IconButton
             icon={<FaPlus />}
             onClick={openAddModal}
-            colorScheme="blue"
+            colorScheme="primary"
+            borderRadius="12px"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
           />
-          <Button as="label" colorScheme="blue" leftIcon={<FaUpload />}>
-            Tải danh sách
+          <Button
+            as="label"
+            colorScheme="primary"
+            leftIcon={<FaUpload />}
+            borderRadius="12px"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+          >
+            Tải lên danh sách
             <Input
               type="file"
               accept=".csv,.xlsx"
@@ -244,64 +266,56 @@ const ClassDetail = () => {
             />
           </Button>
         </Flex>
-
-        <Table variant="simple" size="md" w="100%" bg="white">
-          <Thead>
-            <Tr>
-              <Th>STT</Th>
-              <Th>Mã sinh viên</Th>
-              <Th>Tên sinh viên</Th>
-              <Th>Lớp</Th>
-              <Th>Tên đăng nhập</Th>
-              {/* <Th></Th> */}
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {students.map((sinhVien, index) => (
-              <Tr key={sinhVien.MaSinhVien}>
-                <Td>{index + 1}</Td>
-                <Td>{sinhVien.MaSinhVien}</Td>
-                <Td fontWeight="bold">{sinhVien.TenSinhVien}</Td>
-                <Td>{sinhVien.LopSinhHoat}</Td>
-                <Td>{sinhVien.TenDangNhap}</Td>
-                {/* <Td>
-                  <IconButton
-                    icon={<FaEdit />}
-                    size="sm"
-                    colorScheme="yellow"
-                    variant="ghost"
-                    onClick={() => openEditModal(sinhVien, sinhVien.MaSinhVien)}
-                  />
-                </Td> */}
-                <Td>
-                  <IconButton
-                    icon={<FaTrash />}
-                    size="sm"
-                    colorScheme="red"
-                    variant="ghost"
-                    onClick={() => handleDeleteStudent(sinhVien.MaSinhVien)}
-                  />
-                </Td>
-              </Tr>
-            ))}
-            {Array.from({ length: Math.max(0, 10 - students.length) }).map(
-              (_, idx) => (
-                <Tr key={"empty-" + idx}>
-                  <Td>{students.length + idx + 1}</Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td></Td>
-                </Tr>
-              )
-            )}
-          </Tbody>
-        </Table>
       </Flex>
 
+      <Table
+        variant="simple"
+        size="md"
+        bg="surface"
+        borderRadius="12px"
+        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        overflow="hidden"
+        maxW="1200px"
+      >
+        <Thead>
+          <Tr>
+            <Th color="primary">STT</Th>
+            <Th color="primary">Mã sinh viên</Th>
+            <Th color="primary">Tên sinh viên</Th>
+            <Th color="primary">Lớp</Th>
+            <Th color="primary">Tên đăng nhập</Th>
+            <Th></Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {students.map((sinhVien, index) => (
+            <Tr
+              key={sinhVien.MaSinhVien}
+              _hover={{ bg: "gray.50" }}
+              fontSize="15px"
+            >
+              <Td color="textPrimary">{index + 1}</Td>
+              <Td color="textPrimary">{sinhVien.MaSinhVien}</Td>
+              <Td fontWeight="bold" color="textPrimary">
+                {sinhVien.TenSinhVien}
+              </Td>
+              <Td color="textPrimary">{sinhVien.LopSinhHoat}</Td>
+              <Td color="textPrimary">{sinhVien.TenDangNhap}</Td>
+              <Td>
+                <IconButton
+                  icon={<FaTrash />}
+                  size="sm"
+                  colorScheme="red"
+                  variant="ghost"
+                  borderRadius="12px"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+                  onClick={() => handleDeleteStudent(sinhVien.MaSinhVien)}
+                />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
       <ClassStudentModal
         isOpen={isOpen}
         onClose={onClose}
@@ -312,7 +326,7 @@ const ClassDetail = () => {
         onAddStudent={handleAddStudent}
         loading={loadingAddStudent}
       />
-    </Box>
+    </Flex>
   );
 };
 

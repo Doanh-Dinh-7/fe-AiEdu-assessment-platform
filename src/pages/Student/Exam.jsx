@@ -58,10 +58,20 @@ const Exam = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
     </Center>
   ) : (
-    <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      pt={8}
+      bg="background"
+      borderRadius="12px"
+      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+      px={{ base: 2, md: 8 }}
+      fontFamily="Inter, sans-serif"
+    >
       <Flex
         w="100%"
         maxW="1200px"
@@ -72,32 +82,45 @@ const Exam = () => {
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="xl"
+            fontSize="20px"
             textAlign="center"
             textTransform="uppercase"
+            color="primary"
           >
             Danh sách bài thi
           </Heading>
         </Center>
       </Flex>
 
-      <Table variant="simple" size="md" bg="white" borderRadius="md">
+      <Table
+        variant="simple"
+        size="md"
+        bg="surface"
+        borderRadius="12px"
+        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        overflow="hidden"
+        maxW="1200px"
+      >
         <Thead>
           <Tr>
-            <Th color="#1976d2">STT</Th>
-            <Th color="#1976d2">Tên bài thi</Th>
-            <Th color="#1976d2">Giờ thi</Th>
-            <Th color="#1976d2">Ngày thi</Th>
+            <Th color="primary">STT</Th>
+            <Th color="primary">Tên bài thi</Th>
+            <Th color="primary">Giờ thi</Th>
+            <Th color="primary">Ngày thi</Th>
             <Th textAlign="center"></Th>
             <Th textAlign="center"></Th>
           </Tr>
         </Thead>
         <Tbody>
           {exams.map((exam, idx) => (
-            <Tr key={exam.ma_cuoc_thi}>
-              <Td>{idx + 1}</Td>
-              <Td>{exam.ten_cuoc_thi}</Td>
-              <Td>
+            <Tr
+              key={exam.ma_cuoc_thi}
+              _hover={{ bg: "gray.50" }}
+              fontSize="15px"
+            >
+              <Td color="textPrimary">{idx + 1}</Td>
+              <Td color="textPrimary">{exam.ten_cuoc_thi}</Td>
+              <Td color="textPrimary">
                 {exam.thoi_gian_bat_dau
                   ? new Date(exam.thoi_gian_bat_dau).toLocaleTimeString(
                       "vi-VN",
@@ -105,7 +128,7 @@ const Exam = () => {
                     )
                   : ""}
               </Td>
-              <Td>
+              <Td color="textPrimary">
                 {exam.thoi_gian_bat_dau
                   ? new Date(exam.thoi_gian_bat_dau).toLocaleDateString("vi-VN")
                   : ""}
@@ -115,8 +138,11 @@ const Exam = () => {
                   <Button
                     leftIcon={<FaEdit />}
                     size="sm"
-                    colorScheme="yellow"
-                    variant="ghost"
+                    colorScheme="warning"
+                    variant="solid"
+                    borderRadius="12px"
+                    fontWeight="medium"
+                    boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                     onClick={() =>
                       setStartModal({
                         isOpen: true,
@@ -133,8 +159,11 @@ const Exam = () => {
                 <Button
                   leftIcon={<MdDocumentScanner />}
                   size="sm"
-                  colorScheme="green"
-                  variant="ghost"
+                  colorScheme="success"
+                  variant="solid"
+                  borderRadius="12px"
+                  fontWeight="medium"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                   onClick={() =>
                     setStartModal({
                       isOpen: true,

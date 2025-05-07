@@ -12,12 +12,14 @@ import {
   Spinner,
   Heading,
   Flex,
+  Button,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getExamDetail } from "../../controller/examManagement";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ExamDetail = () => {
+  const navigate = useNavigate();
   const { maCuocThi } = useParams();
   const [examDetail, setExamDetail] = useState();
   const toast = useToast();
@@ -63,10 +65,17 @@ const ExamDetail = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
     </Center>
   ) : (
-    <Flex direction="column" align="center" minH="100vh" bg="#F5F9FF" pt={5}>
+    <Flex
+      direction="column"
+      align="center"
+      minH="100vh"
+      bg="background"
+      py={8}
+      fontFamily="Inter, sans-serif"
+    >
       <Flex
         w="100%"
         maxW="1200px"
@@ -77,9 +86,10 @@ const ExamDetail = () => {
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="xl"
+            fontSize="20px"
             textAlign="center"
             textTransform="uppercase"
+            color="primary"
           >
             Thông tin bài thi
           </Heading>
@@ -88,63 +98,73 @@ const ExamDetail = () => {
       <Box
         w="100%"
         maxW="900px"
-        bg="white"
-        p={6}
-        borderRadius="lg"
-        boxShadow="md"
+        bg="surface"
+        p={8}
+        borderRadius="12px"
+        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
       >
-        <Box p={4}>
-          <Text fontWeight="bold" mb={2}>
+        <Box p={0}>
+          <Text fontWeight="bold" mb={2} color="primary" fontSize="17px">
             Thông tin chung
           </Text>
-          <Text>Mã cuộc thi: {examDetail.MaCuocThi}</Text>
-          <Text>Tên cuộc thi: {examDetail.TenCuocThi}</Text>
-          <Text>Mã học phần: {examDetail.MaHocPhan}</Text>
-          <Text>
+          <Text color="textPrimary">Mã cuộc thi: {examDetail.MaCuocThi}</Text>
+          <Text color="textPrimary">Tên cuộc thi: {examDetail.TenCuocThi}</Text>
+          <Text color="textPrimary">Mã học phần: {examDetail.MaHocPhan}</Text>
+          <Text color="textPrimary">
             Lớp học phần:{" "}
             {examDetail.LopHocPhan && examDetail.LopHocPhan.length > 0
               ? examDetail.LopHocPhan.map((lop) => lop.TenLopHocPhan).join(", ")
               : ""}
           </Text>
-          <Text>
+          <Text color="textPrimary">
             Thời gian bắt đầu:{" "}
             {examDetail.ThoiGianBatDau
               ? new Date(examDetail.ThoiGianBatDau).toLocaleString("vi-VN")
               : ""}
           </Text>
-          <Text>
+          <Text color="textPrimary">
             Thời gian kết thúc:{" "}
             {examDetail.ThoiGianKetThuc
               ? new Date(examDetail.ThoiGianKetThuc).toLocaleString("vi-VN")
               : ""}
           </Text>
-          <Text>Trạng thái: {examDetail.TrangThai}</Text>
+          <Text color="textPrimary">Trạng thái: {examDetail.TrangThai}</Text>
           <Box h={4} />
-          <Text fontWeight="bold" mb={2}>
+          <Text fontWeight="bold" mb={2} color="primary" fontSize="17px">
             Thông tin chi tiết
           </Text>
           {/* Bảng cấu trúc đề thi */}
-          <Table size="md" mb={4}>
-            <Thead>
+          <Table
+            size="md"
+            mb={4}
+            bg="surface"
+            borderRadius="12px"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            overflow="hidden"
+          >
+            <Thead bg="#F2F4F8">
               <Tr>
-                <Th>Chương</Th>
-                <Th>Mức độ</Th>
-                <Th>Số lượng câu</Th>
+                <Th color="primary">Chương</Th>
+                <Th color="primary">Mức độ</Th>
+                <Th color="primary">Số lượng câu</Th>
               </Tr>
             </Thead>
             <Tbody>
               {(examDetail.CauTrucDeThi || []).map((row, idx) => (
-                <Tr key={row.MaChuong + row.MucDo + idx}>
-                  <Td>{row.TenChuong}</Td>
-                  <Td>{row.MucDo}</Td>
-                  <Td>{row.SoLuongCauHoi}</Td>
+                <Tr
+                  key={row.MaChuong + row.MucDo + idx}
+                  _hover={{ bg: "gray.50" }}
+                >
+                  <Td color="textPrimary">{row.TenChuong}</Td>
+                  <Td color="textPrimary">{row.MucDo}</Td>
+                  <Td color="textPrimary">{row.SoLuongCauHoi}</Td>
                 </Tr>
               ))}
               {/* Dòng tổng */}
-              <Tr fontWeight="bold" bg="gray.100">
-                <Td>Tổng</Td>
-                <Td>–</Td>
-                <Td>
+              <Tr fontWeight="bold" bg="#F2F4F8">
+                <Td color="textSecondary">Tổng</Td>
+                <Td color="textSecondary">–</Td>
+                <Td color="textSecondary">
                   Dễ: {totalCounts["dễ"]} - Trung bình:{" "}
                   {totalCounts["trung bình"]} - Khó: {totalCounts["khó"]}
                 </Td>
@@ -152,34 +172,61 @@ const ExamDetail = () => {
             </Tbody>
           </Table>
           {/* Bảng điểm */}
-          <Table size="md">
-            <Thead>
+          <Table
+            size="md"
+            bg="surface"
+            borderRadius="12px"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            overflow="hidden"
+          >
+            <Thead bg="#F2F4F8">
               <Tr>
-                <Th>Loại câu</Th>
-                <Th>Điểm</Th>
+                <Th color="primary">Loại câu</Th>
+                <Th color="primary">Điểm</Th>
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Dễ</Td>
-                <Td>{examDetail.NoiDungDiem?.[0]?.DiemCauDe}</Td>
+              <Tr _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">Dễ</Td>
+                <Td color="textPrimary">
+                  {examDetail.NoiDungDiem?.[0]?.DiemCauDe}
+                </Td>
               </Tr>
-              <Tr>
-                <Td>Trung bình</Td>
-                <Td>{examDetail.NoiDungDiem?.[0]?.DiemCauTrungBinh}</Td>
+              <Tr _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">Trung bình</Td>
+                <Td color="textPrimary">
+                  {examDetail.NoiDungDiem?.[0]?.DiemCauTrungBinh}
+                </Td>
               </Tr>
-              <Tr>
-                <Td>Khó</Td>
-                <Td>{examDetail.NoiDungDiem?.[0]?.DiemCauKho}</Td>
+              <Tr _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">Khó</Td>
+                <Td color="textPrimary">
+                  {examDetail.NoiDungDiem?.[0]?.DiemCauKho}
+                </Td>
               </Tr>
-              <Tr>
-                <Td>Bổ sung</Td>
-                <Td>{examDetail.NoiDungDiem?.[0]?.DiemCauBoSung}</Td>
+              <Tr _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">Bổ sung</Td>
+                <Td color="textPrimary">
+                  {examDetail.NoiDungDiem?.[0]?.DiemCauBoSung}
+                </Td>
               </Tr>
             </Tbody>
           </Table>
         </Box>
       </Box>
+      <Flex w="90%" maxW="900px" justify="flex-end" mt={8}>
+        <Button
+          colorScheme="blackAlpha"
+          borderRadius="12px"
+          px={10}
+          fontWeight="bold"
+          fontSize="16px"
+          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+          onClick={() => navigate(-1)}
+        >
+          Quay lại
+        </Button>
+      </Flex>
     </Flex>
   );
 };

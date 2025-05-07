@@ -1,0 +1,76 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# cursor-style.mdc
+
+designSystem:
+  name: "eTruck Admin UI"
+  description: "Thiết kế giao diện quản trị hiện đại, phẳng, với tone màu xanh dương chủ đạo và hệ thống bảng dữ liệu"
+  colors:
+    primary: "#1976D2"
+    primaryLight: "#E3F2FD"
+    accentOrange: "#FFCC80"
+    accentGreen: "#4CAF50"
+    accentRed: "#F44336"
+    accentYellow: "#FFEB3B"
+    background: "#F5F5F5"
+    surface: "#FFFFFF"
+    textPrimary: "#212121"
+    textSecondary: "#757575"
+  typography:
+    fontFamily: "Roboto, sans-serif"
+    fontSize: 14px
+    fontWeight: 400
+    headings:
+      h1:
+        fontSize: 24px
+        fontWeight: 600
+      h2:
+        fontSize: 20px
+        fontWeight: 500
+  border:
+    radius: 6px
+    color: "#E0E0E0"
+  buttons:
+    shape: rounded
+    primary:
+      backgroundColor: "$primary"
+      textColor: "#FFFFFF"
+      hover:
+        backgroundColor: "#1565C0"
+    secondary:
+      backgroundColor: "#FFFFFF"
+      textColor: "$primary"
+      borderColor: "$primary"
+  table:
+    header:
+      backgroundColor: "#F5F5F5"
+      textColor: "#212121"
+    row:
+      backgroundColor: "#FFFFFF"
+      hover:
+        backgroundColor: "#FAFAFA"
+    border:
+      color: "#E0E0E0"
+  icons:
+    edit: { color: "$accentGreen" }
+    delete: { color: "$accentRed" }
+    view: { color: "$primary" }
+    resetPassword: { color: "$accentYellow" }
+  layout:
+    sidebar:
+      width: 240px
+      backgroundColor: "$primary"
+      textColor: "#FFFFFF"
+    header:
+      height: 64px
+      backgroundColor: "#FFFFFF"
+    content:
+      padding: 24px
+  components:
+    toggle:
+      activeColor: "$primary"
+
+      inactiveColor: "#BDBDBD"

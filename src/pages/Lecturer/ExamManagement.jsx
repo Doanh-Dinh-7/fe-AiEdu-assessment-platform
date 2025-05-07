@@ -96,10 +96,20 @@ const ExamManagement = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
     </Center>
   ) : (
-    <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      pt={8}
+      bg="background"
+      borderRadius="12px"
+      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+      px={{ base: 2, md: 8 }}
+      fontFamily="Inter, sans-serif"
+    >
       <Flex
         w="100%"
         maxW="1200px"
@@ -110,31 +120,42 @@ const ExamManagement = () => {
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="xl"
+            fontSize="20px"
             textAlign="center"
             textTransform="uppercase"
+            color="primary"
           >
             Quản lý cuộc thi
           </Heading>
         </Center>
         <Button
-          colorScheme="blue"
+          colorScheme="primary"
           ml={4}
           px={8}
           fontWeight="bold"
+          borderRadius="12px"
+          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
           onClick={() => handleNavigateForm("create")}
         >
           Thêm
         </Button>
       </Flex>
 
-      <Table variant="simple" size="md" bg="white" borderRadius="md">
+      <Table
+        variant="simple"
+        size="md"
+        bg="surface"
+        borderRadius="12px"
+        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        overflow="hidden"
+        maxW="1200px"
+      >
         <Thead>
           <Tr>
-            <Th color="#1976d2">STT</Th>
-            <Th color="#1976d2">Tên bài thi</Th>
-            <Th color="#1976d2">Giờ thi</Th>
-            <Th color="#1976d2">Ngày thi</Th>
+            <Th color="primary">STT</Th>
+            <Th color="primary">Tên bài thi</Th>
+            <Th color="primary">Giờ thi</Th>
+            <Th color="primary">Ngày thi</Th>
             <Th textAlign="center"></Th>
             <Th textAlign="center"></Th>
             <Th textAlign="center"></Th>
@@ -143,10 +164,10 @@ const ExamManagement = () => {
         </Thead>
         <Tbody>
           {exams.map((exam, idx) => (
-            <Tr key={exam.MaCuocThi}>
-              <Td>{idx + 1}</Td>
-              <Td>{exam.TenCuocThi}</Td>
-              <Td>
+            <Tr key={exam.MaCuocThi} _hover={{ bg: "gray.50" }} fontSize="15px">
+              <Td color="textPrimary">{idx + 1}</Td>
+              <Td color="textPrimary">{exam.TenCuocThi}</Td>
+              <Td color="textPrimary">
                 {exam.ThoiGianBatDau
                   ? new Date(exam.ThoiGianBatDau).toLocaleTimeString("vi-VN", {
                       hour: "2-digit",
@@ -154,7 +175,7 @@ const ExamManagement = () => {
                     })
                   : ""}
               </Td>
-              <Td>
+              <Td color="textPrimary">
                 {exam.NgayTao
                   ? new Date(exam.NgayTao).toLocaleDateString("vi-VN")
                   : ""}
@@ -165,6 +186,9 @@ const ExamManagement = () => {
                   size="sm"
                   colorScheme="blue"
                   variant="ghost"
+                  borderRadius="12px"
+                  fontWeight="medium"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                   onClick={() =>
                     navigate(`${location.pathname}/${exam.MaCuocThi}`)
                   }
@@ -178,6 +202,9 @@ const ExamManagement = () => {
                   size="sm"
                   colorScheme="green"
                   variant="ghost"
+                  borderRadius="12px"
+                  fontWeight="medium"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                   onClick={() =>
                     navigate(`${location.pathname}/result/${exam.MaCuocThi}`)
                   }
@@ -191,6 +218,9 @@ const ExamManagement = () => {
                   size="sm"
                   colorScheme="yellow"
                   variant="ghost"
+                  borderRadius="12px"
+                  fontWeight="medium"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                   onClick={() => handleNavigateForm("edit", exam.MaCuocThi)}
                 >
                   Sửa
@@ -202,6 +232,9 @@ const ExamManagement = () => {
                   size="sm"
                   colorScheme="red"
                   variant="ghost"
+                  borderRadius="12px"
+                  fontWeight="medium"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                   onClick={() => handleDeleteExam(exam.MaCuocThi)}
                 >
                   Xóa

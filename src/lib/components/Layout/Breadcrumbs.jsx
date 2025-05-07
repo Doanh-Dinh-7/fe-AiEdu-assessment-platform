@@ -12,7 +12,7 @@ const breadcrumbNameMap = {
   class: "Danh sách lớp học phần",
   "create-question": "Tạo câu hỏi",
   "upload-document-exam": "Danh sách tài liệu",
-  "exam-management": "Quản lý cuộc thi",
+  "exam-management": "Quản lý kỳ thi",
   "exam-form": "Tạo-Sửa bài thi",
   "exam-result": "Kết quả bài thi",
   detail: "Chi tiết kết quả bài thi",
@@ -31,10 +31,19 @@ const Breadcrumbs = ({ disableBreadcrumb = false }) => {
   );
 
   return (
-    <Breadcrumb mb={2} fontWeight="medium" fontSize="md">
+    <Breadcrumb
+      mb={4}
+      fontWeight="medium"
+      fontSize="md"
+      bg="surface"
+      borderRadius="8px"
+      boxShadow="0 1px 4px rgba(0,0,0,0.04)"
+      px={3}
+      py={2}
+      fontFamily="Inter, sans-serif"
+    >
       {filteredPathnames.map((name, idx) => {
         const isLast = idx === filteredPathnames.length - 1;
-        // Tạo routeTo đúng với các path thực sự có route
         const routeTo =
           "/" +
           pathnames
@@ -111,9 +120,23 @@ const Breadcrumbs = ({ disableBreadcrumb = false }) => {
               to={!disableBreadcrumb ? routeTo : undefined}
               fontWeight={isLast ? "bold" : "medium"}
               color={
-                disableBreadcrumb ? "gray.400" : isLast ? "blue.600" : undefined
+                disableBreadcrumb
+                  ? "textSecondary"
+                  : isLast
+                  ? "textPrimary"
+                  : "primary"
               }
+              _hover={{
+                color: "#357ABD",
+                textDecoration: "underline",
+                bg: "background",
+              }}
               pointerEvents={disableBreadcrumb ? "none" : undefined}
+              bg="surface"
+              borderRadius="8px"
+              px={2}
+              py={1}
+              fontFamily="Inter, sans-serif"
             >
               {displayName}
             </BreadcrumbLink>

@@ -6,9 +6,10 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Flex,
 } from "@chakra-ui/react";
 
-const FinishModal = ({ isOpen, onConfirm }) => (
+const FinishModal = ({ isOpen, onConfirm, onCancel }) => (
   <Modal isOpen={isOpen} onClose={() => {}} isCentered>
     <ModalOverlay />
     <ModalContent>
@@ -17,9 +18,14 @@ const FinishModal = ({ isOpen, onConfirm }) => (
         Vui lòng kiểm tra câu trả lời và xác nhận hoàn thành bài thi
       </ModalBody>
       <ModalFooter>
-        <Button colorScheme="green" onClick={onConfirm}>
-          Xác nhận
-        </Button>
+        <Flex justify="space-between" w="100%">
+          <Button colorScheme="red" onClick={onCancel}>
+            Huỷ
+          </Button>
+          <Button colorScheme="green" onClick={onConfirm}>
+            Xác nhận
+          </Button>
+        </Flex>
       </ModalFooter>
     </ModalContent>
   </Modal>

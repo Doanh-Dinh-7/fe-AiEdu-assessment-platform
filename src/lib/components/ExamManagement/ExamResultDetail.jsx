@@ -52,61 +52,125 @@ const ExamResultDetail = () => {
   const chiTiet = result.ChiTietKetQua?.CauHoi || [];
 
   return (
-    <Box minH="100vh" bg="#F5F9FF" p={0}>
-      <Flex direction="column" align="center" pt={8}>
-        <Center flex={1}>
+    <Box minH="100vh" bg="background" p={0} fontFamily="Inter, sans-serif">
+      <Flex direction="column" align="center" py={8}>
+        <Center flex={1} mb={6}>
           <Heading
             fontWeight="bold"
-            fontSize="xl"
+            fontSize="20px"
             textAlign="center"
             textTransform="uppercase"
+            color="primary"
           >
             Chi tiết kết quả bài thi
           </Heading>
         </Center>
-        <Box w="90%" maxW="1200px" bg="white" borderRadius="md" p={4} mb={4}>
+        <Box
+          w="90%"
+          maxW="1200px"
+          bg="surface"
+          borderRadius="12px"
+          p={6}
+          mb={4}
+          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        >
           <Flex wrap="wrap" gap={6} mb={4}>
             <Flex direction="column" gap={2} flex={1} minW="250px">
-              <Text fontWeight="bold">Tên sinh viên</Text>
-              <Input value={result.TenSinhVien || ""} isReadOnly bg="#e6eaf7" />
-              <Text fontWeight="bold">Mã sinh viên</Text>
-              <Input value={result.MaSinhVien || ""} isReadOnly bg="#e6eaf7" />
+              <Text fontWeight="bold" color="textSecondary">
+                Tên sinh viên
+              </Text>
+              <Input
+                value={result.TenSinhVien || ""}
+                isReadOnly
+                bg="#F2F4F8"
+                borderRadius="12px"
+                fontWeight="medium"
+                color="textPrimary"
+              />
+              <Text fontWeight="bold" color="textSecondary">
+                Mã sinh viên
+              </Text>
+              <Input
+                value={result.MaSinhVien || ""}
+                isReadOnly
+                bg="#F2F4F8"
+                borderRadius="12px"
+                fontWeight="medium"
+                color="textPrimary"
+              />
             </Flex>
             <Flex direction="column" gap={2} flex={1} minW="250px">
-              <Text fontWeight="bold">Tên cuộc thi</Text>
-              <Input value={result.TenCuocThi || ""} isReadOnly bg="#e6eaf7" />
-              <Text fontWeight="bold">Tổng điểm</Text>
-              <Input value={result.TongDiem || ""} isReadOnly bg="#e6eaf7" />
-              <Text fontWeight="bold">Trạng thái</Text>
-              <Input value={result.TrangThai || ""} isReadOnly bg="#e6eaf7" />
+              <Text fontWeight="bold" color="textSecondary">
+                Tên cuộc thi
+              </Text>
+              <Input
+                value={result.TenCuocThi || ""}
+                isReadOnly
+                bg="#F2F4F8"
+                borderRadius="12px"
+                fontWeight="medium"
+                color="textPrimary"
+              />
+              <Text fontWeight="bold" color="textSecondary">
+                Tổng điểm
+              </Text>
+              <Input
+                value={result.TongDiem || ""}
+                isReadOnly
+                bg="#F2F4F8"
+                borderRadius="12px"
+                fontWeight="medium"
+                color="textPrimary"
+              />
+              <Text fontWeight="bold" color="textSecondary">
+                Trạng thái
+              </Text>
+              <Input
+                value={result.TrangThai || ""}
+                isReadOnly
+                bg="#F2F4F8"
+                borderRadius="12px"
+                fontWeight="medium"
+                color="textPrimary"
+              />
             </Flex>
           </Flex>
-          <Table size="md" variant="simple" border="1px solid #b3b3b3">
-            <Thead>
+          <Table
+            size="md"
+            variant="simple"
+            borderRadius="12px"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            overflow="hidden"
+          >
+            <Thead bg="#F2F4F8">
               <Tr>
-                <Th>STT</Th>
-                <Th>Câu hỏi</Th>
-                <Th>Câu trả lời</Th>
-                <Th>Điểm</Th>
-                <Th>Ý chính & điểm</Th>
+                <Th color="primary">STT</Th>
+                <Th color="primary">Câu hỏi</Th>
+                <Th color="primary">Câu trả lời</Th>
+                <Th color="primary">Điểm</Th>
+                <Th color="primary">Ý chính & điểm</Th>
               </Tr>
             </Thead>
             <Tbody>
               {chiTiet.map((row, idx) => (
-                <Tr key={row.MaCauHoi + row.MaCauBoSung}>
-                  <Td>{idx + 1}</Td>
-                  <Td>
+                <Tr
+                  key={row.MaCauHoi + row.MaCauBoSung}
+                  _hover={{ bg: "gray.50" }}
+                  fontSize="15px"
+                >
+                  <Td color="textPrimary">{idx + 1}</Td>
+                  <Td color="textPrimary">
                     {row.MaCauBoSung
                       ? ` (Bổ sung) ${row.NoiDungCauHoi}`
                       : row.NoiDungCauHoi
                       ? row.NoiDungCauHoi
                       : ""}
                   </Td>
-                  <Td>{row.CauTraLoi}</Td>
-                  <Td style={{ whiteSpace: "nowrap" }}>
+                  <Td color="textPrimary">{row.CauTraLoi}</Td>
+                  <Td color="textPrimary" style={{ whiteSpace: "nowrap" }}>
                     {row.TongDiem} / {row.TongDiemToiDa}
                   </Td>
-                  <Td>
+                  <Td color="textPrimary">
                     {row.ChiTietKetQua?.map((y, i) => (
                       <Box key={i} mb={1}>
                         <Text fontSize="sm">
@@ -120,11 +184,13 @@ const ExamResultDetail = () => {
                   </Td>
                 </Tr>
               ))}
-              <Tr fontWeight="bold">
-                <Td colSpan={3} textAlign="right">
+              <Tr fontWeight="bold" bg="#F2F4F8">
+                <Td colSpan={3} textAlign="right" color="textSecondary">
                   Tổng
                 </Td>
-                <Td style={{ whiteSpace: "nowrap" }}>{result.TongDiem}</Td>
+                <Td style={{ whiteSpace: "nowrap" }} color="success">
+                  {result.TongDiem}
+                </Td>
                 <Td></Td>
               </Tr>
             </Tbody>
@@ -133,9 +199,11 @@ const ExamResultDetail = () => {
         <Flex w="90%" maxW="900px" justify="flex-end" mt={8}>
           <Button
             colorScheme="blackAlpha"
-            borderRadius="md"
+            borderRadius="12px"
             px={10}
             fontWeight="bold"
+            fontSize="16px"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
             onClick={() => navigate(-1)}
           >
             Quay lại

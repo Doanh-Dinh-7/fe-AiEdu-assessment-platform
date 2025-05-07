@@ -115,30 +115,40 @@ const ClassForm = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
     </Center>
   ) : (
-    <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={5}>
+    <Flex
+      minH="auto"
+      direction="column"
+      bg="background"
+      align="center"
+      py={7}
+      fontFamily="Inter, sans-serif"
+    >
       <Box
         w="100%"
         maxW="700px"
-        bg="white"
-        p={6}
-        borderRadius="lg"
-        boxShadow="md"
+        bg="surface"
+        p={8}
+        borderRadius="12px"
+        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        mx={2}
       >
         <Heading
-          fontSize="lg"
+          fontSize="20px"
           textAlign="center"
           textTransform="uppercase"
           mb={6}
+          color="primary"
+          fontWeight="bold"
         >
           {mode === "edit" ? "Cập nhật" : "Tạo"} lớp học phần
         </Heading>
 
         <Flex direction="column" gap={4}>
           <Flex direction="column">
-            <Text fontWeight="bold" mb={1}>
+            <Text fontWeight="bold" mb={1} color="textSecondary">
               Tên lớp học phần
             </Text>
             <Input
@@ -146,12 +156,22 @@ const ClassForm = () => {
               placeholder="VD: Quản trị học 48K21.2"
               value={formData.TenLopHocPhan}
               onChange={handleChange}
-              bg="gray.50"
+              borderRadius="12px"
+              bg="#F2F4F8"
+              fontSize="15px"
+              boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "primary",
+                boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+              }}
             />
           </Flex>
 
           <Flex direction="column">
-            <Text fontWeight="bold" mb={1}>
+            <Text fontWeight="bold" mb={1} color="textSecondary">
               Thời gian học
             </Text>
             <Input
@@ -159,12 +179,22 @@ const ClassForm = () => {
               placeholder="VD: 123 T6"
               value={formData.ThoiGianHoc}
               onChange={handleChange}
-              bg="gray.50"
+              borderRadius="12px"
+              bg="#F2F4F8"
+              fontSize="15px"
+              boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "primary",
+                boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+              }}
             />
           </Flex>
 
           <Flex direction="column">
-            <Text fontWeight="bold" mb={1}>
+            <Text fontWeight="bold" mb={1} color="textSecondary">
               Học phần
             </Text>
             <Select
@@ -180,12 +210,42 @@ const ClassForm = () => {
                   MaHocPhan: options ? options.map((opt) => opt.value) : [],
                 }))
               }
+              menuPlacement="top"
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  borderRadius: 12,
+                  background: "#F2F4F8",
+                  fontSize: 15,
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                  borderColor: "#E0E0E0",
+                  color: "#1C1C1C",
+                  minHeight: 44,
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: "#5F6368",
+                }),
+                multiValue: (base) => ({
+                  ...base,
+                  borderRadius: 8,
+                  background: "#e6eaf7",
+                  color: "#1C1C1C",
+                }),
+              }}
             />
           </Flex>
         </Flex>
 
         <Flex justify="flex-end" mt={6}>
-          <Button colorScheme="blue" onClick={handleSave}>
+          <Button
+            colorScheme="primary"
+            borderRadius="12px"
+            fontWeight="bold"
+            fontSize="16px"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            onClick={handleSave}
+          >
             {mode === "edit" ? "Cập nhật" : "Lưu"}
           </Button>
         </Flex>

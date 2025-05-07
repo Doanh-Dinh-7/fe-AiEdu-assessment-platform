@@ -134,27 +134,27 @@ const QuestionDetail = () => {
                         align="flex-start"
                       >
                         <Box flex={1}>
-                          <Textarea
+                  <Textarea
                             defaultValue={cbs?.NoiDung || ""}
-                            isReadOnly={!isEdit}
+                    isReadOnly={!isEdit}
                             mb={1}
-                            onInput={(e) => {
-                              const target = e.currentTarget;
-                              target.style.height = "auto";
-                              target.style.height = `${target.scrollHeight}px`;
-                            }}
-                          />
+                    onInput={(e) => {
+                      const target = e.currentTarget;
+                      target.style.height = "auto";
+                      target.style.height = `${target.scrollHeight}px`;
+                    }}
+                  />
                         </Box>
                         <Box flex={1}>
-                          <Textarea
+                  <Textarea
                             defaultValue={cbs?.DapAnBoSung || ""}
-                            isReadOnly={!isEdit}
-                            onInput={(e) => {
-                              const target = e.currentTarget;
-                              target.style.height = "auto";
-                              target.style.height = `${target.scrollHeight}px`;
-                            }}
-                          />
+                    isReadOnly={!isEdit}
+                    onInput={(e) => {
+                      const target = e.currentTarget;
+                      target.style.height = "auto";
+                      target.style.height = `${target.scrollHeight}px`;
+                    }}
+                  />
                         </Box>
                       </Flex>
                     ))

@@ -1,4 +1,5 @@
-# NCKH - ChatBot
+# Phần mềm hỗ trợ thi vấn đáp
+
 
 Build with Python(Flask) and JavaScript(React)
 

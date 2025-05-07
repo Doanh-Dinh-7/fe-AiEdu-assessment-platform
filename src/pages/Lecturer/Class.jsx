@@ -96,10 +96,20 @@ const Class = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
     </Center>
   ) : (
-    <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      pt={8}
+      bg="background"
+      borderRadius="12px"
+      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+      px={{ base: 2, md: 8 }}
+      fontFamily="Inter, sans-serif"
+    >
       <Flex
         w="100%"
         maxW="1200px"
@@ -113,6 +123,7 @@ const Class = () => {
             fontSize="xl"
             textAlign="center"
             textTransform="uppercase"
+            color="primary"
           >
             Danh sách lớp học phần
           </Heading>
@@ -128,13 +139,21 @@ const Class = () => {
         </Button>
       </Flex>
 
-      <Table variant="simple" size="md" w="100%" maxW="1200px" bg="white">
+      <Table
+        variant="simple"
+        size="md"
+        bg="surface"
+        borderRadius="12px"
+        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        overflow="hidden"
+        maxW="1200px"
+      >
         <Thead>
           <Tr>
-            <Th>STT</Th>
-            <Th>Tên lớp học phần</Th>
-            <Th>Thời gian</Th>
-            <Th>Số lượng</Th>
+            <Th color="primary">STT</Th>
+            <Th color="primary">Tên lớp học phần</Th>
+            <Th color="primary">Thời gian</Th>
+            <Th color="primary">Số lượng</Th>
             <Th textAlign="center"></Th>
             <Th textAlign="center"></Th>
             <Th textAlign="center"></Th>
@@ -143,10 +162,10 @@ const Class = () => {
         <Tbody>
           {classes.map((clas, index) => (
             <Tr key={clas.MaLopHocPhan}>
-              <Td>{index + 1}</Td>
-              <Td>{clas.TenLopHocPhan}</Td>
-              <Td>{clas.ThoiGianHoc}</Td>
-              <Td>{clas.SoLuongThamGia}</Td>
+              <Td color="textPrimary">{index + 1}</Td>
+              <Td color="textPrimary">{clas.TenLopHocPhan}</Td>
+              <Td color="textPrimary">{clas.ThoiGianHoc}</Td>
+              <Td color="textPrimary">{clas.SoLuongThamGia}</Td>
               <Td textAlign="center">
                 <Button
                   leftIcon={<FaEye />}

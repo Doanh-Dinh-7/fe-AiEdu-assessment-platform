@@ -323,20 +323,29 @@ const ExamForm = () => {
   };
 
   return (
-    <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={5}>
+    <Flex
+      minH="100vh"
+      direction="column"
+      bg="background"
+      align="center"
+      py={8}
+      fontFamily="Inter, sans-serif"
+    >
       <Box
-        bg="white"
+        bg="surface"
         w="100%"
         maxW="900px"
         p={8}
-        borderRadius="md"
-        boxShadow="md"
+        borderRadius="12px"
+        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
       >
         <Heading
-          fontSize="lg"
+          fontSize="20px"
           mb={4}
           textAlign="center"
           textTransform="uppercase"
+          color="primary"
+          fontWeight="bold"
         >
           {mode === "edit" ? "Sửa " : "Tạo "}bài thi
         </Heading>
@@ -346,6 +355,17 @@ const ExamForm = () => {
               placeholder="Tên cuộc thi"
               value={TenCuocThi}
               onChange={(e) => setTenCuocThi(e.target.value)}
+              borderRadius="12px"
+              bg="#F2F4F8"
+              fontSize="15px"
+              boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "primary",
+                boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+              }}
             />
             <Flex gap={3}>
               <Box flex={1}>
@@ -354,6 +374,17 @@ const ExamForm = () => {
                   type="datetime-local"
                   value={ThoiGianBatDau}
                   onChange={(e) => setThoiGianBatDau(e.target.value)}
+                  borderRadius="12px"
+                  bg="#F2F4F8"
+                  fontSize="15px"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                  borderColor="border"
+                  color="textPrimary"
+                  _placeholder={{ color: "textSecondary" }}
+                  _focus={{
+                    borderColor: "primary",
+                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                  }}
                 />
               </Box>
               <Box flex={1}>
@@ -362,6 +393,17 @@ const ExamForm = () => {
                   type="datetime-local"
                   value={ThoiGianKetThuc}
                   onChange={(e) => setThoiGianKetThuc(e.target.value)}
+                  borderRadius="12px"
+                  bg="#F2F4F8"
+                  fontSize="15px"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                  borderColor="border"
+                  color="textPrimary"
+                  _placeholder={{ color: "textSecondary" }}
+                  _focus={{
+                    borderColor: "primary",
+                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                  }}
                 />
               </Box>
             </Flex>
@@ -375,6 +417,28 @@ const ExamForm = () => {
                 value={selectedCourse}
                 onChange={(option) => setSelectedCourse(option)}
                 isClearable
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    borderRadius: 12,
+                    background: "#F2F4F8",
+                    fontSize: 15,
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                    borderColor: "#E0E0E0",
+                    color: "#1C1C1C",
+                    minHeight: 44,
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#5F6368",
+                  }),
+                  multiValue: (base) => ({
+                    ...base,
+                    borderRadius: 8,
+                    background: "#e6eaf7",
+                    color: "#1C1C1C",
+                  }),
+                }}
               />
             </Box>
             <Box>
@@ -387,6 +451,28 @@ const ExamForm = () => {
                 }))}
                 value={selectedClasses}
                 onChange={(options) => setSelectedClasses(options || [])}
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    borderRadius: 12,
+                    background: "#F2F4F8",
+                    fontSize: 15,
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                    borderColor: "#E0E0E0",
+                    color: "#1C1C1C",
+                    minHeight: 44,
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#5F6368",
+                  }),
+                  multiValue: (base) => ({
+                    ...base,
+                    borderRadius: 8,
+                    background: "#e6eaf7",
+                    color: "#1C1C1C",
+                  }),
+                }}
               />
             </Box>
             <Checkbox
@@ -397,7 +483,11 @@ const ExamForm = () => {
             </Checkbox>
             <Flex justify="flex-end" mt={6} gap={4}>
               <Button
-                colorScheme="blue"
+                colorScheme="primary"
+                borderRadius="12px"
+                fontWeight="bold"
+                fontSize="16px"
+                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                 onClick={handleNextStep}
                 isLoading={loading}
               >
@@ -408,22 +498,35 @@ const ExamForm = () => {
         )}
         {step === 2 && (
           <Flex direction="column" gap={4}>
-            <Text fontWeight="bold" mb={2} mt={4}>
+            <Text
+              fontWeight="bold"
+              mb={2}
+              mt={4}
+              color="primary"
+              fontSize="17px"
+            >
               Cấu trúc đề thi
             </Text>
-            <Table size="sm" mb={2}>
-              <Thead>
+            <Table
+              size="sm"
+              mb={2}
+              bg="surface"
+              borderRadius="12px"
+              boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+              overflow="hidden"
+            >
+              <Thead bg="#F2F4F8">
                 <Tr>
-                  <Th>Chương</Th>
-                  <Th>Mức độ</Th>
-                  <Th>Số lượng câu hỏi</Th>
+                  <Th color="primary">Chương</Th>
+                  <Th color="primary">Mức độ</Th>
+                  <Th color="primary">Số lượng câu hỏi</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {cauTrucDeThi.map((row, idx) => (
-                  <Tr key={row.MaChuong + row.MucDo}>
-                    <Td>{row.TenChuong}</Td>
-                    <Td>{row.MucDo}</Td>
+                  <Tr key={row.MaChuong + row.MucDo} _hover={{ bg: "gray.50" }}>
+                    <Td color="textPrimary">{row.TenChuong}</Td>
+                    <Td color="textPrimary">{row.MucDo}</Td>
                     <Td>
                       <Input
                         type="number"
@@ -433,13 +536,30 @@ const ExamForm = () => {
                           handleCauTrucChange(idx, e.target.value)
                         }
                         w="80px"
+                        borderRadius="12px"
+                        bg="#F2F4F8"
+                        fontSize="15px"
+                        boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                        borderColor="border"
+                        color="textPrimary"
+                        _placeholder={{ color: "textSecondary" }}
+                        _focus={{
+                          borderColor: "primary",
+                          boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                        }}
                       />
                     </Td>
                   </Tr>
                 ))}
               </Tbody>
             </Table>
-            <Text fontWeight="bold" mb={2} mt={4}>
+            <Text
+              fontWeight="bold"
+              mb={2}
+              mt={4}
+              color="primary"
+              fontSize="17px"
+            >
               Thiết lập điểm cho từng loại câu hỏi <i>(Bắt buộc)</i>
             </Text>
             <Flex gap={3}>
@@ -449,6 +569,17 @@ const ExamForm = () => {
                   type="number"
                   value={DiemCauDe}
                   onChange={(e) => setDiemCauDe(e.target.value)}
+                  borderRadius="12px"
+                  bg="#F2F4F8"
+                  fontSize="15px"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                  borderColor="border"
+                  color="textPrimary"
+                  _placeholder={{ color: "textSecondary" }}
+                  _focus={{
+                    borderColor: "primary",
+                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                  }}
                 />
               </Box>
               <Box flex={1}>
@@ -457,6 +588,17 @@ const ExamForm = () => {
                   type="number"
                   value={DiemCauTrungBinh}
                   onChange={(e) => setDiemCauTrungBinh(e.target.value)}
+                  borderRadius="12px"
+                  bg="#F2F4F8"
+                  fontSize="15px"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                  borderColor="border"
+                  color="textPrimary"
+                  _placeholder={{ color: "textSecondary" }}
+                  _focus={{
+                    borderColor: "primary",
+                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                  }}
                 />
               </Box>
               <Box flex={1}>
@@ -465,6 +607,17 @@ const ExamForm = () => {
                   type="number"
                   value={DiemCauKho}
                   onChange={(e) => setDiemCauKho(e.target.value)}
+                  borderRadius="12px"
+                  bg="#F2F4F8"
+                  fontSize="15px"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                  borderColor="border"
+                  color="textPrimary"
+                  _placeholder={{ color: "textSecondary" }}
+                  _focus={{
+                    borderColor: "primary",
+                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                  }}
                 />
               </Box>
               <Box flex={1}>
@@ -473,15 +626,37 @@ const ExamForm = () => {
                   type="number"
                   value={DiemCauBoSung}
                   onChange={(e) => setDiemCauBoSung(e.target.value)}
+                  borderRadius="12px"
+                  bg="#F2F4F8"
+                  fontSize="15px"
+                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                  borderColor="border"
+                  color="textPrimary"
+                  _placeholder={{ color: "textSecondary" }}
+                  _focus={{
+                    borderColor: "primary",
+                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                  }}
                 />
               </Box>
             </Flex>
             <Flex justify="flex-end" mt={6} gap={4}>
-              <Button colorScheme="gray" onClick={() => setStep(1)}>
+              <Button
+                colorScheme="gray"
+                borderRadius="12px"
+                fontWeight="bold"
+                fontSize="16px"
+                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+                onClick={() => setStep(1)}
+              >
                 Quay lại
               </Button>
               <Button
-                colorScheme="blue"
+                colorScheme="primary"
+                borderRadius="12px"
+                fontWeight="bold"
+                fontSize="16px"
+                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                 onClick={handleCreateOrUpdateExam}
                 isLoading={loading}
               >

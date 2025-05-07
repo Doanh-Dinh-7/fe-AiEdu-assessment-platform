@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 // import SidebarTaking from "../../lib/components/Exam/ExamTaking/SidebarTaking";
-import ConfirmModal from "../../lib/components/Exam/ExamTaking/ConfirmModal";
 import FinishModal from "../../lib/components/Exam/ExamTaking/FinishModal";
 // import ResultTable from "../../lib/components/Exam/ExamTaking/ResultTable";
 import ChatArea from "../../lib/components/Exam/ExamTaking/ChatArea";
@@ -35,15 +34,15 @@ function formatTime(sec) {
 const ExamPractice = () => {
   const { maCuocThi } = useParams();
   const navigate = useNavigate();
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(
+    () => !!localStorage.getItem("ma_phien_luyen_thi")
+  );
   const [finished, setFinished] = useState(false);
   const [current, setCurrent] = useState(0);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([[]]);
-  const [answered, setAnswered] = useState([false, false, false]);
   const [timeLeft, setTimeLeft] = useState(60 * 60);
   const [showHint, setShowHint] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
   const [showFinish, setShowFinish] = useState(false);
   const storageKey = `exam-practice-${maCuocThi}`;
   const [maPhienLuyenThi, setMaPhienLuyenThi] = useState(
@@ -56,30 +55,27 @@ const ExamPractice = () => {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
-    if (chatHistory.length > 0) {
-      const restoredMessages = questions.map((q, idx) => {
-        const his = chatHistory[idx];
-        if (!his) return [{ sender: "bot", text: q.text, time: formatTime(0) }];
-        return [
-          { sender: "bot", text: q.text, time: formatTime(0) },
-          his.userMsg,
-          his.botMsg,
-        ];
-      });
-      setMessages(restoredMessages);
-      setAnswered(chatHistory.map(() => true));
-    } else {
-      setMessages(
-        questions.map((q) => [
-          {
-            sender: "bot",
-            text: q.text,
-            time: formatTime(0),
-          },
-        ])
-      );
-      setAnswered(Array(questions.length).fill(false));
+    // Khôi phục messages từ localStorage nếu có
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+          return;
+        }
+      } catch {}
     }
+    // Nếu không có thì khởi tạo như cũ
+    setMessages(
+      questions.map((q) => [
+        {
+          sender: "bot",
+          text: q.text,
+          time: formatTime(0),
+        },
+      ])
+    );
   }, []);
 
   useEffect(() => {
@@ -91,6 +87,12 @@ const ExamPractice = () => {
     const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
     return () => clearTimeout(timer);
   }, [started, timeLeft, finished]);
+
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      localStorage.setItem(storageKey, JSON.stringify(messages));
+    }
+  }, [messages, storageKey]);
 
   const handleStartPractice = async () => {
     setLoading(true);
@@ -104,7 +106,6 @@ const ExamPractice = () => {
         localStorage.setItem(storageKey, JSON.stringify([]));
         setQuestions([]);
         setMessages([]);
-        setAnswered([]);
         setCurrent(0);
       }
     } catch {
@@ -113,11 +114,8 @@ const ExamPractice = () => {
     setLoading(false);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    setShowConfirm(true);
-  };
-  const handleConfirm = async () => {
     if (!maPhienLuyenThi) {
       alert("Chưa có mã phiên luyện thi!");
       return;
@@ -126,7 +124,6 @@ const ExamPractice = () => {
     const userMsg = { sender: "user", text: input, time: timeStr };
     setInput("");
     setShowHint(false);
-    setShowConfirm(false);
     try {
       const res = await checkAnswerExamPractice(maPhienLuyenThi, {
         CauTraLoi: input,
@@ -152,17 +149,11 @@ const ExamPractice = () => {
 
       setChatHistory(newHistory);
       localStorage.setItem(storageKey, JSON.stringify(newHistory));
-      setAnswered((prev) => {
-        const arr = [...prev];
-        arr[current] = true;
-        return arr;
-      });
 
       const nextIndex = current + 1;
       if (questions[nextIndex]) setCurrent(nextIndex);
     } catch (error) {
       console.log(error);
-
       alert("Có lỗi khi gửi câu trả lời!");
     }
   };
@@ -176,6 +167,7 @@ const ExamPractice = () => {
         throw new Error("Có lỗi khi kết thúc luyện thi!");
       }
       localStorage.removeItem(storageKey);
+      localStorage.removeItem("ma_phien_luyen_thi");
       navigate("/exams");
     } catch {
       alert("Có lỗi khi kết thúc luyện thi!");
@@ -231,7 +223,7 @@ const ExamPractice = () => {
         timeLeft={timeLeft}
         onSelect={setCurrent}
       /> */}
-      <Box flex={1} px={8}>
+      <Box flex={1} px={8} mt={6}>
         {!started ? (
           <Flex justify="center" align="center" h="60vh">
             <Button
@@ -259,43 +251,26 @@ const ExamPractice = () => {
               showHint={showHint}
               hintText={questions[current]?.hint || ""}
               isPracticeMode={true}
+              maCuocThi={maCuocThi}
             />
 
-            <Flex justify="center" mt={6}>
-              {/* {answered.every(Boolean) ? (
-                <Box textAlign="center" w="100%">
-                  <Text
-                    bg="white"
-                    px={6}
-                    py={2}
-                    borderRadius="md"
-                    fontWeight="bold"
-                    mb={4}
-                  >
-                    Vui lòng kiểm tra câu trả lời và xác nhận hoàn thành bài thi
-                  </Text>
-                  <Button bg="green.300" size="lg" onClick={handleFinish}>
-                    Xác nhận hoàn thành bài thi
-                  </Button>
-                </Box>
-              ) : (
-                <Button bg="blue.300" size="lg" onClick={handleFinish}>
-                  Xác nhận hoàn thành bài thi
-                </Button>
-              )} */}
-              <Button bg="blue.300" size="lg" onClick={handleFinish}>
-                Xác nhận kết thúc luyện thi
-              </Button>
-            </Flex>
+            <Button
+              bg="blue.300"
+              size="lg"
+              onClick={handleFinish}
+              mt={10}
+              mb={6}
+            >
+              Kết thúc
+            </Button>
           </>
         )}
       </Box>
-      <ConfirmModal
-        isOpen={showConfirm}
-        onConfirm={handleConfirm}
-        onCancel={() => setShowConfirm(false)}
+      <FinishModal
+        isOpen={showFinish}
+        onConfirm={handleFinishConfirm}
+        onCancel={() => setShowFinish(false)}
       />
-      <FinishModal isOpen={showFinish} onConfirm={handleFinishConfirm} />
     </Flex>
   );
 };

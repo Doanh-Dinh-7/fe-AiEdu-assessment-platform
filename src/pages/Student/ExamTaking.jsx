@@ -1,15 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Text,
-  Table,
-  Tbody,
-  Tr,
-  Td,
-  Th,
-} from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import SidebarTaking from "../../lib/components/Exam/ExamTaking/SidebarTaking";
 import ConfirmModal from "../../lib/components/Exam/ExamTaking/ConfirmModal";
@@ -320,7 +310,14 @@ const ExamTaking = () => {
 
   if (finished) {
     return (
-      <Flex bg="#F5F9FF" align="center" justify="center" pt={8}>
+      <Flex
+        bg="background"
+        align="center"
+        justify="center"
+        pt={8}
+        minH="100vh"
+        fontFamily="Inter, sans-serif"
+      >
         <SidebarTaking
           questions={questions}
           current={current}
@@ -328,12 +325,23 @@ const ExamTaking = () => {
           timeLeft={timeLeft}
           onSelect={setCurrent}
           examName={examName}
+          onFinish={handleFinish}
+          isConfirming={showFinish}
         />
         <Box
           flex={1}
           display="flex"
+          flexDirection="column"
           justifyContent="center"
           alignItems="center"
+          bg="surface"
+          borderRadius="12px"
+          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+          mx={8}
+          py={8}
+          px={4}
+          minH="500px"
+          maxW="900px"
         >
           {finished && resultData ? (
             <ResultTable examHistory={resultData.ExamHistory} />
@@ -349,12 +357,14 @@ const ExamTaking = () => {
         </Box>
         <Button
           colorScheme="blackAlpha"
-          borderRadius="md"
+          borderRadius="12px"
           px={10}
           fontWeight="bold"
-          position="absolute"
-          bottom={8}
-          right={8}
+          fontSize="16px"
+          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+          mt={8}
+          w={{ base: "100%", md: "auto" }}
+          alignSelf="center"
           onClick={handleOutExam}
         >
           Thoát
@@ -364,7 +374,12 @@ const ExamTaking = () => {
   }
 
   return (
-    <Flex bg="#F5F9FF" align="center">
+    <Flex
+      bg="background"
+      align="center"
+      minH="100vh"
+      fontFamily="Inter, sans-serif"
+    >
       <SidebarTaking
         questions={questions}
         current={current}
@@ -372,16 +387,19 @@ const ExamTaking = () => {
         timeLeft={timeLeft}
         onSelect={setCurrent}
         examName={examName}
+        onFinish={handleFinish}
       />
       <Box flex={1} px={8}>
         {!started ? (
           <Flex justify="center" align="center" h="60vh">
             <Button
-              colorScheme="blue"
-              size="xl"
+              colorScheme="primary"
+              size="lg"
               fontWeight="bold"
-              fontSize="xl"
+              fontSize="20px"
               p={8}
+              borderRadius="12px"
+              boxShadow="0 2px 6px rgba(0,0,0,0.08)"
               onClick={handleStartExam}
               isLoading={loadingExam}
             >
@@ -389,40 +407,57 @@ const ExamTaking = () => {
             </Button>
           </Flex>
         ) : questions.length === 0 ? (
-          <Box textAlign="center" w="100%" mt={10} fontSize="xl">
+          <Box
+            textAlign="center"
+            w="100%"
+            mt={10}
+            fontSize="18px"
+            color="textSecondary"
+          >
             Đang tải dữ liệu đề thi...
           </Box>
         ) : (
           <>
-            <ChatArea
-              messages={messages[current] || []}
-              onSend={handleSend}
-              input={input}
-              setInput={setInput}
-              disabled={finished || loadingCheck}
-              placeholder={
-                isSupplement && currentSupplement
-                  ? currentSupplement.NoiDung
-                  : questions[current]?.text
-              }
-            />
+            <Box
+              bg="surface"
+              borderRadius="12px"
+              boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+              p={{ base: 2, md: 6 }}
+              mb={6}
+              minH="320px"
+              maxW="900px"
+              mx="auto"
+            >
+              <ChatArea
+                messages={messages[current] || []}
+                onSend={handleSend}
+                input={input}
+                setInput={setInput}
+                disabled={finished || loadingCheck}
+                placeholder={
+                  isSupplement && currentSupplement
+                    ? currentSupplement.NoiDung
+                    : questions[current]?.text
+                }
+              />
+            </Box>
             {/* Hiển thị kết quả chấm điểm từng ý chính nếu có */}
             {/* {lastCheckResult && lastCheckResult.ChiTietKetQua && (
-              <Box mt={4} bg="white" borderRadius="md" p={4} boxShadow="sm">
-                <Text fontWeight="bold" mb={2} color="blue.600">
+              <Box mt={4} bg="surface" borderRadius="12px" p={4} boxShadow="0 2px 6px rgba(0,0,0,0.08)">
+                <Text fontWeight="bold" mb={2} color="primary" fontSize="16px">
                   Kết quả chấm ý chính:
                 </Text>
-                <Table size="sm">
+                <Table size="sm" variant="simple">
                   <Tbody>
                     <Tr>
-                      <Th>Ý chính</Th>
-                      <Th>Điểm số</Th>
-                      <Th>Điểm tối đa</Th>
-                      <Th>Độ chính xác</Th>
-                      <Th>Đáp án</Th>
+                      <Th color="textPrimary">Ý chính</Th>
+                      <Th color="textPrimary">Điểm số</Th>
+                      <Th color="textPrimary">Điểm tối đa</Th>
+                      <Th color="textPrimary">Độ chính xác</Th>
+                      <Th color="textPrimary">Đáp án</Th>
                     </Tr>
                     {lastCheckResult.ChiTietKetQua.map((item, idx) => (
-                      <Tr key={idx}>
+                      <Tr key={idx} _hover={{ bg: "gray.50" }}>
                         <Td>{item.YChinh}</Td>
                         <Td>{item.DiemSo}</Td>
                         <Td>{item.DiemToiDa}</Td>
@@ -432,36 +467,11 @@ const ExamTaking = () => {
                     ))}
                   </Tbody>
                 </Table>
-                <Text mt={2} fontWeight="bold">
-                  Tổng điểm: {lastCheckResult.TongDiem} /{" "}
-                  {lastCheckResult.TongDiemToiDa} (Tỷ lệ:{" "}
-                  {lastCheckResult.TyLeDiem})
+                <Text mt={2} fontWeight="bold" color="success" fontSize="15px">
+                  Tổng điểm: {lastCheckResult.TongDiem} / {lastCheckResult.TongDiemToiDa} (Tỷ lệ: {lastCheckResult.TyLeDiem})
                 </Text>
               </Box>
             )} */}
-            <Flex justify="center" mt={6}>
-              {answered.every(Boolean) ? (
-                <Box textAlign="center" w="100%">
-                  <Text
-                    bg="white"
-                    px={6}
-                    py={2}
-                    borderRadius="md"
-                    fontWeight="bold"
-                    mb={4}
-                  >
-                    Vui lòng kiểm tra câu trả lời và xác nhận hoàn thành bài thi
-                  </Text>
-                  <Button bg="green.300" size="lg" onClick={handleFinish}>
-                    Xác nhận hoàn thành bài thi
-                  </Button>
-                </Box>
-              ) : (
-                <Button colorScheme="blue" size="lg" onClick={handleFinish}>
-                  Xác nhận hoàn thành bài thi
-                </Button>
-              )}
-            </Flex>
           </>
         )}
       </Box>
@@ -471,7 +481,11 @@ const ExamTaking = () => {
         onCancel={() => setShowConfirm(false)}
         isLoading={loadingCheck}
       />
-      <FinishModal isOpen={showFinish} onConfirm={handleFinishConfirm} />
+      <FinishModal
+        isOpen={showFinish}
+        onConfirm={handleFinishConfirm}
+        onCancel={() => setShowFinish(false)}
+      />
     </Flex>
   );
 };

@@ -2,76 +2,155 @@
 import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  fonts: {
+    heading: "Inter, sans-serif",
+    body: "Inter, sans-serif",
+  },
   colors: {
-    brand: {
-      900: "#0B2545", // Xanh đậm
-      800: "#13315C",
-      700: "#1D2D44",
-      600: "#274690",
-      500: "#3E64FF", // Xanh chủ đạo
-      400: "#5D8BF4",
-      300: "#8BBFFF", // Xanh nhạt
-      200: "#B3C7F7", // Xanh rất nhạt
-      100: "#E3ECFF", // Nền xanh siêu nhạt
-      50: "#F5F9FF", // Nền phụ
+    primary: "#4A90E2",
+    background: "#F2F4F8",
+    surface: "#FFFFFF",
+    textPrimary: "#1C1C1C",
+    textSecondary: "#5F6368",
+    success: "#34A853",
+    error: "#EA4335",
+    warning: "#FBBC05",
+    border: "#E0E0E0",
+    gray: {
+      50: "#F8F9FB",
+      100: "#F2F4F8",
+      200: "#E0E0E0",
+      300: "#C4C4C4",
+      400: "#A0A0A0",
+      500: "#5F6368",
+      600: "#3C4043",
+      700: "#1C1C1C",
     },
-    blue: {
-      900: "#0B2545",
-      800: "#13315C",
-      700: "#1D2D44",
-      600: "#274690",
-      500: "#3E64FF",
-      400: "#5D8BF4",
-      300: "#8BBFFF",
-      200: "#B3C7F7",
-      100: "#E3ECFF",
-      50: "#F5F9FF",
-    },
-    yellow: {
-      500: "#FFD600",
-    },
-    red: {
-      500: "#FF5A5F",
-    },
+  },
+  radii: {
+    sm: "8px",
+    md: "12px",
+    lg: "16px",
+    xl: "20px",
+    full: "9999px",
   },
   components: {
     Button: {
+      baseStyle: {
+        borderRadius: "12px",
+        fontWeight: "medium",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
+      },
       variants: {
         solid: (props) => {
           const { colorScheme } = props;
-
-          if (colorScheme === "blue") {
+          if (colorScheme === "primary" || colorScheme === "blue") {
             return {
-              bg: "blue.500",
+              bg: "primary",
               color: "white",
-              _hover: {
-                bg: "blue.600",
-              },
+              _hover: { bg: "#357ABD" },
             };
           }
-
-          // Trả về mặc định để Chakra tự xử lý các colorScheme khác
+          if (colorScheme === "success") {
+            return {
+              bg: "success",
+              color: "white",
+              _hover: { bg: "#258944" },
+            };
+          }
+          if (colorScheme === "error" || colorScheme === "red") {
+            return {
+              bg: "error",
+              color: "white",
+              _hover: { bg: "#B31412" },
+            };
+          }
+          if (colorScheme === "warning" || colorScheme === "yellow") {
+            return {
+              bg: "warning",
+              color: "#222",
+              _hover: { bg: "#E2B203" },
+            };
+          }
           return {};
         },
       },
     },
+    Input: {
+      baseStyle: {
+        borderRadius: "12px",
+        fontSize: "14px",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+      },
+      variants: {
+        outline: {
+          field: {
+            borderRadius: "12px",
+            borderColor: "border",
+            _focus: {
+              borderColor: "primary",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
+            },
+          },
+        },
+      },
+    },
+    Modal: {
+      baseStyle: {
+        dialog: {
+          borderRadius: "12px",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
+        },
+        header: {
+          fontWeight: "bold",
+          fontSize: "18px",
+        },
+        closeButton: {
+          top: "16px",
+          right: "16px",
+        },
+      },
+    },
     Table: {
+      baseStyle: {
+        th: {
+          bg: "background",
+          color: "textSecondary",
+          fontWeight: "bold",
+          fontSize: "15px",
+        },
+        td: {
+          fontSize: "14px",
+        },
+      },
       variants: {
         simple: {
           th: {
             borderBottom: "1px solid",
-            borderColor: "blue.200",
-            textTransform: "none",
-            letterSpacing: "normal",
-            fontWeight: "medium",
-            bg: "blue.50",
-            color: "blue.800",
+            borderColor: "border",
+            bg: "background",
+            color: "textSecondary",
           },
           td: {
             borderBottom: "1px solid",
-            borderColor: "blue.100",
-            color: "blue.900",
+            borderColor: "border",
           },
+          tr: {
+            _hover: {
+              bg: "gray.50",
+            },
+          },
+        },
+      },
+    },
+    Switch: {
+      baseStyle: {
+        track: {
+          bg: "border",
+          _checked: { bg: "primary" },
+        },
+        thumb: {
+          bg: "white",
         },
       },
     },
@@ -79,8 +158,10 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: "blue.50",
-        color: "blue.900",
+        bg: "background",
+        color: "textPrimary",
+        fontSize: "14px",
+        fontFamily: "Inter, sans-serif",
       },
     },
   },
