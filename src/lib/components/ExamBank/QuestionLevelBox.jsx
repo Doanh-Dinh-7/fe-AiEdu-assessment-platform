@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 const QuestionLevelBox = ({ easy, medium, hard }) => (
   <Flex
     position="fixed"
-    top="32px"
-    right="32px"
+    top={20}
+    right={10}
     bg="white"
     boxShadow="md"
     borderRadius="md"

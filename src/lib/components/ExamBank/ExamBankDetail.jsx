@@ -192,16 +192,53 @@ const ExamBankDetail = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
     </Center>
   ) : (
-    <Flex minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
-      <Flex w="100%" maxW="1200px" direction="column" gap={4}>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      bg="#F2F4F8"
+      pt={8}
+      fontFamily="Inter, sans-serif"
+    >
+      <Flex
+        w="100%"
+        maxW="1200px"
+        justify="space-between"
+        align="center"
+        mb={8}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
         <Center flex={1}>
-          <Heading fontSize="lg" mb={2} textTransform="uppercase">
+          <Heading
+            fontSize="20px"
+            mb={2}
+            textTransform="uppercase"
+            color="#4A90E2"
+            letterSpacing={1}
+          >
             Chi tiết ngân hàng đề thi {ThongTinHocPhan.TenHocPhan}
           </Heading>
         </Center>
+      </Flex>
+      <Flex
+        w="100%"
+        maxW="1200px"
+        direction="column"
+        gap={4}
+        mb={2}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
         <Flex wrap="wrap" gap={4} align="center">
           <Text fontWeight="bold">Học phần:</Text>
           <Input
@@ -209,7 +246,10 @@ const ExamBankDetail = () => {
             size="sm"
             w="180px"
             isReadOnly
-            bg="white"
+            bg="#F2F4F8"
+            borderRadius="12px"
+            fontWeight="medium"
+            color="#1C1C1C"
           />
           <Text fontWeight="bold">Số tín chỉ:</Text>
           <Input
@@ -217,7 +257,10 @@ const ExamBankDetail = () => {
             size="sm"
             w="60px"
             isReadOnly
-            bg="white"
+            bg="#F2F4F8"
+            borderRadius="12px"
+            fontWeight="medium"
+            color="#1C1C1C"
           />
           <Text fontWeight="bold">Số chương:</Text>
           <Input
@@ -225,7 +268,10 @@ const ExamBankDetail = () => {
             size="sm"
             w="60px"
             isReadOnly
-            bg="white"
+            bg="#F2F4F8"
+            borderRadius="12px"
+            fontWeight="medium"
+            color="#1C1C1C"
           />
         </Flex>
         <Flex wrap="wrap" gap={4} align="center">
@@ -235,7 +281,10 @@ const ExamBankDetail = () => {
             size="sm"
             w="80px"
             isReadOnly
-            bg="white"
+            bg="#F2F4F8"
+            borderRadius="12px"
+            fontWeight="medium"
+            color="#1C1C1C"
           />
           <Text fontWeight="bold">Số câu hỏi đã có:</Text>
           <Input
@@ -243,7 +292,10 @@ const ExamBankDetail = () => {
             size="sm"
             w="80px"
             isReadOnly
-            bg="white"
+            bg="#F2F4F8"
+            borderRadius="12px"
+            fontWeight="medium"
+            color="#1C1C1C"
           />
           <Text fontWeight="bold">Mức độ:</Text>
           <Badge colorScheme="green">Dễ: {ThongKeMucDo.De}</Badge>
@@ -253,92 +305,134 @@ const ExamBankDetail = () => {
         <Flex direction="column" gap={2}>
           <Text fontWeight="bold">Mô tả:</Text>
           <Text
-            bg="white"
+            bg="#F2F4F8"
             p={3}
-            borderRadius="md"
+            borderRadius="12px"
             fontSize="sm"
+            color="#1C1C1C"
             whiteSpace="pre-line"
           >
             {ThongTinHocPhan.MoTaHocPhan}
           </Text>
         </Flex>
       </Flex>
-      <Table
-        variant="simple"
-        size="md"
+      <Flex
         w="100%"
         maxW="1200px"
+        direction="column"
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={6}
+        py={6}
         mt={8}
-        bg="white"
       >
-        <Thead>
-          <Tr>
-            <Th>STT</Th>
-            <Th>Chương</Th>
-            <Th>Tổng số câu hỏi</Th>
-            <Th>Ngày tạo</Th>
-            <Th textAlign="center"></Th>
-            <Th textAlign="center"></Th>
-            <Th textAlign="center"></Th>
-            <Th textAlign="center"></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {DanhSachChuong.map((chuong, index) => (
-            <Tr key={chuong.MaChuong}>
-              <Td>{index + 1}</Td>
-              <Td>{chuong.TenChuong}</Td>
-              <Td>{chuong.SoCauHoi}</Td>
-              <Td>{chuong.NgayTao}</Td>
-              <Td textAlign="center">
-                <IconButton
-                  leftIcon={<FaEye />}
-                  size="sm"
-                  colorScheme="blue"
-                  variant="ghost"
-                  onClick={() =>
-                    navigate(`${location.pathname}/${chuong.MaChuong}`)
-                  }
-                />
-              </Td>
-              <Td textAlign="center">
-                <IconButton
-                  leftIcon={<FaUpload />}
-                  size="sm"
-                  colorScheme="purple"
-                  variant="ghost"
-                  onClick={() =>
-                    navigate(
-                      `${location.pathname}/${chuong.MaChuong}/upload-document-exam`
-                    )
-                  }
-                />
-              </Td>
-              <Td textAlign="center">
-                <IconButton
-                  icon={<FaEdit />}
-                  size="sm"
-                  colorScheme="yellow"
-                  variant="ghost"
-                  onClick={() => openEditModal(chuong)}
-                />
-              </Td>
-              <Td textAlign="center">
-                <IconButton
-                  icon={<FaTrash />}
-                  size="sm"
-                  colorScheme="red"
-                  variant="ghost"
-                  onClick={() => handleDeleteChapter(chuong)}
-                />
-              </Td>
+        <Table
+          variant="simple"
+          size="md"
+          bg="transparent"
+          borderRadius="12px"
+          overflow="hidden"
+        >
+          <Thead bg="#F2F4F8">
+            <Tr>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                STT
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Chương
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Tổng số câu hỏi
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Ngày tạo
+              </Th>
+              <Th textAlign="center"></Th>
+              <Th textAlign="center"></Th>
+              <Th textAlign="center"></Th>
+              <Th textAlign="center"></Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {DanhSachChuong.map((chuong, index) => (
+              <Tr
+                key={chuong.MaChuong}
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">{index + 1}</Td>
+                <Td color="#1C1C1C">{chuong.TenChuong}</Td>
+                <Td color="#1C1C1C">{chuong.SoCauHoi}</Td>
+                <Td color="#1C1C1C">{chuong.NgayTao}</Td>
+                <Td textAlign="center">
+                  <IconButton
+                    icon={<FaEye />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#E3F0FC"
+                    color="#4A90E2"
+                    fontWeight="bold"
+                    _hover={{ bg: "#B3D6F7" }}
+                    variant="ghost"
+                    onClick={() =>
+                      navigate(`${location.pathname}/${chuong.MaChuong}`)
+                    }
+                  />
+                </Td>
+                <Td textAlign="center">
+                  <IconButton
+                    icon={<FaUpload />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#E6E6FA"
+                    color="#6C63FF"
+                    fontWeight="bold"
+                    _hover={{ bg: "#CFCFFF" }}
+                    variant="ghost"
+                    onClick={() =>
+                      navigate(
+                        `${location.pathname}/${chuong.MaChuong}/upload-document-exam`
+                      )
+                    }
+                  />
+                </Td>
+                <Td textAlign="center">
+                  <IconButton
+                    icon={<FaEdit />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#FFF7E0"
+                    color="#FBBC05"
+                    fontWeight="bold"
+                    _hover={{ bg: "#FFE6A1" }}
+                    variant="ghost"
+                    onClick={() => openEditModal(chuong)}
+                  />
+                </Td>
+                <Td textAlign="center">
+                  <IconButton
+                    icon={<FaTrash />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#FDE8E6"
+                    color="#EA4335"
+                    fontWeight="bold"
+                    _hover={{ bg: "#F9BDB6" }}
+                    variant="ghost"
+                    onClick={() => handleDeleteChapter(chuong)}
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Flex>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius="12px">
           <ModalHeader>
             Đổi tên chương: {selectedChapter?.TenChuong}
           </ModalHeader>
@@ -348,13 +442,30 @@ const ExamBankDetail = () => {
               value={newChapterName}
               onChange={(e) => setNewChapterName(e.target.value)}
               placeholder="Nhập tên chương mới"
+              borderRadius="12px"
+              bg="#F2F4F8"
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleUpdateNameChapter}>
+            <Button
+              bg="#4A90E2"
+              color="#fff"
+              borderRadius="999px"
+              px={8}
+              fontWeight="bold"
+              fontSize="16px"
+              boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+              _hover={{ bg: "#357ABD" }}
+              mr={3}
+              onClick={handleUpdateNameChapter}
+            >
               Lưu
             </Button>
-            <Button variant="ghost" onClick={() => setIsOpen(false)}>
+            <Button
+              variant="ghost"
+              borderRadius="999px"
+              onClick={() => setIsOpen(false)}
+            >
               Hủy
             </Button>
           </ModalFooter>

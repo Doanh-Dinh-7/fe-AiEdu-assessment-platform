@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createCourse, updateCourse } from "../../controller/course";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useAutoResizeTextarea from "../../hooks/useAutoResizeTextarea";
 
 const ExamBankForm = () => {
@@ -105,19 +105,55 @@ const ExamBankForm = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
     </Center>
   ) : (
-    <Flex minH="100vh" direction="column" bg="#F5F9FF" align="center" pt={5}>
-      <Flex w="100%" maxW="1200px" direction="column" gap={4}>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      bg="#F2F4F8"
+      pt={8}
+      fontFamily="Inter, sans-serif"
+    >
+      <Flex
+        w="100%"
+        maxW="1200px"
+        justify="space-between"
+        align="center"
+        mb={8}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
         <Center flex={1}>
-          <Heading fontSize="lg" mb={2} textTransform="uppercase">
+          <Heading
+            fontSize="20px"
+            mb={2}
+            textTransform="uppercase"
+            color="#4A90E2"
+            letterSpacing={1}
+          >
             {mode === "edit" ? "Cập nhật" : "Tạo"} ngân hàng đề thi{" "}
             {defaultData.TenHocPhan}
           </Heading>
         </Center>
-
-        <Flex gridArea="2 / 2 / 1 / 1" direction="column" gap={4}>
+      </Flex>
+      <Flex
+        w="100%"
+        maxW="1200px"
+        direction="column"
+        gap={4}
+        mb={2}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
+        <Flex direction="column" gap={4}>
           <Flex wrap="wrap" gap={4} align="center">
             <Text fontWeight="bold">Học phần:</Text>
             <Input
@@ -126,7 +162,10 @@ const ExamBankForm = () => {
               onChange={handleChange}
               size="sm"
               w="180px"
-              bg="white"
+              borderRadius="12px"
+              bg="#F2F4F8"
+              fontWeight="medium"
+              color="#1C1C1C"
             />
             <Text fontWeight="bold">Số tín chỉ:</Text>
             <Input
@@ -135,7 +174,10 @@ const ExamBankForm = () => {
               onChange={handleChange}
               size="sm"
               w="80px"
-              bg="white"
+              borderRadius="12px"
+              bg="#F2F4F8"
+              fontWeight="medium"
+              color="#1C1C1C"
             />
           </Flex>
           <Flex wrap="wrap" gap={4} align="center">
@@ -146,7 +188,10 @@ const ExamBankForm = () => {
               onChange={handleChange}
               size="sm"
               w="80px"
-              bg="white"
+              borderRadius="12px"
+              bg="#F2F4F8"
+              fontWeight="medium"
+              color="#1C1C1C"
             />
             <Flex>
               <FormControl isInvalid={!!chapterError}>
@@ -158,10 +203,12 @@ const ExamBankForm = () => {
                     onChange={handleChange}
                     size="sm"
                     w="80px"
-                    bg="white"
+                    borderRadius="12px"
+                    bg="#F2F4F8"
+                    fontWeight="medium"
+                    color="#1C1C1C"
                     isInvalid={!!chapterError}
                   />
-
                   <FormErrorMessage>{chapterError}</FormErrorMessage>
                 </Flex>
               </FormControl>
@@ -175,7 +222,10 @@ const ExamBankForm = () => {
               onChange={handleChange}
               size="sm"
               w="180px"
-              bg="white"
+              borderRadius="12px"
+              bg="#F2F4F8"
+              fontWeight="medium"
+              color="#1C1C1C"
             />
             <Text fontWeight="bold">Bậc đào tạo:</Text>
             <Input
@@ -184,7 +234,10 @@ const ExamBankForm = () => {
               onChange={handleChange}
               size="sm"
               w="180px"
-              bg="white"
+              borderRadius="12px"
+              bg="#F2F4F8"
+              fontWeight="medium"
+              color="#1C1C1C"
             />
           </Flex>
         </Flex>
@@ -193,18 +246,32 @@ const ExamBankForm = () => {
           <Textarea
             ref={textareaRef}
             name="MoTaHocPhan"
-            bg="white"
+            bg="#F2F4F8"
             p={3}
-            borderRadius="md"
+            borderRadius="12px"
             fontSize="sm"
             whiteSpace="pre-line"
             value={formData.MoTaHocPhan}
+            color="#1C1C1C"
+            fontWeight="medium"
             onChange={handleChange}
           />
         </Flex>
       </Flex>
-      <Flex w="100%" justify="flex-end" align="center" mb={6}>
-        <Button mt={4} ml={4} colorScheme="green" onClick={handleSave}>
+      <Flex w="100%" maxW="1200px" justify="flex-end" align="center" mb={6}>
+        <Button
+          mt={4}
+          ml={4}
+          bg="#34A853"
+          color="#fff"
+          borderRadius="999px"
+          px={8}
+          fontWeight="bold"
+          fontSize="16px"
+          boxShadow="0 2px 8px rgba(52,168,83,0.08)"
+          _hover={{ bg: "#1e7e34" }}
+          onClick={handleSave}
+        >
           {mode === "edit" ? "Cập nhật" : "Lưu"}
         </Button>
       </Flex>

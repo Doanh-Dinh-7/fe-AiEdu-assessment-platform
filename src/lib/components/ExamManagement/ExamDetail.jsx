@@ -65,14 +65,14 @@ const ExamDetail = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
     </Center>
   ) : (
     <Flex
       direction="column"
       align="center"
       minH="100vh"
-      bg="background"
+      bg="#F2F4F8"
       py={8}
       fontFamily="Inter, sans-serif"
     >
@@ -81,7 +81,12 @@ const ExamDetail = () => {
         maxW="1200px"
         justify="space-between"
         align="center"
-        mb={6}
+        mb={8}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
       >
         <Center flex={1}>
           <Heading
@@ -89,7 +94,8 @@ const ExamDetail = () => {
             fontSize="20px"
             textAlign="center"
             textTransform="uppercase"
-            color="primary"
+            color="#4A90E2"
+            letterSpacing={1}
           >
             Thông tin bài thi
           </Heading>
@@ -97,74 +103,83 @@ const ExamDetail = () => {
       </Flex>
       <Box
         w="100%"
-        maxW="900px"
-        bg="surface"
+        maxW="1200px"
+        bg="#FFFFFF"
         p={8}
         borderRadius="12px"
-        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
       >
         <Box p={0}>
-          <Text fontWeight="bold" mb={2} color="primary" fontSize="17px">
+          <Text fontWeight="bold" mb={2} color="#4A90E2" fontSize="17px">
             Thông tin chung
           </Text>
-          <Text color="textPrimary">Mã cuộc thi: {examDetail.MaCuocThi}</Text>
-          <Text color="textPrimary">Tên cuộc thi: {examDetail.TenCuocThi}</Text>
-          <Text color="textPrimary">Mã học phần: {examDetail.MaHocPhan}</Text>
-          <Text color="textPrimary">
+          <Text color="#1C1C1C">Mã cuộc thi: {examDetail.MaCuocThi}</Text>
+          <Text color="#1C1C1C">Tên cuộc thi: {examDetail.TenCuocThi}</Text>
+          <Text color="#1C1C1C">Mã học phần: {examDetail.MaHocPhan}</Text>
+          <Text color="#1C1C1C">
             Lớp học phần:{" "}
             {examDetail.LopHocPhan && examDetail.LopHocPhan.length > 0
               ? examDetail.LopHocPhan.map((lop) => lop.TenLopHocPhan).join(", ")
               : ""}
           </Text>
-          <Text color="textPrimary">
+          <Text color="#1C1C1C">
             Thời gian bắt đầu:{" "}
             {examDetail.ThoiGianBatDau
               ? new Date(examDetail.ThoiGianBatDau).toLocaleString("vi-VN")
               : ""}
           </Text>
-          <Text color="textPrimary">
+          <Text color="#1C1C1C">
             Thời gian kết thúc:{" "}
             {examDetail.ThoiGianKetThuc
               ? new Date(examDetail.ThoiGianKetThuc).toLocaleString("vi-VN")
               : ""}
           </Text>
-          <Text color="textPrimary">Trạng thái: {examDetail.TrangThai}</Text>
+          <Text color="#1C1C1C">Trạng thái: {examDetail.TrangThai}</Text>
           <Box h={4} />
-          <Text fontWeight="bold" mb={2} color="primary" fontSize="17px">
+          <Text fontWeight="bold" mb={2} color="#4A90E2" fontSize="17px">
             Thông tin chi tiết
           </Text>
           {/* Bảng cấu trúc đề thi */}
           <Table
             size="md"
             mb={4}
-            bg="surface"
+            bg="transparent"
             borderRadius="12px"
-            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            boxShadow="0 2px 8px rgba(0,0,0,0.08)"
             overflow="hidden"
           >
             <Thead bg="#F2F4F8">
               <Tr>
-                <Th color="primary">Chương</Th>
-                <Th color="primary">Mức độ</Th>
-                <Th color="primary">Số lượng câu</Th>
+                <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                  Chương
+                </Th>
+                <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                  Mức độ
+                </Th>
+                <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                  Số lượng câu
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
               {(examDetail.CauTrucDeThi || []).map((row, idx) => (
                 <Tr
                   key={row.MaChuong + row.MucDo + idx}
-                  _hover={{ bg: "gray.50" }}
+                  _hover={{ bg: "#F2F4F8" }}
+                  fontSize="15px"
+                  borderRadius="12px"
+                  transition="background 0.2s"
                 >
-                  <Td color="textPrimary">{row.TenChuong}</Td>
-                  <Td color="textPrimary">{row.MucDo}</Td>
-                  <Td color="textPrimary">{row.SoLuongCauHoi}</Td>
+                  <Td color="#1C1C1C">{row.TenChuong}</Td>
+                  <Td color="#1C1C1C">{row.MucDo}</Td>
+                  <Td color="#1C1C1C">{row.SoLuongCauHoi}</Td>
                 </Tr>
               ))}
               {/* Dòng tổng */}
               <Tr fontWeight="bold" bg="#F2F4F8">
-                <Td color="textSecondary">Tổng</Td>
-                <Td color="textSecondary">–</Td>
-                <Td color="textSecondary">
+                <Td color="#5F6368">Tổng</Td>
+                <Td color="#5F6368">–</Td>
+                <Td color="#5F6368">
                   Dễ: {totalCounts["dễ"]} - Trung bình:{" "}
                   {totalCounts["trung bình"]} - Khó: {totalCounts["khó"]}
                 </Td>
@@ -174,39 +189,63 @@ const ExamDetail = () => {
           {/* Bảng điểm */}
           <Table
             size="md"
-            bg="surface"
+            bg="transparent"
             borderRadius="12px"
-            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            boxShadow="0 2px 8px rgba(0,0,0,0.08)"
             overflow="hidden"
           >
             <Thead bg="#F2F4F8">
               <Tr>
-                <Th color="primary">Loại câu</Th>
-                <Th color="primary">Điểm</Th>
+                <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                  Loại câu
+                </Th>
+                <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                  Điểm
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
-              <Tr _hover={{ bg: "gray.50" }}>
-                <Td color="textPrimary">Dễ</Td>
-                <Td color="textPrimary">
+              <Tr
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">Dễ</Td>
+                <Td color="#1C1C1C">
                   {examDetail.NoiDungDiem?.[0]?.DiemCauDe}
                 </Td>
               </Tr>
-              <Tr _hover={{ bg: "gray.50" }}>
-                <Td color="textPrimary">Trung bình</Td>
-                <Td color="textPrimary">
+              <Tr
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">Trung bình</Td>
+                <Td color="#1C1C1C">
                   {examDetail.NoiDungDiem?.[0]?.DiemCauTrungBinh}
                 </Td>
               </Tr>
-              <Tr _hover={{ bg: "gray.50" }}>
-                <Td color="textPrimary">Khó</Td>
-                <Td color="textPrimary">
+              <Tr
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">Khó</Td>
+                <Td color="#1C1C1C">
                   {examDetail.NoiDungDiem?.[0]?.DiemCauKho}
                 </Td>
               </Tr>
-              <Tr _hover={{ bg: "gray.50" }}>
-                <Td color="textPrimary">Bổ sung</Td>
-                <Td color="textPrimary">
+              <Tr
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">Bổ sung</Td>
+                <Td color="#1C1C1C">
                   {examDetail.NoiDungDiem?.[0]?.DiemCauBoSung}
                 </Td>
               </Tr>
@@ -216,12 +255,14 @@ const ExamDetail = () => {
       </Box>
       <Flex w="90%" maxW="900px" justify="flex-end" mt={8}>
         <Button
-          colorScheme="blackAlpha"
-          borderRadius="12px"
+          bg="#1C1C1C"
+          color="#fff"
+          borderRadius="999px"
           px={10}
           fontWeight="bold"
           fontSize="16px"
-          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+          boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+          _hover={{ bg: "#333" }}
           onClick={() => navigate(-1)}
         >
           Quay lại

@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import QuestionLevelBox from "./QuestionLevelBox";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import useAutoResizeTextarea from "../../hooks/useAutoResizeTextarea";
 
@@ -51,60 +51,136 @@ const QuestionDetail = () => {
   // Nếu không có dữ liệu thì báo lỗi
   if (!questionDetailData) {
     return (
-      <Box p={8}>
+      <Box minH="100vh" bg="#F2F4F8" p={8} fontFamily="Inter, sans-serif">
         <Text color="red.500">Không tìm thấy dữ liệu câu hỏi.</Text>
       </Box>
     );
   }
 
   return (
-    <Box minH="100vh" p={8}>
-      <Flex w="100%" maxW="1200px" direction="column" gap={4}>
-        <Flex direction="column" justify="space-between" align="center">
-          <Center flex={1}>
-            <Heading fontSize="lg" mb={2} textTransform="uppercase">
-              Chi tiết câu hỏi {maCauHoi}
-            </Heading>
-          </Center>
-          <QuestionLevelBox easy={easy} medium={medium} hard={hard} />
-          <Box w="100%" mt={4}>
-            <Text fontWeight="bold" mb={1}>
-              Câu hỏi:
-            </Text>
-            <Textarea
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              isReadOnly={!isEdit}
-              resize="vertical"
-              ref={questionRef}
-            />
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      bg="#F2F4F8"
+      pt={8}
+      fontFamily="Inter, sans-serif"
+    >
+      <Flex
+        w="100%"
+        maxW="1200px"
+        justify="space-between"
+        align="center"
+        mb={8}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
+        <Center flex={1}>
+          <Heading
+            fontSize="20px"
+            mb={2}
+            textTransform="uppercase"
+            color="#4A90E2"
+            letterSpacing={1}
+          >
+            Chi tiết câu hỏi {maCauHoi}
+          </Heading>
+        </Center>
+      </Flex>
+      <Flex
+        w="100%"
+        maxW="1200px"
+        direction="column"
+        gap={4}
+        mb={2}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
+        <QuestionLevelBox easy={easy} medium={medium} hard={hard} />
+        <Box w="100%" mt={4}>
+          <Text fontWeight="bold" mb={1}>
+            Câu hỏi:
+          </Text>
+          <Textarea
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            isReadOnly={!isEdit}
+            resize="vertical"
+            ref={questionRef}
+            borderRadius="12px"
+            bg="#F2F4F8"
+            color="#1C1C1C"
+            fontWeight="medium"
+          />
 
-            <Text fontWeight="bold" mt={4} mb={1}>
-              Đáp án:
-            </Text>
-            <Textarea
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              isReadOnly={!isEdit}
-              resize="vertical"
-              ref={answerRef}
-            />
-          </Box>
-        </Flex>
-        <Table variant="simple" bg="white" mt={4}>
-          <Thead>
+          <Text fontWeight="bold" mt={4} mb={1}>
+            Đáp án:
+          </Text>
+          <Textarea
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            isReadOnly={!isEdit}
+            resize="vertical"
+            ref={answerRef}
+            borderRadius="12px"
+            bg="#F2F4F8"
+            color="#1C1C1C"
+            fontWeight="medium"
+          />
+        </Box>
+      </Flex>
+      <Flex
+        w="100%"
+        maxW="1200px"
+        direction="column"
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={6}
+        py={6}
+        mt={8}
+      >
+        <Table
+          variant="simple"
+          bg="transparent"
+          borderRadius="12px"
+          overflow="hidden"
+        >
+          <Thead bg="#F2F4F8">
             <Tr>
-              <Th>STT</Th>
-              <Th>Ý chính</Th>
-              <Th>Điểm số</Th>
-              <Th>Câu hỏi bổ sung</Th>
-              <Th>Đáp án câu bổ sung</Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                STT
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Ý chính
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Điểm số
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Câu hỏi bổ sung
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Đáp án câu bổ sung
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
             {keyPoints.map((row, index) => (
-              <Tr key={row?.MaID || index}>
-                <Td>{index + 1}</Td>
+              <Tr
+                key={row?.MaID || index}
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">{index + 1}</Td>
                 <Td>
                   <Textarea
                     defaultValue={row?.NoiDung || ""}
@@ -114,6 +190,10 @@ const QuestionDetail = () => {
                       target.style.height = "auto";
                       target.style.height = `${target.scrollHeight}px`;
                     }}
+                    borderRadius="12px"
+                    bg="#F2F4F8"
+                    color="#1C1C1C"
+                    fontWeight="medium"
                   />
                 </Td>
                 <Td>
@@ -122,6 +202,10 @@ const QuestionDetail = () => {
                     defaultValue={row?.TyLeDiem || 0}
                     min={0}
                     isReadOnly={!isEdit}
+                    borderRadius="12px"
+                    bg="#F2F4F8"
+                    color="#1C1C1C"
+                    fontWeight="medium"
                   />
                 </Td>
                 <Td colSpan={2}>
@@ -134,27 +218,35 @@ const QuestionDetail = () => {
                         align="flex-start"
                       >
                         <Box flex={1}>
-                  <Textarea
+                          <Textarea
                             defaultValue={cbs?.NoiDung || ""}
-                    isReadOnly={!isEdit}
+                            isReadOnly={!isEdit}
                             mb={1}
-                    onInput={(e) => {
-                      const target = e.currentTarget;
-                      target.style.height = "auto";
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
-                  />
+                            onInput={(e) => {
+                              const target = e.currentTarget;
+                              target.style.height = "auto";
+                              target.style.height = `${target.scrollHeight}px`;
+                            }}
+                            borderRadius="12px"
+                            bg="#F2F4F8"
+                            color="#1C1C1C"
+                            fontWeight="medium"
+                          />
                         </Box>
                         <Box flex={1}>
-                  <Textarea
+                          <Textarea
                             defaultValue={cbs?.DapAnBoSung || ""}
-                    isReadOnly={!isEdit}
-                    onInput={(e) => {
-                      const target = e.currentTarget;
-                      target.style.height = "auto";
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
-                  />
+                            isReadOnly={!isEdit}
+                            onInput={(e) => {
+                              const target = e.currentTarget;
+                              target.style.height = "auto";
+                              target.style.height = `${target.scrollHeight}px`;
+                            }}
+                            borderRadius="12px"
+                            bg="#F2F4F8"
+                            color="#1C1C1C"
+                            fontWeight="medium"
+                          />
                         </Box>
                       </Flex>
                     ))
@@ -170,11 +262,22 @@ const QuestionDetail = () => {
         </Table>
         {isEdit && (
           <Flex justify="flex-end" mt={4}>
-            <Button colorScheme="blue">Lưu</Button>
+            <Button
+              bg="#4A90E2"
+              color="#fff"
+              borderRadius="999px"
+              px={8}
+              fontWeight="bold"
+              fontSize="16px"
+              boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+              _hover={{ bg: "#357ABD" }}
+            >
+              Lưu
+            </Button>
           </Flex>
         )}
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 

@@ -54,7 +54,7 @@ const lecturerRoutes = {
     { path: "/class/:maLopHocPhan", element: <ClassDetail /> },
     { path: "/class/class-form", element: <ClassForm /> },
 
-    // Quản lý cuộc thi
+    // Quản lý kỳ thi
     { path: "/exam-management", element: <ExamManagement /> },
     { path: "/exam-management/:maCuocThi", element: <ExamDetail /> },
     { path: "/exam-management/exam-form", element: <ExamForm /> },

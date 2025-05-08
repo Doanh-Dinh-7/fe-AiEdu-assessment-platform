@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   Heading,
@@ -70,7 +69,6 @@ const ClassDetail = () => {
     fetchStudents();
   }, [maLopHocPhan, toast]);
 
-  const [editIndex, setEditIndex] = useState(null);
   const [student, setStudent] = useState({
     TenSinhVien: "",
     LopSinhHoat: "",
@@ -88,9 +86,7 @@ const ClassDetail = () => {
 
   const handleSubmit = () => {
     if (isEdit) {
-      const updated = [...students];
-      updated[editIndex] = { ...student, stt: editIndex + 1 };
-      setStudents(updated);
+      // Đã xoá editIndex, nếu cần sửa student hãy cập nhật lại logic phù hợp
     } else {
       setStudents((prev) => [
         ...prev,
@@ -211,7 +207,7 @@ const ClassDetail = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
     </Center>
   ) : (
     <Flex
@@ -219,10 +215,7 @@ const ClassDetail = () => {
       direction="column"
       align="center"
       pt={8}
-      bg="background"
-      borderRadius="12px"
-      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-      px={{ base: 2, md: 8 }}
+      bg="#F2F4F8"
       fontFamily="Inter, sans-serif"
     >
       <Flex
@@ -230,14 +223,20 @@ const ClassDetail = () => {
         maxW="1200px"
         justify="space-between"
         align="center"
-        mb={6}
+        mb={8}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
       >
         <Center flex={1}>
           <Heading
             fontSize="20px"
             mb={2}
             textTransform="uppercase"
-            color="primary"
+            color="#4A90E2"
+            letterSpacing={1}
           >
             Lớp học phần {nameClass}
           </Heading>
@@ -246,16 +245,20 @@ const ClassDetail = () => {
           <IconButton
             icon={<FaPlus />}
             onClick={openAddModal}
-            colorScheme="primary"
-            borderRadius="12px"
-            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            bg="#4A90E2"
+            color="#fff"
+            borderRadius="999px"
+            boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+            _hover={{ bg: "#357ABD" }}
           />
           <Button
             as="label"
-            colorScheme="primary"
+            bg="#4A90E2"
+            color="#fff"
             leftIcon={<FaUpload />}
-            borderRadius="12px"
-            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            borderRadius="999px"
+            boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+            _hover={{ bg: "#357ABD" }}
           >
             Tải lên danh sách
             <Input
@@ -268,54 +271,77 @@ const ClassDetail = () => {
         </Flex>
       </Flex>
 
-      <Table
-        variant="simple"
-        size="md"
-        bg="surface"
-        borderRadius="12px"
-        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-        overflow="hidden"
+      <Flex
+        w="100%"
         maxW="1200px"
+        direction="column"
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={6}
+        py={6}
       >
-        <Thead>
-          <Tr>
-            <Th color="primary">STT</Th>
-            <Th color="primary">Mã sinh viên</Th>
-            <Th color="primary">Tên sinh viên</Th>
-            <Th color="primary">Lớp</Th>
-            <Th color="primary">Tên đăng nhập</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {students.map((sinhVien, index) => (
-            <Tr
-              key={sinhVien.MaSinhVien}
-              _hover={{ bg: "gray.50" }}
-              fontSize="15px"
-            >
-              <Td color="textPrimary">{index + 1}</Td>
-              <Td color="textPrimary">{sinhVien.MaSinhVien}</Td>
-              <Td fontWeight="bold" color="textPrimary">
-                {sinhVien.TenSinhVien}
-              </Td>
-              <Td color="textPrimary">{sinhVien.LopSinhHoat}</Td>
-              <Td color="textPrimary">{sinhVien.TenDangNhap}</Td>
-              <Td>
-                <IconButton
-                  icon={<FaTrash />}
-                  size="sm"
-                  colorScheme="red"
-                  variant="ghost"
-                  borderRadius="12px"
-                  boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-                  onClick={() => handleDeleteStudent(sinhVien.MaSinhVien)}
-                />
-              </Td>
+        <Table
+          variant="simple"
+          size="md"
+          bg="transparent"
+          borderRadius="12px"
+          overflow="hidden"
+        >
+          <Thead bg="#F2F4F8">
+            <Tr>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                STT
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Mã sinh viên
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Tên sinh viên
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Lớp
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Tên đăng nhập
+              </Th>
+              <Th></Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {students.map((sinhVien, index) => (
+              <Tr
+                key={sinhVien.MaSinhVien}
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">{index + 1}</Td>
+                <Td color="#1C1C1C">{sinhVien.MaSinhVien}</Td>
+                <Td fontWeight="bold" color="#1C1C1C">
+                  {sinhVien.TenSinhVien}
+                </Td>
+                <Td color="#1C1C1C">{sinhVien.LopSinhHoat}</Td>
+                <Td color="#1C1C1C">{sinhVien.TenDangNhap}</Td>
+                <Td>
+                  <IconButton
+                    icon={<FaTrash />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#FDE8E6"
+                    color="#EA4335"
+                    fontWeight="bold"
+                    _hover={{ bg: "#F9BDB6" }}
+                    variant="ghost"
+                    onClick={() => handleDeleteStudent(sinhVien.MaSinhVien)}
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Flex>
       <ClassStudentModal
         isOpen={isOpen}
         onClose={onClose}

@@ -10,6 +10,7 @@ import {
   VStack,
   Divider,
   useToast,
+  Center,
 } from "@chakra-ui/react";
 import QuestionLevelBox from "./QuestionLevelBox";
 import {
@@ -147,13 +148,51 @@ const CreateQuestion = () => {
     item.subQuestionConfirmed && item.subAnswerConfirmed;
 
   return (
-    <Box minH="100vh" direction="column" bg="#F5F9FF" pt={5}>
-      <Flex direction="column" align="center" maxW="1200px" mx="auto">
-        <Heading fontSize="xl" mb={4} textTransform="uppercase">
-          Tạo câu hỏi chương {maChuong}
-        </Heading>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      bg="#F2F4F8"
+      pt={8}
+      fontFamily="Inter, sans-serif"
+    >
+      <Flex
+        w="100%"
+        maxW="1200px"
+        justify="space-between"
+        align="center"
+        mb={8}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
+        <Center flex={1}>
+          <Heading
+            fontSize="20px"
+            mb={2}
+            textTransform="uppercase"
+            color="#4A90E2"
+            letterSpacing={1}
+          >
+            Tạo câu hỏi chương {maChuong}
+          </Heading>
+        </Center>
+      </Flex>
+      <Flex
+        w="100%"
+        maxW="1200px"
+        direction="column"
+        gap={4}
+        mb={2}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
         <QuestionLevelBox easy={easy} medium={medium} hard={hard} />
-
         <Flex justify="space-between" align="center" w="100%" mb={6}>
           {["Mức độ", "Câu hỏi", "Trả lời", "Tách ý và Câu hỏi phụ"].map(
             (label, index) => (
@@ -163,7 +202,7 @@ const CreateQuestion = () => {
                   h="40px"
                   mx="auto"
                   borderRadius="full"
-                  bg={step >= index ? "blue.500" : "gray.300"}
+                  bg={step >= index ? "#4A90E2" : "#E0E0E0"}
                   color="white"
                   display="flex"
                   alignItems="center"
@@ -173,14 +212,16 @@ const CreateQuestion = () => {
                 >
                   {index + 1}
                 </Box>
-                <Text fontSize="sm">{label}</Text>
+                <Text fontSize="sm" color="#5F6368">
+                  {label}
+                </Text>
               </Box>
             )
           )}
         </Flex>
 
         {/* BƯỚC 1: CHỌN MỨC ĐỘ */}
-        <Box bg="white" p={6} borderRadius="md" w="100%" mb={4}>
+        <Box bg="#F2F4F8" p={6} borderRadius="12px" w="100%" mb={4}>
           <Text fontWeight="bold" mb={2}>
             Chọn mức độ:
           </Text>
@@ -190,6 +231,10 @@ const CreateQuestion = () => {
             mb={4}
             maxW="200px"
             isDisabled={step > 0}
+            borderRadius="12px"
+            bg="#FFFFFF"
+            fontWeight="medium"
+            color="#1C1C1C"
           >
             {LEVELS.map((lv) => (
               <option key={lv.value} value={lv.value}>
@@ -198,14 +243,24 @@ const CreateQuestion = () => {
             ))}
           </Select>
           {step === 0 && (
-            <Button colorScheme="blue" onClick={handleLevelConfirm}>
+            <Button
+              bg="#4A90E2"
+              color="#fff"
+              borderRadius="999px"
+              px={8}
+              fontWeight="bold"
+              fontSize="16px"
+              boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+              _hover={{ bg: "#357ABD" }}
+              onClick={handleLevelConfirm}
+            >
               Tạo câu hỏi
             </Button>
           )}
         </Box>
 
         {/* BƯỚC 2: NHẬP CÂU HỎI */}
-        <Box bg="white" p={6} borderRadius="md" w="100%" mb={4}>
+        <Box bg="#F2F4F8" p={6} borderRadius="12px" w="100%" mb={4}>
           <Text fontWeight="bold" mb={2}>
             Câu hỏi
           </Text>
@@ -215,11 +270,19 @@ const CreateQuestion = () => {
             onChange={(e) => setQuestion(e.target.value)}
             isDisabled={step > 1}
             mb={2}
+            borderRadius="12px"
+            bg="#FFFFFF"
+            fontWeight="medium"
+            color="#1C1C1C"
           />
           {step === 1 && (
             <Flex justify="flex-end" gap={2}>
               <Button
-                colorScheme="yellow"
+                bg="#FBBC05"
+                color="#fff"
+                borderRadius="999px"
+                fontWeight="bold"
+                _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
                 mt={2}
                 isLoading={loading}
                 onClick={async () => {
@@ -234,7 +297,11 @@ const CreateQuestion = () => {
                 Tạo lại
               </Button>
               <Button
-                colorScheme="green"
+                bg="#34A853"
+                color="#fff"
+                borderRadius="999px"
+                fontWeight="bold"
+                _hover={{ bg: "#1e7e34" }}
                 mt={2}
                 onClick={handleQuestionConfirm}
                 isDisabled={!question}
@@ -246,7 +313,7 @@ const CreateQuestion = () => {
         </Box>
 
         {/* BƯỚC 3: NHẬP TRẢ LỜI */}
-        <Box bg="white" p={6} borderRadius="md" w="100%" mb={4}>
+        <Box bg="#F2F4F8" p={6} borderRadius="12px" w="100%" mb={4}>
           <Text fontWeight="bold" mb={2}>
             Câu trả lời
           </Text>
@@ -256,11 +323,19 @@ const CreateQuestion = () => {
             onChange={(e) => setAnswer(e.target.value)}
             isDisabled={step > 2}
             mb={2}
+            borderRadius="12px"
+            bg="#FFFFFF"
+            fontWeight="medium"
+            color="#1C1C1C"
           />
           {step === 2 && (
             <Flex justify="flex-end" gap={2}>
               <Button
-                colorScheme="yellow"
+                bg="#FBBC05"
+                color="#fff"
+                borderRadius="999px"
+                fontWeight="bold"
+                _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
                 mt={2}
                 isLoading={loading}
                 onClick={async () => {
@@ -276,7 +351,11 @@ const CreateQuestion = () => {
                 Tạo lại
               </Button>
               <Button
-                colorScheme="green"
+                bg="#34A853"
+                color="#fff"
+                borderRadius="999px"
+                fontWeight="bold"
+                _hover={{ bg: "#1e7e34" }}
                 mt={2}
                 onClick={handleAnswerConfirm}
                 isDisabled={!answer}
@@ -293,10 +372,10 @@ const CreateQuestion = () => {
             ideas.map((item, idx) => (
               <Box
                 key={idx}
-                bg="white"
+                bg="#F2F4F8"
                 p={5}
-                borderRadius="md"
-                border="1px solid #B3B3B3"
+                borderRadius="12px"
+                border="1px solid #E0E0E0"
               >
                 <Text fontWeight="bold" mb={2}>
                   Tách ý {idx + 1}
@@ -311,10 +390,18 @@ const CreateQuestion = () => {
                   }}
                   isDisabled={item.confirmed}
                   mb={2}
+                  borderRadius="12px"
+                  bg="#FFFFFF"
+                  fontWeight="medium"
+                  color="#1C1C1C"
                 />
                 <Flex justify="flex-end" gap={2}>
                   <Button
-                    colorScheme="yellow"
+                    bg="#FBBC05"
+                    color="#fff"
+                    borderRadius="999px"
+                    fontWeight="bold"
+                    _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
                     size="sm"
                     mb={2}
                     isLoading={loading}
@@ -334,7 +421,11 @@ const CreateQuestion = () => {
                     Tạo lại
                   </Button>
                   <Button
-                    colorScheme="green"
+                    bg="#34A853"
+                    color="#fff"
+                    borderRadius="999px"
+                    fontWeight="bold"
+                    _hover={{ bg: "#1e7e34" }}
                     size="sm"
                     onClick={() => {
                       const updated = [...ideas];
@@ -361,10 +452,18 @@ const CreateQuestion = () => {
                       }}
                       isDisabled={item.subQuestionConfirmed}
                       mb={2}
+                      borderRadius="12px"
+                      bg="#FFFFFF"
+                      fontWeight="medium"
+                      color="#1C1C1C"
                     />
                     <Flex justify="flex-end" gap={2}>
                       <Button
-                        colorScheme="yellow"
+                        bg="#FBBC05"
+                        color="#fff"
+                        borderRadius="999px"
+                        fontWeight="bold"
+                        _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
                         size="sm"
                         mb={2}
                         isLoading={loading}
@@ -385,7 +484,11 @@ const CreateQuestion = () => {
                         Tạo lại
                       </Button>
                       <Button
-                        colorScheme="green"
+                        bg="#34A853"
+                        color="#fff"
+                        borderRadius="999px"
+                        fontWeight="bold"
+                        _hover={{ bg: "#1e7e34" }}
                         size="sm"
                         onClick={() => {
                           const updated = [...ideas];
@@ -416,10 +519,18 @@ const CreateQuestion = () => {
                       }}
                       isDisabled={item.subAnswerConfirmed}
                       mb={2}
+                      borderRadius="12px"
+                      bg="#FFFFFF"
+                      fontWeight="medium"
+                      color="#1C1C1C"
                     />
                     <Flex justify="flex-end" gap={2}>
                       <Button
-                        colorScheme="yellow"
+                        bg="#FBBC05"
+                        color="#fff"
+                        borderRadius="999px"
+                        fontWeight="bold"
+                        _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
                         size="sm"
                         mb={2}
                         isLoading={loading}
@@ -441,7 +552,11 @@ const CreateQuestion = () => {
                         Tạo lại
                       </Button>
                       <Button
-                        colorScheme="green"
+                        bg="#34A853"
+                        color="#fff"
+                        borderRadius="999px"
+                        fontWeight="bold"
+                        _hover={{ bg: "#1e7e34" }}
                         size="sm"
                         onClick={() => {
                           const updated = [...ideas];
@@ -462,7 +577,14 @@ const CreateQuestion = () => {
 
           {step >= 3 && showNextIdea && ideas.every(canShowAddIdeaButton) && (
             <Button
-              colorScheme="blue"
+              bg="#4A90E2"
+              color="#fff"
+              borderRadius="999px"
+              px={8}
+              fontWeight="bold"
+              fontSize="16px"
+              boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+              _hover={{ bg: "#357ABD" }}
               onClick={handleAddIdea}
               w="200px"
               alignSelf="center"
@@ -473,9 +595,21 @@ const CreateQuestion = () => {
 
           {step >= 3 && (
             <>
-              <Divider />
+              <Divider
+                borderColor="#E0E0E0"
+                borderWidth={2}
+                borderRadius="12px"
+                my={4}
+              />
               <Button
-                colorScheme="teal"
+                bg="#34A853"
+                color="#fff"
+                borderRadius="999px"
+                px={8}
+                fontWeight="bold"
+                fontSize="16px"
+                boxShadow="0 2px 8px rgba(52,168,83,0.08)"
+                _hover={{ bg: "#1e7e34" }}
                 onClick={handleSave}
                 w="200px"
                 alignSelf="center"
@@ -487,7 +621,7 @@ const CreateQuestion = () => {
           )}
         </VStack>
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 

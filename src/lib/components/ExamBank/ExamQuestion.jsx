@@ -11,6 +11,7 @@ import {
   Heading,
   Center,
   Spinner,
+  IconButton,
 } from "@chakra-ui/react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useState, useEffect } from "react";
@@ -84,25 +85,50 @@ const ExamQuestion = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
     </Center>
   ) : (
-    <Box minH="100vh" direction="column" align="center" bg="#F5F9FF" pt={5}>
-      <Flex w="100%" maxW="1200px" direction="column" gap={4}>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      bg="#F2F4F8"
+      pt={8}
+      fontFamily="Inter, sans-serif"
+    >
+      <Flex
+        w="100%"
+        maxW="1200px"
+        justify="space-between"
+        align="center"
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
         <Center flex={1}>
-          <Heading fontSize="lg" mb={2} textTransform="uppercase">
+          <Heading
+            fontSize="20px"
+            mb={2}
+            textTransform="uppercase"
+            color="#4A90E2"
+            letterSpacing={1}
+          >
             Câu hỏi {tenChuong}
           </Heading>
         </Center>
-        {/* Box cố định hiển thị số câu hỏi theo cấp độ */}
-        <QuestionLevelBox
-          easy={countLevel("dễ")}
-          medium={countLevel("trung bình")}
-          hard={countLevel("khó")}
-        />
-        <Flex justify="flex-end" mb={4}>
+        <Flex justify="flex-end">
           <Button
-            colorScheme="blue"
+            bg="#4A90E2"
+            color="#fff"
+            borderRadius="999px"
+            px={8}
+            py={2}
+            fontWeight="bold"
+            fontSize="16px"
+            boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+            _hover={{ bg: "#357ABD" }}
             onClick={() =>
               navigate(`${location.pathname}/create-question`, {
                 state: {
@@ -117,57 +143,109 @@ const ExamQuestion = () => {
           </Button>
         </Flex>
       </Flex>
-      <Table variant="simple" bg="white">
-        <Thead>
-          <Tr>
-            <Th>STT</Th>
-            <Th>Câu hỏi</Th>
-            <Th>Mức độ</Th>
-            <Th>Ngày tạo</Th>
-            <Th textAlign="center"></Th>
-            <Th textAlign="center"></Th>
-            <Th textAlign="center"></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {questionData.map((q, idx) => (
-            <Tr key={q.MaCauHoi}>
-              <Td>{idx + 1}</Td>
-              <Td>{q.NoiDung}</Td>
-              <Td>{q.MucDo}</Td>
-              <Td>{q.NgayTao}</Td>
-              <Td textAlign="center">
-                <Button
-                  leftIcon={<FaEye />}
-                  size="sm"
-                  colorScheme="blue"
-                  variant="ghost"
-                  onClick={() => handleNavigateQuestion(q, "view")}
-                ></Button>
-              </Td>
-              <Td textAlign="center">
-                <Button
-                  leftIcon={<FaEdit />}
-                  size="sm"
-                  colorScheme="yellow"
-                  variant="ghost"
-                  onClick={() => handleNavigateQuestion(q, "edit")}
-                ></Button>
-              </Td>
-              <Td textAlign="center">
-                <Button
-                  leftIcon={<FaTrash />}
-                  size="sm"
-                  colorScheme="red"
-                  variant="ghost"
-                  ml={2}
-                ></Button>
-              </Td>
+
+      {/* Box cố định hiển thị số câu hỏi theo cấp độ */}
+      <QuestionLevelBox
+        easy={countLevel("dễ")}
+        medium={countLevel("trung bình")}
+        hard={countLevel("khó")}
+      />
+      <Flex
+        w="100%"
+        maxW="1200px"
+        direction="column"
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={6}
+        py={6}
+        mt={8}
+      >
+        <Table
+          variant="simple"
+          bg="transparent"
+          borderRadius="12px"
+          overflow="hidden"
+        >
+          <Thead bg="#F2F4F8">
+            <Tr>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                STT
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Câu hỏi
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Mức độ
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Ngày tạo
+              </Th>
+              <Th textAlign="center"></Th>
+              <Th textAlign="center"></Th>
+              <Th textAlign="center"></Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </Box>
+          </Thead>
+          <Tbody>
+            {questionData.map((q, idx) => (
+              <Tr
+                key={q.MaCauHoi}
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">{idx + 1}</Td>
+                <Td color="#1C1C1C" whiteSpace="pre-wrap" w="50%">
+                  {q.NoiDung}
+                </Td>
+                <Td color="#1C1C1C">{q.MucDo}</Td>
+                <Td color="#1C1C1C">{q.NgayTao}</Td>
+                <Td textAlign="center">
+                  <IconButton
+                    icon={<FaEye />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#E3F0FC"
+                    color="#4A90E2"
+                    fontWeight="bold"
+                    _hover={{ bg: "#B3D6F7" }}
+                    variant="ghost"
+                    onClick={() => handleNavigateQuestion(q, "view")}
+                  />
+                </Td>
+                <Td textAlign="center">
+                  <IconButton
+                    icon={<FaEdit />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#FFF7E0"
+                    color="#FBBC05"
+                    fontWeight="bold"
+                    _hover={{ bg: "#FFE6A1" }}
+                    variant="ghost"
+                    onClick={() => handleNavigateQuestion(q, "edit")}
+                  />
+                </Td>
+                <Td textAlign="center">
+                  <IconButton
+                    icon={<FaTrash />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#FDE8E6"
+                    color="#EA4335"
+                    fontWeight="bold"
+                    _hover={{ bg: "#F9BDB6" }}
+                    variant="ghost"
+                    ml={2}
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Flex>
+    </Flex>
   );
 };
 

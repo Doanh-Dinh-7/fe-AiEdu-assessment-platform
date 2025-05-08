@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   Heading,
@@ -13,7 +12,7 @@ import {
   useToast,
   Spinner,
 } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import AddDocumentModal from "./AddDocumentModal ";
@@ -27,7 +26,6 @@ import { getDocumentChapter, updateChapter } from "../../controller/chapter";
 
 const ExamDocuments = () => {
   const { maHocPhan, maChuong } = useParams();
-  const navigate = useNavigate();
   const [docs, setDocs] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -96,41 +94,106 @@ const ExamDocuments = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
     </Center>
   ) : (
-    <Box minH="100vh" direction="column" bg="#F5F9FF" pt={5}>
-      <Flex direction="column" align="center" maxW="1200px" mx="auto">
-        <Flex w="100%" justify="space-between" align="center" mb={4}>
-          <Center flex={1}>
-            <Heading fontSize="lg" mb={2} textTransform="uppercase">
-              Danh sách tài liệu chương
-            </Heading>
-          </Center>
-          <Button colorScheme="blue" onClick={() => setIsOpen(true)}>
-            Thêm tài liệu
-          </Button>
-        </Flex>
-        <Table variant="simple" size="md" w="50vw" bg="white">
-          <Thead>
+    <Flex
+      minH="100vh"
+      direction="column"
+      align="center"
+      bg="#F2F4F8"
+      pt={8}
+      fontFamily="Inter, sans-serif"
+    >
+      <Flex
+        w="100%"
+        maxW="1200px"
+        justify="space-between"
+        align="center"
+        mb={8}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
+      >
+        <Center flex={1}>
+          <Heading
+            fontSize="20px"
+            mb={2}
+            textTransform="uppercase"
+            color="#4A90E2"
+            letterSpacing={1}
+          >
+            Danh sách tài liệu chương
+          </Heading>
+        </Center>
+        <Button
+          bg="#4A90E2"
+          color="#fff"
+          borderRadius="999px"
+          px={8}
+          fontWeight="bold"
+          fontSize="16px"
+          boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+          _hover={{ bg: "#357ABD" }}
+          onClick={() => setIsOpen(true)}
+        >
+          Thêm tài liệu
+        </Button>
+      </Flex>
+      <Flex
+        w="100%"
+        maxW="1200px"
+        direction="column"
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={6}
+        py={6}
+      >
+        <Table
+          variant="simple"
+          size="md"
+          bg="transparent"
+          borderRadius="12px"
+          overflow="hidden"
+        >
+          <Thead bg="#F2F4F8">
             <Tr>
-              <Th>STT</Th>
-              <Th>Tài liệu</Th>
-              <Th>Ngày tạo</Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                STT
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Tài liệu
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Ngày tạo
+              </Th>
               <Th textAlign="center"></Th>
             </Tr>
           </Thead>
           <Tbody>
             {docs.map((doc, idx) => (
-              <Tr key={doc.MaTaiLieu}>
-                <Td>{idx + 1}</Td>
-                <Td>{doc.TenTaiLieu}</Td>
-                <Td>{doc.NgayTao}</Td>
+              <Tr
+                key={doc.MaTaiLieu}
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">{idx + 1}</Td>
+                <Td color="#1C1C1C">{doc.TenTaiLieu}</Td>
+                <Td color="#1C1C1C">{doc.NgayTao}</Td>
                 <Td textAlign="center">
                   <Button
                     leftIcon={<FaTrash />}
                     size="sm"
-                    colorScheme="red"
+                    borderRadius="999px"
+                    bg="#FDE8E6"
+                    color="#EA4335"
+                    fontWeight="bold"
+                    _hover={{ bg: "#F9BDB6" }}
                     variant="ghost"
                     ml={2}
                     onClick={() => handleDeleteDocument(doc.MaTaiLieu)}
@@ -153,7 +216,7 @@ const ExamDocuments = () => {
         setIsOpen={setIsOpen}
         updateChapter={updateChapter}
       />
-    </Box>
+    </Flex>
   );
 };
 

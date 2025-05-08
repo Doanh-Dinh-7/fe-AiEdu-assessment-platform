@@ -96,7 +96,7 @@ const Class = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
     </Center>
   ) : (
     <Flex
@@ -104,10 +104,7 @@ const Class = () => {
       direction="column"
       align="center"
       pt={8}
-      bg="background"
-      borderRadius="12px"
-      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-      px={{ base: 2, md: 8 }}
+      bg="#F2F4F8"
       fontFamily="Inter, sans-serif"
     >
       <Flex
@@ -115,94 +112,140 @@ const Class = () => {
         maxW="1200px"
         justify="space-between"
         align="center"
-        mb={6}
+        mb={8}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={8}
+        py={5}
       >
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="xl"
+            fontSize="20px"
             textAlign="center"
             textTransform="uppercase"
-            color="primary"
+            color="#4A90E2"
+            letterSpacing={1}
           >
             Danh sách lớp học phần
           </Heading>
         </Center>
         <Button
-          colorScheme="blue"
-          ml={4}
+          bg="#4A90E2"
+          color="#fff"
+          borderRadius="999px"
           px={8}
+          py={2}
           fontWeight="bold"
+          fontSize="16px"
+          boxShadow="0 2px 8px rgba(74,144,226,0.08)"
+          _hover={{ bg: "#357ABD" }}
           onClick={() => handleNavigateForm("create")}
+          leftIcon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
         >
           Thêm
         </Button>
       </Flex>
-
-      <Table
-        variant="simple"
-        size="md"
-        bg="surface"
-        borderRadius="12px"
-        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-        overflow="hidden"
+      <Flex
+        w="100%"
         maxW="1200px"
+        direction="column"
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={6}
+        py={6}
       >
-        <Thead>
-          <Tr>
-            <Th color="primary">STT</Th>
-            <Th color="primary">Tên lớp học phần</Th>
-            <Th color="primary">Thời gian</Th>
-            <Th color="primary">Số lượng</Th>
-            <Th textAlign="center"></Th>
-            <Th textAlign="center"></Th>
-            <Th textAlign="center"></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {classes.map((clas, index) => (
-            <Tr key={clas.MaLopHocPhan}>
-              <Td color="textPrimary">{index + 1}</Td>
-              <Td color="textPrimary">{clas.TenLopHocPhan}</Td>
-              <Td color="textPrimary">{clas.ThoiGianHoc}</Td>
-              <Td color="textPrimary">{clas.SoLuongThamGia}</Td>
-              <Td textAlign="center">
-                <Button
-                  leftIcon={<FaEye />}
-                  size="sm"
-                  colorScheme="blue"
-                  variant="ghost"
-                  onClick={() => navigate(`/class/${clas.MaLopHocPhan}`)}
-                >
-                  Xem
-                </Button>
-              </Td>
-              <Td textAlign="center">
-                <Button
-                  leftIcon={<FaEdit />}
-                  size="sm"
-                  colorScheme="yellow"
-                  variant="ghost"
-                  onClick={() => handleNavigateForm("edit", clas)}
-                >
-                  Sửa
-                </Button>
-              </Td>
-              <Td textAlign="center">
-                <Button
-                  leftIcon={<FaTrash />}
-                  size="sm"
-                  colorScheme="red"
-                  variant="ghost"
-                  onClick={() => handleDeleteClass(clas.MaLopHocPhan)}
-                >
-                  Xóa
-                </Button>
-              </Td>
+        <Table
+          variant="simple"
+          size="md"
+          bg="transparent"
+          borderRadius="12px"
+          overflow="hidden"
+        >
+          <Thead bg="#F2F4F8">
+            <Tr>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                STT
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Tên lớp học phần
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Thời gian
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Số lượng
+              </Th>
+              <Th textAlign="center"></Th>
+              <Th textAlign="center"></Th>
+              <Th textAlign="center"></Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {classes.map((clas, index) => (
+              <Tr
+                key={clas.MaLopHocPhan}
+                _hover={{ bg: "#F2F4F8" }}
+                fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
+              >
+                <Td color="#1C1C1C">{index + 1}</Td>
+                <Td color="#1C1C1C">{clas.TenLopHocPhan}</Td>
+                <Td color="#1C1C1C">{clas.ThoiGianHoc}</Td>
+                <Td color="#1C1C1C">{clas.SoLuongThamGia}</Td>
+                <Td textAlign="center">
+                  <Button
+                    leftIcon={<FaEye />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#E3F0FC"
+                    color="#4A90E2"
+                    fontWeight="bold"
+                    _hover={{ bg: "#B3D6F7" }}
+                    variant="ghost"
+                    onClick={() => navigate(`/class/${clas.MaLopHocPhan}`)}
+                  >
+                    Xem
+                  </Button>
+                </Td>
+                <Td textAlign="center">
+                  <Button
+                    leftIcon={<FaEdit />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#FFF7E0"
+                    color="#FBBC05"
+                    fontWeight="bold"
+                    _hover={{ bg: "#FFE6A1" }}
+                    variant="ghost"
+                    onClick={() => handleNavigateForm("edit", clas)}
+                  >
+                    Sửa
+                  </Button>
+                </Td>
+                <Td textAlign="center">
+                  <Button
+                    leftIcon={<FaTrash />}
+                    size="sm"
+                    borderRadius="999px"
+                    bg="#FDE8E6"
+                    color="#EA4335"
+                    fontWeight="bold"
+                    _hover={{ bg: "#F9BDB6" }}
+                    variant="ghost"
+                    onClick={() => handleDeleteClass(clas.MaLopHocPhan)}
+                  >
+                    Xóa
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Flex>
     </Flex>
   );
 };

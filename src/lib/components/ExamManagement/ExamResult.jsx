@@ -93,7 +93,7 @@ const ExamResult = () => {
       direction="column"
       align="center"
       py={8}
-      bg="background"
+      bg="#F2F4F8"
       fontFamily="Inter, sans-serif"
     >
       <Flex
@@ -101,8 +101,13 @@ const ExamResult = () => {
         maxW="1200px"
         align="center"
         direction="column"
-        mb={6}
+        mb={8}
         gap={4}
+        bg="#FFFFFF"
+        borderRadius="12px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        px={6}
+        py={5}
       >
         <Center flex={1}>
           <Heading
@@ -110,7 +115,8 @@ const ExamResult = () => {
             fontSize="20px"
             textAlign="center"
             textTransform="uppercase"
-            color="primary"
+            color="#4A90E2"
+            letterSpacing={1}
           >
             Kết quả bài thi
           </Heading>
@@ -118,7 +124,7 @@ const ExamResult = () => {
 
         <Flex wrap="wrap" gap={6} mb={6} w="90%" maxW="1100px">
           <Flex direction="column" gap={2} flex={1} minW="250px">
-            <Text fontWeight="bold" color="textSecondary">
+            <Text fontWeight="bold" color="#5F6368">
               Tên cuộc thi
             </Text>
             <Input
@@ -127,9 +133,9 @@ const ExamResult = () => {
               bg="#F2F4F8"
               borderRadius="12px"
               fontWeight="medium"
-              color="textPrimary"
+              color="#1C1C1C"
             />
-            <Text fontWeight="bold" color="textSecondary">
+            <Text fontWeight="bold" color="#5F6368">
               Môn học
             </Text>
             <Input
@@ -138,9 +144,9 @@ const ExamResult = () => {
               bg="#F2F4F8"
               borderRadius="12px"
               fontWeight="medium"
-              color="textPrimary"
+              color="#1C1C1C"
             />
-            <Text fontWeight="bold" color="textSecondary">
+            <Text fontWeight="bold" color="#5F6368">
               Hình thức thi
             </Text>
             <Input
@@ -149,9 +155,9 @@ const ExamResult = () => {
               bg="#F2F4F8"
               borderRadius="12px"
               fontWeight="medium"
-              color="textPrimary"
+              color="#1C1C1C"
             />
-            <Text fontWeight="bold" color="textSecondary">
+            <Text fontWeight="bold" color="#5F6368">
               Các chương
             </Text>
             <Input
@@ -163,11 +169,11 @@ const ExamResult = () => {
               bg="#F2F4F8"
               borderRadius="12px"
               fontWeight="medium"
-              color="textPrimary"
+              color="#1C1C1C"
             />
           </Flex>
           <Flex direction="column" gap={2} flex={1} minW="250px">
-            <Text fontWeight="bold" color="textSecondary">
+            <Text fontWeight="bold" color="#5F6368">
               Thời gian bắt đầu
             </Text>
             <Input
@@ -176,9 +182,9 @@ const ExamResult = () => {
               bg="#F2F4F8"
               borderRadius="12px"
               fontWeight="medium"
-              color="textPrimary"
+              color="#1C1C1C"
             />
-            <Text fontWeight="bold" color="textSecondary">
+            <Text fontWeight="bold" color="#5F6368">
               Thời gian kết thúc
             </Text>
             <Input
@@ -187,9 +193,9 @@ const ExamResult = () => {
               bg="#F2F4F8"
               borderRadius="12px"
               fontWeight="medium"
-              color="textPrimary"
+              color="#1C1C1C"
             />
-            <Text fontWeight="bold" color="textSecondary">
+            <Text fontWeight="bold" color="#5F6368">
               Lớp học phần
             </Text>
             <Input
@@ -202,9 +208,9 @@ const ExamResult = () => {
               bg="#F2F4F8"
               borderRadius="12px"
               fontWeight="medium"
-              color="textPrimary"
+              color="#1C1C1C"
             />
-            <Text fontWeight="bold" color="textSecondary">
+            <Text fontWeight="bold" color="#5F6368">
               Số lượng sinh viên
             </Text>
             <Input
@@ -213,27 +219,37 @@ const ExamResult = () => {
               bg="#F2F4F8"
               borderRadius="12px"
               fontWeight="medium"
-              color="textPrimary"
+              color="#1C1C1C"
             />
           </Flex>
         </Flex>
       </Flex>
       <Box
-        w="95%"
-        maxW="1100px"
-        bg="surface"
+        w="100%"
+        maxW="1200px"
+        bg="#FFFFFF"
         borderRadius="12px"
-        p={4}
-        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        p={6}
+        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
       >
         <Table size="md" variant="simple" borderRadius="12px" overflow="hidden">
           <Thead bg="#F2F4F8">
             <Tr>
-              <Th color="primary">STT</Th>
-              <Th color="primary">Mã sinh viên</Th>
-              <Th color="primary">Tên sinh viên</Th>
-              <Th color="primary">Tổng điểm</Th>
-              <Th color="primary">Trạng thái</Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                STT
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Mã sinh viên
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Tên sinh viên
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Tổng điểm
+              </Th>
+              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+                Trạng thái
+              </Th>
               <Th></Th>
             </Tr>
           </Thead>
@@ -241,23 +257,26 @@ const ExamResult = () => {
             {examInfo.DanhSachKetQua?.map((row, idx) => (
               <Tr
                 key={row.MaSinhVien}
-                _hover={{ bg: "gray.50" }}
+                _hover={{ bg: "#F2F4F8" }}
                 fontSize="15px"
+                borderRadius="12px"
+                transition="background 0.2s"
               >
-                <Td color="textPrimary">{idx + 1}</Td>
-                <Td color="textPrimary">{row.MaSinhVien}</Td>
-                <Td color="textPrimary">{row.TenSinhVien}</Td>
-                <Td color="textPrimary">{row.TongDiem}</Td>
-                <Td color="textPrimary">{row.TrangThai}</Td>
+                <Td color="#1C1C1C">{idx + 1}</Td>
+                <Td color="#1C1C1C">{row.MaSinhVien}</Td>
+                <Td color="#1C1C1C">{row.TenSinhVien}</Td>
+                <Td color="#1C1C1C">{row.TongDiem}</Td>
+                <Td color="#1C1C1C">{row.TrangThai}</Td>
                 <Td>
                   <Button
                     leftIcon={<FaEye />}
                     size="sm"
-                    colorScheme="blue"
+                    borderRadius="999px"
+                    bg="#E3F0FC"
+                    color="#4A90E2"
+                    fontWeight="bold"
+                    _hover={{ bg: "#B3D6F7" }}
                     variant="ghost"
-                    borderRadius="12px"
-                    fontWeight="medium"
-                    boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                     onClick={() =>
                       navigate(`${location.pathname}/${row.MaSinhVien}`)
                     }
@@ -272,12 +291,14 @@ const ExamResult = () => {
       </Box>
       <Flex w="90%" maxW="900px" justify="flex-end" mt={8}>
         <Button
-          colorScheme="blackAlpha"
-          borderRadius="12px"
+          bg="#1C1C1C"
+          color="#fff"
+          borderRadius="999px"
           px={10}
           fontWeight="bold"
           fontSize="16px"
-          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+          boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+          _hover={{ bg: "#333" }}
           onClick={() => navigate(-1)}
         >
           Quay lại
