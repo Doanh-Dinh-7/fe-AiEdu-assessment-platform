@@ -1,9 +1,9 @@
-import { BASE_URL } from "../config/config";
+import { BASE_URL, CHAT_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getCoursesList = async () => {
   try {
-    const res = await fetch(BASE_URL + "/academic/course", {
+    const res = await fetch(CHAT_URL + "/academic/course", {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export const getCoursesList = async () => {
 
 export const getCourseDetail = async (MaHocPhan) => {
   try {
-    const res = await fetch(BASE_URL + "/academic/course/" + MaHocPhan, {
+    const res = await fetch(CHAT_URL + "/academic/course/" + MaHocPhan, {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export const getCourseDetail = async (MaHocPhan) => {
 
 export const createCourse = async (courseData) => {
   try {
-    const res = await fetch(BASE_URL + "/academic/course", {
+    const res = await fetch(CHAT_URL + "/academic/course", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export const createCourse = async (courseData) => {
 
 export const updateCourse = async (courseData, MaHocPhan) => {
   try {
-    const res = await fetch(BASE_URL + "/academic/course/" + MaHocPhan, {
+    const res = await fetch(CHAT_URL + "/academic/course/" + MaHocPhan, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export const updateCourse = async (courseData, MaHocPhan) => {
 
 export const deleteCourse = async (MaHocPhan) => {
   try {
-    const res = await fetch(BASE_URL + "/academic/course/" + MaHocPhan, {
+    const res = await fetch(CHAT_URL + "/academic/course/" + MaHocPhan, {
       method: "DELETE", // Nếu API cần gửi dữ liệu, hãy đặt method DELETE
       headers: {
         "Content-Type": "application/json",

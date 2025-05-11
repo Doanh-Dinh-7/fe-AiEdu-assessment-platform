@@ -1,9 +1,9 @@
-import { BASE_URL } from "../config/config";
+import { BASE_URL, CHAT_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getExamsStudentList = async () => {
   try {
-    const res = await fetch(BASE_URL + "/exam/sv", {
+    const res = await fetch(CHAT_URL + "/exam/sv", {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export const getExamsStudentList = async () => {
 
 export const getExamsStudentDetail = async (MaCuocThi) => {
   try {
-    const res = await fetch(BASE_URL + "/exam/sv/" + MaCuocThi, {
+    const res = await fetch(CHAT_URL + "/exam/sv/" + MaCuocThi, {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export const joinExam = async (MaCuocThi, mat_khau) => {
   console.log("mat khau", mat_khau);
 
   try {
-    const res = await fetch(BASE_URL + "/exam/tham-gia-cuoc-thi/" + MaCuocThi, {
+    const res = await fetch(CHAT_URL + "/exam/tham-gia-cuoc-thi/" + MaCuocThi, {
       method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export const joinExam = async (MaCuocThi, mat_khau) => {
 export const joinPracticeExam = async (MaCuocThi) => {
   try {
     const res = await fetch(
-      BASE_URL + "/pratice/tham-gia-luyen-thi/" + MaCuocThi,
+      CHAT_URL + "/pratice/tham-gia-luyen-thi/" + MaCuocThi,
       {
         method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
         headers: {
@@ -78,7 +78,7 @@ export const joinPracticeExam = async (MaCuocThi) => {
 export const speechToText = async (MaCuocThi) => {
   try {
     const res = await fetch(
-      BASE_URL + "/pratice/tham-gia-luyen-thi/" + MaCuocThi,
+      CHAT_URL + "/pratice/tham-gia-luyen-thi/" + MaCuocThi,
       {
         method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
         headers: {

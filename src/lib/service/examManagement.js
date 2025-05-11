@@ -1,9 +1,9 @@
-import { BASE_URL, MOCKUP_URL } from "../config/config";
+import { BASE_URL, MOCKUP_URL, CHAT_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getExamsList = async () => {
   try {
-    const res = await fetch(BASE_URL + "/exam", {
+    const res = await fetch(CHAT_URL + "/exam", {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export const getExamsList = async () => {
 
 export const createExam = async (examData) => {
   try {
-    const res = await fetch(BASE_URL + "/exam", {
+    const res = await fetch(CHAT_URL + "/exam", {
       method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export const createExam = async (examData) => {
 
 export const updateExam = async (MaCuocThi, examData) => {
   try {
-    const res = await fetch(BASE_URL + "/exam/" + MaCuocThi, {
+    const res = await fetch(CHAT_URL + "/exam/" + MaCuocThi, {
       method: "PUT", // Nếu API cần gửi dữ liệu, hãy đặt method PUT
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export const updateExam = async (MaCuocThi, examData) => {
 
 export const deleteExam = async (MaCuocThi) => {
   try {
-    const res = await fetch(BASE_URL + "/exam/" + MaCuocThi, {
+    const res = await fetch(CHAT_URL + "/exam/" + MaCuocThi, {
       method: "DELETE", // Nếu API cần gửi dữ liệu, hãy đặt method DELETE
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export const deleteExam = async (MaCuocThi) => {
 
 export const getExamDetail = async (MaCuocThi) => {
   try {
-    const res = await fetch(BASE_URL + "/exam/" + MaCuocThi, {
+    const res = await fetch(CHAT_URL + "/exam/" + MaCuocThi, {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export const getExamDetail = async (MaCuocThi) => {
 // sài URL MOCKUP
 export const getExamResult = async (MaCuocThi) => {
   try {
-    const res = await fetch(MOCKUP_URL + "/result/" + MaCuocThi + "/gv", {
+    const res = await fetch(CHAT_URL + "/result/" + MaCuocThi + "/gv", {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export const getExamResult = async (MaCuocThi) => {
 export const getExamResultDetail = async (MaCuocThi, MaSinhVien) => {
   try {
     const res = await fetch(
-      MOCKUP_URL + "/result/" + MaCuocThi + "/chitiet/" + MaSinhVien + "/gv",
+      CHAT_URL + "/result/" + MaCuocThi + "/chitiet/" + MaSinhVien + "/gv",
       {
         method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
         headers: {

@@ -1,10 +1,10 @@
-import { BASE_URL, MOCKUP_URL } from "../config/config";
+import { BASE_URL, MOCKUP_URL, CHAT_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getExamPracticeDetail = async (MaCuocThi) => {
   try {
     const res = await fetch(
-      BASE_URL + `/pratice/bat-dau-luyen-thi/` + MaCuocThi,
+      CHAT_URL + `/pratice/bat-dau-luyen-thi/` + MaCuocThi,
       {
         method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
         headers: {
@@ -24,7 +24,7 @@ export const getExamPracticeDetail = async (MaCuocThi) => {
 export const checkAnswerExamPractice = async (MaLuyenThi, answerData) => {
   try {
     const res = await fetch(
-      MOCKUP_URL + `/pratice/xu-ly-cau-tra-loi-luyen-thi/` + MaLuyenThi,
+      CHAT_URL + `/pratice/xu-ly-cau-tra-loi-luyen-thi/` + MaLuyenThi,
       {
         method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
         headers: {
@@ -46,7 +46,7 @@ export const checkAnswerExamPractice = async (MaLuyenThi, answerData) => {
 export const finishedExamPractice = async (MaLuyenThi) => {
   try {
     const res = await fetch(
-      MOCKUP_URL + `/pratice/ket-thuc-phien-luyen-thi/` + MaLuyenThi,
+      CHAT_URL + `/pratice/ket-thuc-phien-luyen-thi/` + MaLuyenThi,
       {
         method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
         headers: {

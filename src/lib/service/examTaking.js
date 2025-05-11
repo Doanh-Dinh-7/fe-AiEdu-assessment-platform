@@ -1,9 +1,9 @@
-import { BASE_URL, MOCKUP_URL } from "../config/config";
+import { BASE_URL, MOCKUP_URL, CHAT_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getExamTakingDetail = async (MaCuocThi) => {
   try {
-    const res = await fetch(BASE_URL + `/exam/process/${MaCuocThi}/start`, {
+    const res = await fetch(CHAT_URL + `/exam/process/${MaCuocThi}/start`, {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const getExamTakingDetail = async (MaCuocThi) => {
 // sài URL MOCKUP
 export const checkAnswerExamTaking = async (MaCuocThi, answerData) => {
   try {
-    const res = await fetch(MOCKUP_URL + `/exam/process/${MaCuocThi}/answer`, {
+    const res = await fetch(CHAT_URL + `/exam/process/${MaCuocThi}/answer`, {
       method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const checkAnswerExamTaking = async (MaCuocThi, answerData) => {
 export const finishedExamTaking = async (MaCuocThi) => {
   try {
     const res = await fetch(
-      MOCKUP_URL + `/exam/process/${MaCuocThi}/complete`,
+      CHAT_URL + `/exam/process/${MaCuocThi}/complete`,
       {
         method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
         headers: {

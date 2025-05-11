@@ -1,9 +1,9 @@
-import { BASE_URL, MOCKUP_URL } from "../config/config";
+import { BASE_URL, MOCKUP_URL, CHAT_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getQuestionList = async (MaChuong) => {
   try {
-    const res = await fetch(BASE_URL + "/topic/exam/" + MaChuong, {
+    const res = await fetch(CHAT_URL + "/topic/exam/" + MaChuong, {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export const getQuestionList = async (MaChuong) => {
 
 export const createQuestion = async (MaChuong, questionData) => {
   try {
-    const res = await fetch(BASE_URL + "/topic/" + MaChuong + "/save", {
+    const res = await fetch(CHAT_URL + "/topic/" + MaChuong + "/save", {
       method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export const getQuestionSuggestion = async (
 ) => {
   try {
     const res = await fetch(
-      MOCKUP_URL +
+      CHAT_URL +
         "/chatbot/generate_bot_question/" +
         MaHocPhan +
         "_" +

@@ -1,8 +1,8 @@
-import { BASE_URL } from "../config/config";
+import { BASE_URL, CHAT_URL } from "../config/config";
 
 export const login = async (username, password) => {
   try {
-    const response = await fetch(BASE_URL + "/account/login", {
+    const response = await fetch(CHAT_URL + "/account/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -22,7 +22,7 @@ export const login = async (username, password) => {
 
 export const logout = async () => {
   try {
-    const response = await fetch(BASE_URL + "/account/logout", {
+    const response = await fetch(CHAT_URL + "/account/logout", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -40,7 +40,6 @@ export const logout = async () => {
 };
 
 export const checkResponse = async (response) => {
-
   if (!response.ok) {
     if (response.status === 401) {
       // Nếu mã lỗi là 401, xóa token và chuyển hướng đến trang đăng nhập

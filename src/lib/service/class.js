@@ -1,9 +1,9 @@
-import { BASE_URL } from "../config/config";
+import { BASE_URL, CHAT_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
 export const getClassList = async () => {
   try {
-    const res = await fetch(BASE_URL + "/academic/class", {
+    const res = await fetch(CHAT_URL + "/academic/class", {
       method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
       headers: {
         "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const getClassList = async () => {
 
 export const createClass = async (classData) => {
   try {
-    const res = await fetch(BASE_URL + "/academic/class", {
+    const res = await fetch(CHAT_URL + "/academic/class", {
       method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export const createClass = async (classData) => {
 
 export const updateClass = async (classData, MaLopHocPhan) => {
   try {
-    const res = await fetch(BASE_URL + "/academic/class/" + MaLopHocPhan, {
+    const res = await fetch(CHAT_URL + "/academic/class/" + MaLopHocPhan, {
       method: "PUT", // Nếu API cần gửi dữ liệu, hãy đặt method PUT
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export const updateClass = async (classData, MaLopHocPhan) => {
 
 export const deleteClass = async (MaLopHocPhan) => {
   try {
-    const res = await fetch(BASE_URL + "/academic/class/" + MaLopHocPhan, {
+    const res = await fetch(CHAT_URL + "/academic/class/" + MaLopHocPhan, {
       method: "DELETE", // Nếu API cần gửi dữ liệu, hãy đặt method DELETE
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export const deleteClass = async (MaLopHocPhan) => {
 export const getClassStudenList = async (MaLopHocPhan) => {
   try {
     const res = await fetch(
-      BASE_URL + "/academic/class/" + MaLopHocPhan + "/students",
+      CHAT_URL + "/academic/class/" + MaLopHocPhan + "/students",
       {
         method: "GET", // Nếu API cần gửi dữ liệu, hãy đặt method GET
         headers: {
@@ -95,7 +95,7 @@ export const getClassStudenList = async (MaLopHocPhan) => {
 export const importFileStudentList = async (MaLopHocPhan, fileStudentsData) => {
   try {
     const res = await fetch(
-      BASE_URL + "/academic/class/" + MaLopHocPhan + "/import_students",
+      CHAT_URL + "/academic/class/" + MaLopHocPhan + "/import_students",
       {
         method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
         credentials: "include",
