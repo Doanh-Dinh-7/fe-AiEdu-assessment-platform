@@ -12,7 +12,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { createCourse, updateCourse } from "../../controller/course";
+import { createCourse, updateCourse } from "../../service/course";
 import { useState } from "react";
 import useAutoResizeTextarea from "../../hooks/useAutoResizeTextarea";
 

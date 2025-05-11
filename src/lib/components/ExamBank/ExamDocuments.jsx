@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import AddDocumentModal from "./AddDocumentModal ";
-import { getDocumentChapter, updateChapter } from "../../controller/chapter";
+import { getDocumentChapter, updateChapter } from "../../service/chapter";
 
 // const initialDocs = [
 //   { stt: 1, name: "Nắng ấm xa dần", date: "16/02/2025" },

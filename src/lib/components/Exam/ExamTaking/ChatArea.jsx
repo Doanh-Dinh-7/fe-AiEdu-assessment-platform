@@ -1,7 +1,7 @@
 // lib/components/Exam/ExamTaking/ChatArea.jsx
 import { useEffect, useRef, useState } from "react";
 import { Box, Flex, Input, Button, Text } from "@chakra-ui/react";
-import { speechToText } from "../../../controller/speechToText";
+import { speechToText } from "../../../service/speechToText";
 import PropTypes from "prop-types";
 
 const ChatArea = ({

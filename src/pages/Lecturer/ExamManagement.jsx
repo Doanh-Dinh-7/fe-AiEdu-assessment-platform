@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { MdDocumentScanner } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
-import { deleteExam, getExamsList } from "../../lib/controller/examManagement";
+import { deleteExam, getExamsList } from "../../lib/service/examManagement";
 
 // const initialExams = [
 //   { stt: 1, name: "CSLT GK", time: "07:00", date: "20/04/2024" },

@@ -26,8 +26,8 @@ import {
 import { useEffect, useState } from "react";
 import { FaEye, FaUpload, FaEdit, FaTrash } from "react-icons/fa";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { getCourseDetail } from "../../controller/course";
-import { deleteChapter, updateChapter } from "../../controller/chapter";
+import { getCourseDetail } from "../../service/course";
+import { deleteChapter, updateChapter } from "../../service/chapter";
 
 // const data = [
 //   {

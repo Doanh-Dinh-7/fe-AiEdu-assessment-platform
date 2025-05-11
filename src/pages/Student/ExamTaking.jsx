@@ -10,7 +10,7 @@ import {
   getExamTakingDetail,
   checkAnswerExamTaking,
   finishedExamTaking,
-} from "../../lib/controller/examTaking";
+} from "../../lib/service/examTaking";
 
 // const mockQuestions = [
 //   {

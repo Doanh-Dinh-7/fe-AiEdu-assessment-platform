@@ -20,7 +20,7 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../controller/jwt";
+import { logout } from "../../service/jwt";
 import { useState } from "react";
 
 const Sidebar = () => {

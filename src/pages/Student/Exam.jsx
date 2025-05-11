@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDocumentScanner } from "react-icons/md";
 import ExamStartModal from "../../lib/components/Exam/ExamStartModal";
-import { getExamsStudentList } from "../../lib/controller/examStudent";
+import { getExamsStudentList } from "../../lib/service/examStudent";
 
 // const initialExams = [
 //   { stt: 1, name: "CSLT GK", time: "07:00", date: "20/04/2024" },

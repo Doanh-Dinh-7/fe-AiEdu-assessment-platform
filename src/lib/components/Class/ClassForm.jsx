@@ -12,8 +12,8 @@ import {
 import { Select } from "chakra-react-select";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { createClass, updateClass } from "../../controller/class";
-import { getCoursesList } from "../../controller/course";
+import { createClass, updateClass } from "../../service/class";
+import { getCoursesList } from "../../service/course";
 
 const ClassForm = () => {
   const navigate = useNavigate();

@@ -15,7 +15,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getExamDetail } from "../../controller/examManagement";
+import { getExamDetail } from "../../service/examManagement";
 import { useNavigate, useParams } from "react-router-dom";
 
 const ExamDetail = () => {

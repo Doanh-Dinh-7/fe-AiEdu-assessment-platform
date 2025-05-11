@@ -21,9 +21,9 @@ import {
   createExam,
   updateExam,
   getExamDetail,
-} from "../../controller/examManagement";
-import { getCoursesList, getCourseDetail } from "../../controller/course";
-import { getClassList } from "../../controller/class";
+} from "../../service/examManagement";
+import { getCoursesList, getCourseDetail } from "../../service/course";
+import { getClassList } from "../../service/class";
 
 // // Giả lập dữ liệu chương và lớp học phần (cần thay bằng API thực tế)
 // const mockChapters = [

@@ -13,10 +13,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import QuestionLevelBox from "./QuestionLevelBox";
-import {
-  createQuestion,
-  getQuestionSuggestion,
-} from "../../controller/question";
+import { createQuestion, getQuestionSuggestion } from "../../service/question";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const LEVELS = [
@@ -289,8 +286,8 @@ const CreateQuestion = () => {
                   const suggestion = await fetchSuggestion({
                     MucDo: level.toLowerCase(),
                   });
-                  if (suggestion && suggestion.CauHoi) {
-                    setQuestion(suggestion.CauHoi);
+                  if (suggestion && suggestion.content) {
+                    setQuestion(suggestion.content);
                   }
                 }}
               >
@@ -343,8 +340,8 @@ const CreateQuestion = () => {
                     MucDo: level.toLowerCase(),
                     CauHoi: question,
                   });
-                  if (suggestion && suggestion.DapAn) {
-                    setAnswer(suggestion.DapAn);
+                  if (suggestion && suggestion.content) {
+                    setAnswer(suggestion.content);
                   }
                 }}
               >
@@ -411,9 +408,9 @@ const CreateQuestion = () => {
                         CauHoi: question,
                         DapAn: answer,
                       });
-                      if (suggestion && suggestion.YChinh) {
+                      if (suggestion && suggestion.content) {
                         const updated = [...ideas];
-                        updated[idx].idea = suggestion.YChinh;
+                        updated[idx].idea = suggestion.content;
                         setIdeas(updated);
                       }
                     }}
@@ -474,9 +471,9 @@ const CreateQuestion = () => {
                             DapAn: answer,
                             YChinh: item.idea,
                           });
-                          if (suggestion && suggestion.CauHoiBoSung) {
+                          if (suggestion && suggestion.content) {
                             const updated = [...ideas];
-                            updated[idx].subQuestion = suggestion.CauHoiBoSung;
+                            updated[idx].subQuestion = suggestion.content;
                             setIdeas(updated);
                           }
                         }}
@@ -542,9 +539,9 @@ const CreateQuestion = () => {
                             YChinh: item.idea,
                             CauHoiBoSung: item.subQuestion,
                           });
-                          if (suggestion && suggestion.DapAnBoSung) {
+                          if (suggestion && suggestion.content) {
                             const updated = [...ideas];
-                            updated[idx].subAnswer = suggestion.DapAnBoSung;
+                            updated[idx].subAnswer = suggestion.content;
                             setIdeas(updated);
                           }
                         }}

@@ -9,7 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../lib/controller/jwt";
+import { login } from "../lib/service/jwt";
 import bgLogin from "../asset/images/bg-Login.jpeg";
 
 const LoginPage = () => {

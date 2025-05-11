@@ -24,7 +24,7 @@ import {
   getClassStudenList,
   importFileStudentList,
   updateClass,
-} from "../../controller/class";
+} from "../../service/class";
 
 // const initialStudents = [
 //   {

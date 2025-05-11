@@ -9,7 +9,7 @@ import {
   getExamPracticeDetail,
   checkAnswerExamPractice,
   finishedExamPractice,
-} from "../../lib/controller/examPratice";
+} from "../../lib/service/examPratice";
 
 // const mockQuestions = [
 //   {

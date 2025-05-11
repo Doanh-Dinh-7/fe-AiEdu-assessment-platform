@@ -17,7 +17,7 @@ import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import QuestionLevelBox from "./QuestionLevelBox";
-import { getQuestionList } from "../../controller/question"; // Đường dẫn đúng tới hàm API
+import { getQuestionList } from "../../service/question"; // Đường dẫn đúng tới hàm API
 
 // const questionData = [
 //   {

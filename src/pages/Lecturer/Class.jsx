@@ -15,8 +15,8 @@ import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import { getClassList } from "../../lib/controller/class";
-import { deleteClass } from "../../lib/controller/class";
+import { getClassList } from "../../lib/service/class";
+import { deleteClass } from "../../lib/service/class";
 
 // const initialClassData = [
 //   { stt: 1, id: "QTH-47K21.1", name: "CSLT", time: "123 T6", quantity: 30 },

@@ -16,7 +16,7 @@ import {
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getCoursesList, deleteCourse } from "../../lib/controller/course";
+import { getCoursesList, deleteCourse } from "../../lib/service/course";
 
 // const initialData = [
 //   { stt: 1, hocPhan: "Quản trị học", tinChi: 3, ngayTao: "12/04/2025" },

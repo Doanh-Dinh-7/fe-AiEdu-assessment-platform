@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { FaEye } from "react-icons/fa";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getExamResult } from "../../controller/examManagement";
+import { getExamResult } from "../../service/examManagement";
 import { useEffect, useState } from "react";
 
 // const examInfo = {

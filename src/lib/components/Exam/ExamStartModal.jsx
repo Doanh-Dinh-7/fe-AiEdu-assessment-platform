@@ -19,7 +19,7 @@ import {
   getExamsStudentDetail,
   joinExam,
   joinPracticeExam,
-} from "../../controller/examStudent";
+} from "../../service/examStudent";
 
 const ExamStartModal = ({ isOpen, onClose, maCuocThi, mode = "exam" }) => {
   const location = useLocation();
