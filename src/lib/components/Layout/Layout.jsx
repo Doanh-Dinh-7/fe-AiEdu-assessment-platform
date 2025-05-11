@@ -70,7 +70,7 @@ const Layout = () => {
           borderTopRadius="12px"
           boxShadow="0 -2px 6px rgba(0,0,0,0.04)"
         >
-          Copyright © 2025 by ... v1.0.0
+          Copyright © 2025 by Dragon Team {"        "} v1.0.0
         </Box>
         {showProgress && (
           <Box
