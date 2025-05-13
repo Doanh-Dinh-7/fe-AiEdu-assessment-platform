@@ -62,7 +62,7 @@ const ResultTable = ({ examHistory }) => {
             </Td>
             <Td color="success">
               {examHistory.CauHoi.reduce(
-                (sum, q) => sum + (q.TongDiemToiDa || 0),
+                (sum, q) => sum + (q.MaCauBoSung ? 0 : q.TongDiemToiDa || 0),
                 0
               )}
             </Td>
