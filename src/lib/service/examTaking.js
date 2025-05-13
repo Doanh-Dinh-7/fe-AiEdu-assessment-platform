@@ -26,7 +26,7 @@ export const checkAnswerExamTaking = async (MaCuocThi, answerData) => {
       headers: {
         "Content-Type": "application/json",
       },
-      // credentials: "include",
+      credentials: "include",
       body: JSON.stringify(answerData),
     });
     const data = await checkResponse(res);
@@ -47,7 +47,7 @@ export const finishedExamTaking = async (MaCuocThi) => {
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: "include",
+        credentials: "include",
       }
     );
     const data = await checkResponse(res);

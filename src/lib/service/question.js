@@ -54,7 +54,7 @@ export const getQuestionSuggestion = async (
           "Content-Type": "application/json",
         },
         body: JSON.stringify(questionData),
-        // credentials: "include",
+        credentials: "include",
       }
     );
     const data = await checkResponse(res);

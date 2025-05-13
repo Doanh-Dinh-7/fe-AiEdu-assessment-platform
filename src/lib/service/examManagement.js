@@ -97,7 +97,7 @@ export const getExamResult = async (MaCuocThi) => {
       headers: {
         "Content-Type": "application/json",
       },
-      // credentials: "include",
+      credentials: "include",
     });
     const data = await checkResponse(res);
 
@@ -117,7 +117,7 @@ export const getExamResultDetail = async (MaCuocThi, MaSinhVien) => {
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: "include",
+        credentials: "include",
       }
     );
     const data = await checkResponse(res);
