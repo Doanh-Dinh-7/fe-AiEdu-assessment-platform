@@ -117,9 +117,10 @@ const CreateQuestion = () => {
   const fetchSuggestion = async (body) => {
     try {
       const res = await getQuestionSuggestion(maHocPhan, maChuong, body);
-      if (Array.isArray(res) && res.length > 0) {
-        console.log("res", res[0]);
-        return res[0];
+      
+      if (res) {
+        console.log("res", res);
+        return res;
       }
 
       return null;
