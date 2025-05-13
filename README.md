@@ -189,20 +189,22 @@ fe-AiEdu-assessment-platform/
 ## Đóng góp
 
 ### Người thực hiện dự án chung:
-<div w="100" style="text-align: center;"> 
+
+<p align="center">
   <a href="https://github.com/Doanh-Dinh-7">
-    <img src="https://avatars.githubusercontent.com/u/126660014?v=4" width="50" style="border-radius: 50%;"/>
+    <img src="https://avatars.githubusercontent.com/u/126660014?v=4" width="77" style="border-radius: 50%;"/>
   </a>
   <a href="https://github.com/heellworld">
-    <img src="https://avatars.githubusercontent.com/u/121366474?v=4" width="50" style="border-radius: 50%;"/>
+    <img src="https://avatars.githubusercontent.com/u/121366474?v=4" width="77" style="border-radius: 50%;"/>
   </a>
   <a href="https://github.com/qanngyen">
-    <img src="https://avatars.githubusercontent.com/u/126125030?v=4" width="50" style="border-radius: 50%;"/>
+    <img src="https://avatars.githubusercontent.com/u/126125030?v=4" width="77" style="border-radius: 50%;"/>
   </a>
   <a href="https://github.com/BaoPhuongPham">
-    <img src="https://avatars.githubusercontent.com/u/122434056?v=4" width="50" style="border-radius: 50%;"/>
+    <img src="https://avatars.githubusercontent.com/u/122434056?v=4" width="77" style="border-radius: 50%;"/>
   </a>
-</div>
+</p>
+
 Chúng tôi rất hoan nghênh mọi đóng góp từ cộng đồng. Nếu bạn muốn đóng góp, vui lòng:
 
 1. Fork repository
