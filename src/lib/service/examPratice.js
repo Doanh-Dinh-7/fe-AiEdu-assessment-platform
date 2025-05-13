@@ -30,7 +30,7 @@ export const checkAnswerExamPractice = async (MaLuyenThi, answerData) => {
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: "include",
+        credentials: "include",
         body: JSON.stringify(answerData),
       }
     );
@@ -52,7 +52,7 @@ export const finishedExamPractice = async (MaLuyenThi) => {
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: "include",
+        credentials: "include",
       }
     );
     const data = await checkResponse(res);
