@@ -21,7 +21,7 @@ export default defineConfig({
     strictPort: true,
     cors: true,
     allowedHosts: [
-      "jr-suit-also-dc.trycloudflare.com",
+      "theoretical-almost-motherboard-passport.trycloudflare.com",
       '*'
     ] // Thêm địa chỉ ngrok cụ thể
   }

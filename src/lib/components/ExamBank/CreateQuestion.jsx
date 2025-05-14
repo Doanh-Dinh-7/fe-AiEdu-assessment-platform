@@ -117,11 +117,14 @@ const CreateQuestion = () => {
   const fetchSuggestion = async (body) => {
     try {
       const res = await getQuestionSuggestion(maHocPhan, maChuong, body);
-      if (Array.isArray(res) && res.length > 0) {
-        console.log("res", res[0]);
-        return res[0];
+      console.log("res", res);
+      // if (Array.isArray(res) && res.length > 0) {
+      //   console.log("res", res[0]);
+      //   return res[0];
+      // }
+      if (res && res.content) {
+        return res;
       }
-
       return null;
     } catch (error) {
       toast({
