@@ -12,6 +12,9 @@ AiEdu Assessment Platform là một nền tảng hỗ trợ thi vấn đáp thô
 - Phân tích và báo cáo kết quả chi tiết
 - Hỗ trợ nhiều định dạng câu hỏi khác nhau
 
+## Backend: 
+💽[Hệ thống Chatbot Hỗ trợ Thi Vấn Đáp](https://github.com/heellworld/oral-exam-chatbot-.git)💽
+
 ## Giao diện
 ### GIẢNG VIÊN
 <table width="100%">
