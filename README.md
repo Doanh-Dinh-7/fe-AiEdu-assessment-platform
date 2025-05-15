@@ -1,5 +1,7 @@
 # AiEdu Assessment Platform - Nền tảng hỗ trợ thi vấn đáp thông minh
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Mô tả
 AiEdu Assessment Platform là một nền tảng hỗ trợ thi vấn đáp thông minh, được phát triển để tối ưu hóa quá trình đánh giá và kiểm tra vấn đáp trong môi trường giáo dục. Nền tảng này kết hợp sức mạnh của AI để tạo ra trải nghiệm thi cử hiệu quả và công bằng cho cả giảng viên và sinh viên.
 
