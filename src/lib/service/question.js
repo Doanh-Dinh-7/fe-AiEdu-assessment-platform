@@ -43,11 +43,7 @@ export const getQuestionSuggestion = async (
 ) => {
   try {
     const res = await fetch(
-      CHAT_URL +
-        "/chatbot/generate_bot_question/" +
-        MaHocPhan +
-        "_" +
-        MaChuong,
+      CHAT_URL + "/chatbot/generate_bot_question/" + MaHocPhan + "_" + MaChuong,
       {
         method: "POST",
         headers: {
@@ -61,5 +57,22 @@ export const getQuestionSuggestion = async (
     return data;
   } catch (error) {
     console.log("Lỗi khi lấy gợi ý câu hỏi:", error);
+  }
+};
+
+export const deleteQuestion = async (MaCauHoi) => {
+  try {
+    const res = await fetch(CHAT_URL + "/topic/exam/" + MaCauHoi, {
+      method: "DELETE", // Nếu API cần gửi dữ liệu, hãy đặt method GET
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const data = await checkResponse(res);
+
+    return data;
+  } catch (error) {
+    console.log("Lỗi khi xóa câu hỏi:", error);
   }
 };

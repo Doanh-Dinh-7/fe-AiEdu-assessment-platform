@@ -12,12 +12,13 @@ import {
   Center,
   Spinner,
   IconButton,
+  useToast,
 } from "@chakra-ui/react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import QuestionLevelBox from "./QuestionLevelBox";
-import { getQuestionList } from "../../service/question"; // Đường dẫn đúng tới hàm API
+import { deleteQuestion, getQuestionList } from "../../service/question"; // Đường dẫn đúng tới hàm API
 
 // const questionData = [
 //   {
@@ -50,6 +51,7 @@ const ExamQuestion = () => {
   const [tenChuong, setTenChuong] = useState("");
   const [questionData, setQuestionData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const toast = useToast();
 
   useEffect(() => {
     if (!maChuong) return;
@@ -81,6 +83,25 @@ const ExamQuestion = () => {
         hard: countLevel("khó"),
       },
     });
+  };
+
+  const handleDeleteQuestion = async (MaCauHoi) => {
+    const confirm = window.confirm("Bạn có chắc chắn muốn xóa câu hỏi này?");
+    if (confirm) {
+      try {
+        const res = await deleteQuestion(MaCauHoi);
+        if (!res) {
+          throw new Error("Lỗi khi xóa câu hỏi");
+        }
+        toast({
+          title: "Thành công",
+          description: "Câu hỏi đã được xóa thành công",
+          status: "success",
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   return loading ? (
@@ -238,6 +259,7 @@ const ExamQuestion = () => {
                     _hover={{ bg: "#F9BDB6" }}
                     variant="ghost"
                     ml={2}
+                    onClick={() => handleDeleteQuestion(q.MaCauHoi)}
                   />
                 </Td>
               </Tr>
