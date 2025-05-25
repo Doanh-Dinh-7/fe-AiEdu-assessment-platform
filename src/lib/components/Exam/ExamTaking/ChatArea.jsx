@@ -1,8 +1,11 @@
 // lib/components/Exam/ExamTaking/ChatArea.jsx
 import { useEffect, useRef, useState } from "react";
-import { Box, Flex, Input, Button, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, Textarea, IconButton } from "@chakra-ui/react";
 import { speechToText } from "../../../service/speechToText";
 import PropTypes from "prop-types";
+import useAutoResizeTextarea from "../../../hooks/useAutoResizeTextarea";
+import { FaMicrophone, FaStop } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const ChatArea = ({
   messages,
@@ -15,10 +18,14 @@ const ChatArea = ({
   const ref = useRef(null);
   const [isRecording, setIsRecording] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { textareaRef } = useAutoResizeTextarea(input);
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
+      ref.current.scrollTo({
+        top: ref.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [messages]);
 
@@ -44,14 +51,14 @@ const ChatArea = ({
     <Box display="flex" alignItems="center" ml={2}>
       <Box
         as="span"
-        w="12px"
-        h="12px"
+        w={3}
+        h={3}
         borderRadius="full"
-        bg="red.500"
+        bg="error.500"
         animation="blinker 1s linear infinite"
         mr={2}
       />
-      <Text color="red.500" fontWeight="bold" fontSize="sm">
+      <Text color="error.500" fontWeight="bold" fontSize="sm">
         Đang ghi âm...
       </Text>
       <style>{`
@@ -64,47 +71,46 @@ const ChatArea = ({
 
   return (
     <Box
+      ref={ref}
       display="flex"
       flexDirection="column"
       justifyContent="flex-end"
-      h={{ base: "60vh", md: "70vh" }}
+      flex="1"
+      h={{ base: "60vh", md: "80vh" }}
       minH="320px"
-      maxH="70vh"
+      maxH="80vh"
       bg="surface"
-      borderRadius="12px"
-      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+      borderRadius="md"
+      boxShadow="md"
       p={{ base: 2, md: 4 }}
     >
-      <Box
-        ref={ref}
-        flex={1}
-        overflowY="auto"
-        mb={2}
-        px={2}
-        maxH={{ base: "40vh", md: "50vh" }}
-        minH="180px"
-        transition="max-height 0.2s"
-      >
+      <Box flex={1} overflowY="auto" mb={4} px={2}>
         {messages.map((msg, idx) => (
-          <Flex
+          <motion.div
             key={idx}
-            justify={msg.sender === "user" ? "flex-end" : "flex-start"}
-            mb={3}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: idx * 0.05 }}
           >
-            <Box
-              bg={msg.sender === "user" ? "blue.100" : "gray.200"}
-              px={4}
-              py={2}
-              borderRadius="xl"
-              maxW="70%"
-              boxShadow="md"
+            <Flex
+              justify={msg.sender === "user" ? "flex-end" : "flex-start"}
+              mb={3}
             >
-              <Text fontSize="md">{msg.text}</Text>
-              <Text fontSize="xs" color="gray.500" mt={1} textAlign="right">
-                {msg.time}
-              </Text>
-            </Box>
-          </Flex>
+              <Box
+                bg={msg.sender === "user" ? "brand.100" : "gray.100"}
+                px={4}
+                py={2}
+                borderRadius="xl"
+                maxW="70%"
+                boxShadow="sm"
+              >
+                <Text fontSize="md">{msg.text}</Text>
+                <Text fontSize="xs" color="gray.500" mt={1} textAlign="right">
+                  {msg.time}
+                </Text>
+              </Box>
+            </Flex>
+          </motion.div>
         ))}
       </Box>
 
@@ -114,41 +120,51 @@ const ChatArea = ({
           e.preventDefault();
           if (!disabled) onSend();
         }}
-        alignItems="center"
-        mt={2}
+        alignItems="flex-end"
+        mt={4}
       >
-        <Input
+        <Textarea
+          ref={textareaRef}
           placeholder="Nhập câu trả lời..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           isDisabled={disabled}
-          bg="white"
-          borderRadius="12px"
-          fontSize="15px"
+          maxH="40vh"
         />
         {isRecording && <RecordingIndicator />}
-        <Button
+        <IconButton
           ml={2}
           colorScheme={isRecording ? "red" : "teal"}
           isLoading={loading}
           onClick={handleSpeechToText}
           type="button"
           isDisabled={disabled}
-          borderRadius="12px"
-        >
-          {isRecording ? "Kết thúc" : "Ghi âm"}
-        </Button>
-        <Button
+          borderRadius="md"
+          fontWeight="medium"
+          icon={isRecording ? <FaStop /> : <FaMicrophone />}
+          aria-label={isRecording ? "Kết thúc ghi âm" : "Bắt đầu ghi âm"}
+          _active={{
+            transform: "scale(0.95)",
+            bgColor: isRecording ? "red.600" : "teal.600",
+          }}
+        />
+        <IconButton
           type="submit"
           ml={2}
-          colorScheme="blue"
+          bg="accent.500"
+          _hover={{ bg: "accent.600" }}
+          _active={{
+            transform: "scale(0.95)",
+            bgColor: "accent.600",
+          }}
           isDisabled={disabled}
-          borderRadius="12px"
+          borderRadius="md"
+          fontWeight="medium"
         >
-          <Box as="span" fontSize="xl">
+          <Box as="span" colorScheme="accent" fontSize="xl">
             &#8593;
           </Box>
-        </Button>
+        </IconButton>
       </Flex>
     </Box>
   );

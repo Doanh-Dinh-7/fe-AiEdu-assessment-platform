@@ -11,6 +11,8 @@ import {
   Button,
   useToast,
   Spinner,
+  Box,
+  IconButton,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
@@ -58,7 +60,7 @@ const Exam = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
     </Center>
   ) : (
     <Flex
@@ -66,7 +68,7 @@ const Exam = () => {
       direction="column"
       align="center"
       pt={8}
-      bg="#F2F4F8"
+      bg="background"
       fontFamily="Inter, sans-serif"
     >
       <Flex
@@ -75,19 +77,19 @@ const Exam = () => {
         justify="space-between"
         align="center"
         mb={8}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="20px"
+            fontSize="xl"
             textAlign="center"
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Danh sách bài thi
@@ -95,53 +97,54 @@ const Exam = () => {
         </Center>
       </Flex>
 
-      <Flex
+      <Box
         w="100%"
         maxW="1200px"
-        direction="column"
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={6}
         py={6}
       >
-        <Table
-          variant="simple"
-          size="md"
-          bg="transparent"
-          borderRadius="12px"
-          overflow="hidden"
-        >
-          <Thead bg="#F2F4F8">
+        <Table variant="simple" size="md">
+          <Thead bg="background">
             <Tr>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 STT
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Tên bài thi
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Giờ thi
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Ngày thi
               </Th>
-              <Th textAlign="center"></Th>
-              <Th textAlign="center"></Th>
+              <Th
+                textAlign="center"
+                fontWeight="bold"
+                fontSize="sm"
+                color="textSecondary"
+              >
+                Luyện thi
+              </Th>
+              <Th
+                textAlign="center"
+                fontWeight="bold"
+                fontSize="sm"
+                color="textSecondary"
+              >
+                Thi
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
             {exams.map((exam, idx) => (
-              <Tr
-                key={exam.ma_cuoc_thi}
-                _hover={{ bg: "#F2F4F8" }}
-                fontSize="15px"
-                borderRadius="12px"
-                transition="background 0.2s"
-              >
-                <Td color="#1C1C1C">{idx + 1}</Td>
-                <Td color="#1C1C1C">{exam.ten_cuoc_thi}</Td>
-                <Td color="#1C1C1C">
+              <Tr key={exam.ma_cuoc_thi} _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">{idx + 1}</Td>
+                <Td color="textPrimary">{exam.ten_cuoc_thi}</Td>
+                <Td color="textPrimary">
                   {exam.thoi_gian_bat_dau
                     ? new Date(exam.thoi_gian_bat_dau).toLocaleTimeString(
                         "vi-VN",
@@ -149,7 +152,7 @@ const Exam = () => {
                       )
                     : ""}
                 </Td>
-                <Td color="#1C1C1C">
+                <Td color="textPrimary">
                   {exam.thoi_gian_bat_dau
                     ? new Date(exam.thoi_gian_bat_dau).toLocaleDateString(
                         "vi-VN"
@@ -158,10 +161,10 @@ const Exam = () => {
                 </Td>
                 <Td textAlign="center">
                   {exam.trang_thai_luyen_thi === "có" && (
-                    <Button
-                      leftIcon={<FaEdit />}
+                    <IconButton
+                      icon={<FaEdit />}
                       size="sm"
-                      borderRadius="999px"
+                      borderRadius="full"
                       bg="#FFF7E0"
                       color="#FBBC05"
                       fontWeight="bold"
@@ -174,21 +177,20 @@ const Exam = () => {
                           mode: "practice",
                         })
                       }
-                    >
-                      Luyện thi
-                    </Button>
+                      aria-label="Luyện thi"
+                    />
                   )}
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<MdDocumentScanner />}
+                  <IconButton
+                    icon={<MdDocumentScanner />}
                     size="sm"
-                    borderRadius="999px"
-                    bg="#E6F4EA"
-                    color="#34A853"
+                    borderRadius="full"
+                    bg="#E3F0FC"
+                    color="#4A90E2"
                     fontWeight="bold"
-                    _hover={{ bg: "#B7E6C6" }}
-                    variant="solid"
+                    _hover={{ bg: "#B3D6F7" }}
+                    variant="ghost"
                     onClick={() =>
                       setStartModal({
                         isOpen: true,
@@ -196,15 +198,14 @@ const Exam = () => {
                         mode: "exam",
                       })
                     }
-                  >
-                    Thi
-                  </Button>
+                    aria-label="Thi"
+                  />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
-      </Flex>
+      </Box>
       <ExamStartModal
         isOpen={startModal.isOpen}
         onClose={() =>

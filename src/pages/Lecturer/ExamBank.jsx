@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   Thead,
   Tbody,
@@ -12,6 +11,7 @@ import {
   Spinner,
   useToast,
   Box,
+  IconButton,
 } from "@chakra-ui/react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -98,14 +98,14 @@ const ExamBank = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
     </Center>
   ) : (
     <Flex
       minH="100vh"
       direction="column"
       align="center"
-      bg="#F2F4F8"
+      bg="background"
       pt={8}
       fontFamily="Inter, sans-serif"
     >
@@ -115,69 +115,60 @@ const ExamBank = () => {
         justify="space-between"
         align="center"
         mb={8}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="20px"
+            fontSize="xl"
             textAlign="center"
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Ngân hàng đề thi
           </Heading>
         </Center>
-        <Button
-          bg="#4A90E2"
-          color="#fff"
-          borderRadius="999px"
+        <IconButton
+          icon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
+          colorScheme="brand"
+          borderRadius="full"
           px={8}
           py={2}
           fontWeight="bold"
-          fontSize="16px"
-          boxShadow="0 2px 8px rgba(74,144,226,0.08)"
-          _hover={{ bg: "#357ABD" }}
+          fontSize="md"
+          boxShadow="md"
           onClick={() => handleNavigateForm("create")}
-          leftIcon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
-        >
-          Thêm
-        </Button>
+          variant="ghost"
+          aria-label="Thêm"
+        />
       </Flex>
       <Box
         w="100%"
         maxW="1200px"
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={6}
         py={6}
       >
-        <Table
-          variant="simple"
-          size="md"
-          w="100%"
-          bg="transparent"
-          borderRadius="12px"
-          overflow="hidden"
-        >
-          <Thead bg="#F2F4F8">
+        <Table variant="simple" size="md" w="100%">
+          <Thead bg="background">
             <Tr>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 STT
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Học phần
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Số tín chỉ
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Ngày tạo
               </Th>
               <Th textAlign="center"> </Th>
@@ -187,21 +178,16 @@ const ExamBank = () => {
           </Thead>
           <Tbody>
             {courses.map((course, index) => (
-              <Tr
-                key={course.MaHocPhan}
-                _hover={{ bg: "#F2F4F8" }}
-                borderRadius="12px"
-                transition="background 0.2s"
-              >
-                <Td color="#1C1C1C">{index + 1}</Td>
-                <Td color="#1C1C1C">{course.TenHocPhan}</Td>
-                <Td color="#1C1C1C">{course.SoTinChi}</Td>
-                <Td color="#1C1C1C">{course.NgayTao}</Td>
+              <Tr key={course.MaHocPhan} _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">{index + 1}</Td>
+                <Td color="textPrimary">{course.TenHocPhan}</Td>
+                <Td color="textPrimary">{course.SoTinChi}</Td>
+                <Td color="textPrimary">{course.NgayTao}</Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaEye />}
+                  <IconButton
+                    icon={<FaEye />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#E3F0FC"
                     color="#4A90E2"
                     fontWeight="bold"
@@ -210,30 +196,30 @@ const ExamBank = () => {
                     onClick={() =>
                       navigate(`${location.pathname}/${course.MaHocPhan}`)
                     }
-                  >
-                    Xem chi tiết
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xem chi tiết"
+                  />
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaEdit />}
+                  <IconButton
+                    icon={<FaEdit />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FFF7E0"
                     color="#FBBC05"
                     fontWeight="bold"
                     _hover={{ bg: "#FFE6A1" }}
                     variant="ghost"
                     onClick={() => handleNavigateForm("edit", course)}
-                  >
-                    Sửa
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Sửa học phần"
+                  />
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaTrash />}
+                  <IconButton
+                    icon={<FaTrash />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FDE8E6"
                     color="#EA4335"
                     fontWeight="bold"
@@ -242,9 +228,9 @@ const ExamBank = () => {
                     onClick={() =>
                       handleDeleteCourse(course.MaHocPhan, course.TenHocPhan)
                     }
-                  >
-                    Xóa
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xóa học phần"
+                  />
                 </Td>
               </Tr>
             ))}

@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   Thead,
   Tbody,
@@ -10,6 +9,8 @@ import {
   Flex,
   Heading,
   Spinner,
+  Box,
+  IconButton,
 } from "@chakra-ui/react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useState, useEffect } from "react";
@@ -96,7 +97,7 @@ const Class = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
     </Center>
   ) : (
     <Flex
@@ -104,7 +105,7 @@ const Class = () => {
       direction="column"
       align="center"
       pt={8}
-      bg="#F2F4F8"
+      bg="background"
       fontFamily="Inter, sans-serif"
     >
       <Flex
@@ -113,69 +114,60 @@ const Class = () => {
         justify="space-between"
         align="center"
         mb={8}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="20px"
+            fontSize="xl"
             textAlign="center"
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Danh sách lớp học phần
           </Heading>
         </Center>
-        <Button
-          bg="#4A90E2"
-          color="#fff"
-          borderRadius="999px"
+        <IconButton
+          icon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
+          colorScheme="brand"
+          borderRadius="full"
           px={8}
           py={2}
           fontWeight="bold"
-          fontSize="16px"
-          boxShadow="0 2px 8px rgba(74,144,226,0.08)"
-          _hover={{ bg: "#357ABD" }}
+          fontSize="md"
+          boxShadow="md"
           onClick={() => handleNavigateForm("create")}
-          leftIcon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
-        >
-          Thêm
-        </Button>
+          variant="ghost"
+          aria-label="Thêm lớp học phần"
+        />
       </Flex>
-      <Flex
+      <Box
         w="100%"
         maxW="1200px"
-        direction="column"
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={6}
         py={6}
       >
-        <Table
-          variant="simple"
-          size="md"
-          bg="transparent"
-          borderRadius="12px"
-          overflow="hidden"
-        >
-          <Thead bg="#F2F4F8">
+        <Table variant="simple" size="md">
+          <Thead bg="background">
             <Tr>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 STT
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Tên lớp học phần
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Thời gian
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Số lượng
               </Th>
               <Th textAlign="center"></Th>
@@ -185,67 +177,61 @@ const Class = () => {
           </Thead>
           <Tbody>
             {classes.map((clas, index) => (
-              <Tr
-                key={clas.MaLopHocPhan}
-                _hover={{ bg: "#F2F4F8" }}
-                fontSize="15px"
-                borderRadius="12px"
-                transition="background 0.2s"
-              >
-                <Td color="#1C1C1C">{index + 1}</Td>
-                <Td color="#1C1C1C">{clas.TenLopHocPhan}</Td>
-                <Td color="#1C1C1C">{clas.ThoiGianHoc}</Td>
-                <Td color="#1C1C1C">{clas.SoLuongThamGia}</Td>
+              <Tr key={clas.MaLopHocPhan} _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">{index + 1}</Td>
+                <Td color="textPrimary">{clas.TenLopHocPhan}</Td>
+                <Td color="textPrimary">{clas.ThoiGianHoc}</Td>
+                <Td color="textPrimary">{clas.SoLuongThamGia}</Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaEye />}
+                  <IconButton
+                    icon={<FaEye />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#E3F0FC"
                     color="#4A90E2"
                     fontWeight="bold"
                     _hover={{ bg: "#B3D6F7" }}
                     variant="ghost"
                     onClick={() => navigate(`/class/${clas.MaLopHocPhan}`)}
-                  >
-                    Xem
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xem chi tiết lớp học phần"
+                  />
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaEdit />}
+                  <IconButton
+                    icon={<FaEdit />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FFF7E0"
                     color="#FBBC05"
                     fontWeight="bold"
                     _hover={{ bg: "#FFE6A1" }}
                     variant="ghost"
                     onClick={() => handleNavigateForm("edit", clas)}
-                  >
-                    Sửa
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Sửa lớp học phần"
+                  />
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaTrash />}
+                  <IconButton
+                    icon={<FaTrash />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FDE8E6"
                     color="#EA4335"
                     fontWeight="bold"
                     _hover={{ bg: "#F9BDB6" }}
                     variant="ghost"
                     onClick={() => handleDeleteClass(clas.MaLopHocPhan)}
-                  >
-                    Xóa
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xóa lớp học phần"
+                  />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
-      </Flex>
+      </Box>
     </Flex>
   );
 };

@@ -13,8 +13,10 @@ const FinishModal = ({ isOpen, onConfirm, onCancel }) => (
   <Modal isOpen={isOpen} onClose={() => {}} isCentered>
     <ModalOverlay />
     <ModalContent>
-      <ModalHeader>Xác nhận hoàn thành bài thi</ModalHeader>
-      <ModalBody>
+      <ModalHeader color="textPrimary" fontWeight="bold">
+        Xác nhận hoàn thành bài thi
+      </ModalHeader>
+      <ModalBody color="textSecondary">
         Vui lòng kiểm tra câu trả lời và xác nhận hoàn thành bài thi
       </ModalBody>
       <ModalFooter>

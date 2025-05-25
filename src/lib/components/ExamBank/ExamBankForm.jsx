@@ -10,6 +10,7 @@ import {
   FormErrorMessage,
   FormControl,
   Spinner,
+  Box,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createCourse, updateCourse } from "../../service/course";
@@ -105,14 +106,14 @@ const ExamBankForm = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
     </Center>
   ) : (
     <Flex
       minH="100vh"
       direction="column"
       align="center"
-      bg="#F2F4F8"
+      bg="background"
       pt={8}
       fontFamily="Inter, sans-serif"
     >
@@ -122,18 +123,18 @@ const ExamBankForm = () => {
         justify="space-between"
         align="center"
         mb={8}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
-            fontSize="20px"
+            fontSize="xl"
             mb={2}
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             {mode === "edit" ? "Cập nhật" : "Tạo"} ngân hàng đề thi{" "}
@@ -141,72 +142,109 @@ const ExamBankForm = () => {
           </Heading>
         </Center>
       </Flex>
-      <Flex
+      <Box
         w="100%"
         maxW="1200px"
-        direction="column"
-        gap={4}
-        mb={2}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Flex direction="column" gap={4}>
-          <Flex wrap="wrap" gap={4} align="center">
-            <Text fontWeight="bold">Học phần:</Text>
+          <Flex wrap="wrap" gap={6} align="center">
+            <Text fontWeight="semibold" fontSize="sm" color="textSecondary">
+              Học phần:
+            </Text>
             <Input
               name="TenHocPhan"
               value={formData.TenHocPhan}
               onChange={handleChange}
               size="sm"
               w="180px"
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontWeight="medium"
-              color="#1C1C1C"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "brand.500",
+                boxShadow: "outline",
+              }}
             />
-            <Text fontWeight="bold">Số tín chỉ:</Text>
+            <Text fontWeight="semibold" fontSize="sm" color="textSecondary">
+              Số tín chỉ:
+            </Text>
             <Input
               name="SoTinChi"
               value={formData.SoTinChi}
               onChange={handleChange}
               size="sm"
               w="80px"
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontWeight="medium"
-              color="#1C1C1C"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "brand.500",
+                boxShadow: "outline",
+              }}
             />
           </Flex>
-          <Flex wrap="wrap" gap={4} align="center">
-            <Text fontWeight="bold">Tổng số câu hỏi:</Text>
+          <Flex wrap="wrap" gap={6} align="center">
+            <Text fontWeight="semibold" fontSize="sm" color="textSecondary">
+              Tổng số câu hỏi:
+            </Text>
             <Input
               name="TongSoCau"
               value={formData.TongSoCau}
               onChange={handleChange}
               size="sm"
               w="80px"
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontWeight="medium"
-              color="#1C1C1C"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "brand.500",
+                boxShadow: "outline",
+              }}
             />
             <Flex>
               <FormControl isInvalid={!!chapterError}>
-                <Flex gap={4} align="center">
-                  <Text fontWeight="bold">Số chương:</Text>
+                <Flex gap={6} align="center">
+                  <Text
+                    fontWeight="semibold"
+                    fontSize="sm"
+                    color="textSecondary"
+                  >
+                    Số chương:
+                  </Text>
                   <Input
                     name="SoChuong"
                     value={formData.SoChuong}
                     onChange={handleChange}
                     size="sm"
                     w="80px"
-                    borderRadius="12px"
-                    bg="#F2F4F8"
-                    fontWeight="medium"
-                    color="#1C1C1C"
+                    borderRadius="md"
+                    bg="background"
+                    fontSize="sm"
+                    boxShadow="sm"
+                    borderColor="border"
+                    color="textPrimary"
+                    _placeholder={{ color: "textSecondary" }}
+                    _focus={{
+                      borderColor: "brand.500",
+                      boxShadow: "outline",
+                    }}
                     isInvalid={!!chapterError}
                   />
                   <FormErrorMessage>{chapterError}</FormErrorMessage>
@@ -214,67 +252,91 @@ const ExamBankForm = () => {
               </FormControl>
             </Flex>
           </Flex>
-          <Flex wrap="wrap" gap={4} align="center">
-            <Text fontWeight="bold">Hình thức thi:</Text>
+          <Flex wrap="wrap" gap={6} align="center">
+            <Text fontWeight="semibold" fontSize="sm" color="textSecondary">
+              Hình thức thi:
+            </Text>
             <Input
               name="HinhThucThi"
               value={formData.HinhThucThi}
               onChange={handleChange}
               size="sm"
               w="180px"
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontWeight="medium"
-              color="#1C1C1C"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "brand.500",
+                boxShadow: "outline",
+              }}
             />
-            <Text fontWeight="bold">Bậc đào tạo:</Text>
+            <Text fontWeight="semibold" fontSize="sm" color="textSecondary">
+              Bậc đào tạo:
+            </Text>
             <Input
               name="BacDaoTao"
               value={formData.BacDaoTao}
               onChange={handleChange}
               size="sm"
               w="180px"
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontWeight="medium"
-              color="#1C1C1C"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "brand.500",
+                boxShadow: "outline",
+              }}
             />
           </Flex>
         </Flex>
-        <Flex direction="column" gap={2}>
-          <Text fontWeight="bold">Mô tả:</Text>
+        <Flex direction="column" gap={2} mt={4}>
+          <Text fontWeight="semibold" fontSize="sm" color="textSecondary">
+            Mô tả:
+          </Text>
           <Textarea
             ref={textareaRef}
             name="MoTaHocPhan"
-            bg="#F2F4F8"
+            bg="background"
             p={3}
-            borderRadius="12px"
+            borderRadius="md"
             fontSize="sm"
-            whiteSpace="pre-line"
+            boxShadow="sm"
+            borderColor="border"
+            color="textPrimary"
+            _placeholder={{ color: "textSecondary" }}
+            _focus={{
+              borderColor: "brand.500",
+              boxShadow: "outline",
+            }}
             value={formData.MoTaHocPhan}
-            color="#1C1C1C"
-            fontWeight="medium"
             onChange={handleChange}
           />
         </Flex>
-      </Flex>
-      <Flex w="100%" maxW="1200px" justify="flex-end" align="center" mb={6}>
-        <Button
-          mt={4}
-          ml={4}
-          bg="#34A853"
-          color="#fff"
-          borderRadius="999px"
-          px={8}
-          fontWeight="bold"
-          fontSize="16px"
-          boxShadow="0 2px 8px rgba(52,168,83,0.08)"
-          _hover={{ bg: "#1e7e34" }}
-          onClick={handleSave}
-        >
-          {mode === "edit" ? "Cập nhật" : "Lưu"}
-        </Button>
-      </Flex>
+
+        <Flex justify="flex-end" mt={6}>
+          <Button
+            colorScheme="brand"
+            borderRadius="md"
+            px={8}
+            fontWeight="semibold"
+            fontSize="md"
+            boxShadow="md"
+            onClick={handleSave}
+            isLoading={loading}
+            isDisabled={!!chapterError}
+          >
+            {mode === "edit" ? "Cập nhật" : "Lưu"}
+          </Button>
+        </Flex>
+      </Box>
     </Flex>
   );
 };

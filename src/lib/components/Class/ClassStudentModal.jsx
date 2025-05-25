@@ -12,6 +12,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const ClassStudentModal = ({ isOpen, onClose, onAddStudent, loading }) => {
   const [maSinhVien, setMaSinhVien] = useState("");
@@ -27,68 +28,73 @@ const ClassStudentModal = ({ isOpen, onClose, onAddStudent, loading }) => {
       <ModalOverlay />
       <ModalContent
         bg="surface"
-        borderRadius="12px"
-        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        borderRadius="md"
+        boxShadow="md"
         fontFamily="Inter, sans-serif"
         maxW="400px"
+        p={6}
       >
         <ModalHeader
           fontWeight="bold"
           textAlign="center"
           textTransform="uppercase"
-          color="primary"
-          fontSize="20px"
+          color="brand.500"
+          fontSize="xl"
           borderBottom="1px solid"
           borderColor="border"
-          borderTopRadius="12px"
+          borderTopRadius="md"
           pb={3}
         >
           Thêm sinh viên
         </ModalHeader>
         <ModalCloseButton
-          top={3}
-          right={3}
+          top={4}
+          right={4}
           borderRadius="full"
-          bg="gray.100"
-          _hover={{ bg: "gray.200" }}
+          bg="background"
+          _hover={{ bg: "gray.100" }}
         />
         <ModalBody>
-          <FormControl mb={3}>
-            <FormLabel color="textSecondary" fontWeight="bold">
+          <FormControl mb={4}>
+            <FormLabel
+              color="text.secondary"
+              fontWeight="semibold"
+              fontSize="sm"
+            >
               Mã sinh viên
             </FormLabel>
             <Input
               value={maSinhVien}
               onChange={(e) => setMaSinhVien(e.target.value)}
               placeholder="Nhập mã sinh viên"
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontSize="15px"
-              boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
               borderColor="border"
-              color="textPrimary"
-              _placeholder={{ color: "textSecondary" }}
+              color="text.primary"
+              _placeholder={{ color: "text.secondary" }}
               _focus={{
-                borderColor: "primary",
-                boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                borderColor: "brand.500",
+                boxShadow: "0 0 0 1px #4A90E2",
               }}
             />
           </FormControl>
         </ModalBody>
         <ModalFooter>
           <Button
-            colorScheme="primary"
+            colorScheme="brand"
             mr={3}
             onClick={handleSubmit}
             isLoading={loading}
-            borderRadius="12px"
-            fontWeight="bold"
-            fontSize="16px"
-            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            borderRadius="md"
+            fontWeight="semibold"
+            fontSize="md"
+            boxShadow="md"
           >
             Thêm
           </Button>
-          <Button variant="ghost" onClick={onClose} borderRadius="12px">
+          <Button variant="ghost" onClick={onClose} borderRadius="md">
             Hủy
           </Button>
         </ModalFooter>
@@ -98,3 +104,10 @@ const ClassStudentModal = ({ isOpen, onClose, onAddStudent, loading }) => {
 };
 
 export default ClassStudentModal;
+
+ClassStudentModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onAddStudent: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};

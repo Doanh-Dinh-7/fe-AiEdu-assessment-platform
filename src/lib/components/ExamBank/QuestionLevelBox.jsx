@@ -6,7 +6,7 @@ const QuestionLevelBox = ({ easy, medium, hard }) => (
     position="fixed"
     top={20}
     right={10}
-    bg="white"
+    bg="surface"
     boxShadow="md"
     borderRadius="md"
     p={2}
@@ -16,14 +16,16 @@ const QuestionLevelBox = ({ easy, medium, hard }) => (
     justifyContent="center"
     gap={2}
   >
-    <Text fontWeight="bold">Hiện tại:</Text>
-    <Badge colorScheme="green" px={2} py={1}>
+    <Text fontWeight="semibold" fontSize="sm" color="textPrimary">
+      Hiện tại:
+    </Text>
+    <Badge colorScheme="green" px={2} py={1} borderRadius="md" fontSize="xs">
       Dễ: {easy}
     </Badge>
-    <Badge colorScheme="blue" px={2} py={1}>
+    <Badge colorScheme="blue" px={2} py={1} borderRadius="md" fontSize="xs">
       TB: {medium}
     </Badge>
-    <Badge colorScheme="red" px={2} py={1}>
+    <Badge colorScheme="red" px={2} py={1} borderRadius="md" fontSize="xs">
       Khó: {hard}
     </Badge>
   </Flex>

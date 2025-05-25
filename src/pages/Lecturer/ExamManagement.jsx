@@ -8,9 +8,10 @@ import {
   Th,
   Td,
   Heading,
-  Button,
   useToast,
   Spinner,
+  Box,
+  IconButton,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
@@ -96,7 +97,7 @@ const ExamManagement = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
     </Center>
   ) : (
     <Flex
@@ -104,7 +105,7 @@ const ExamManagement = () => {
       direction="column"
       align="center"
       pt={8}
-      bg="#F2F4F8"
+      bg="background"
       fontFamily="Inter, sans-serif"
     >
       <Flex
@@ -113,69 +114,60 @@ const ExamManagement = () => {
         justify="space-between"
         align="center"
         mb={8}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="20px"
+            fontSize="xl"
             textAlign="center"
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Quản lý kỳ thi
           </Heading>
         </Center>
-        <Button
-          bg="#4A90E2"
-          color="#fff"
-          borderRadius="999px"
+        <IconButton
+          icon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
+          colorScheme="brand"
+          borderRadius="full"
           px={8}
           py={2}
           fontWeight="bold"
-          fontSize="16px"
-          boxShadow="0 2px 8px rgba(74,144,226,0.08)"
-          _hover={{ bg: "#357ABD" }}
+          fontSize="md"
+          boxShadow="md"
           onClick={() => handleNavigateForm("create")}
-          leftIcon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
-        >
-          Thêm
-        </Button>
+          variant="ghost"
+          aria-label="Thêm kỳ thi"
+        />
       </Flex>
-      <Flex
+      <Box
         w="100%"
         maxW="1200px"
-        direction="column"
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={6}
         py={6}
       >
-        <Table
-          variant="simple"
-          size="md"
-          bg="transparent"
-          borderRadius="12px"
-          overflow="hidden"
-        >
-          <Thead bg="#F2F4F8">
+        <Table variant="simple" size="md">
+          <Thead bg="background">
             <Tr>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 STT
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Tên bài thi
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Giờ thi
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Ngày thi
               </Th>
               <Th textAlign="center"></Th>
@@ -186,16 +178,10 @@ const ExamManagement = () => {
           </Thead>
           <Tbody>
             {exams.map((exam, idx) => (
-              <Tr
-                key={exam.MaCuocThi}
-                _hover={{ bg: "#F2F4F8" }}
-                fontSize="15px"
-                borderRadius="12px"
-                transition="background 0.2s"
-              >
-                <Td color="#1C1C1C">{idx + 1}</Td>
-                <Td color="#1C1C1C">{exam.TenCuocThi}</Td>
-                <Td color="#1C1C1C">
+              <Tr key={exam.MaCuocThi} _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">{idx + 1}</Td>
+                <Td color="textPrimary">{exam.TenCuocThi}</Td>
+                <Td color="textPrimary">
                   {exam.ThoiGianBatDau
                     ? new Date(exam.ThoiGianBatDau).toLocaleTimeString(
                         "vi-VN",
@@ -206,16 +192,16 @@ const ExamManagement = () => {
                       )
                     : ""}
                 </Td>
-                <Td color="#1C1C1C">
+                <Td color="textPrimary">
                   {exam.NgayTao
                     ? new Date(exam.NgayTao).toLocaleDateString("vi-VN")
                     : ""}
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaEye />}
+                  <IconButton
+                    icon={<FaEye />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#E3F0FC"
                     color="#4A90E2"
                     fontWeight="bold"
@@ -224,62 +210,62 @@ const ExamManagement = () => {
                     onClick={() =>
                       navigate(`${location.pathname}/${exam.MaCuocThi}`)
                     }
-                  >
-                    Xem
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xem thông tin kỳ thi"
+                  />
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<MdDocumentScanner />}
+                  <IconButton
+                    icon={<MdDocumentScanner />}
                     size="sm"
-                    borderRadius="999px"
-                    bg="#E6F4EA"
-                    color="#34A853"
+                    borderRadius="full"
+                    bg="#E6E6FA"
+                    color="#6C63FF"
                     fontWeight="bold"
-                    _hover={{ bg: "#B7E6C6" }}
+                    _hover={{ bg: "#CFCFFF" }}
                     variant="ghost"
                     onClick={() =>
                       navigate(`${location.pathname}/result/${exam.MaCuocThi}`)
                     }
-                  >
-                    Xem kết quả
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xem kết quả kỳ thi"
+                  />
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaEdit />}
+                  <IconButton
+                    icon={<FaEdit />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FFF7E0"
                     color="#FBBC05"
                     fontWeight="bold"
                     _hover={{ bg: "#FFE6A1" }}
                     variant="ghost"
                     onClick={() => handleNavigateForm("edit", exam.MaCuocThi)}
-                  >
-                    Sửa
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Sửa kỳ thi"
+                  />
                 </Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaTrash />}
+                  <IconButton
+                    icon={<FaTrash />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FDE8E6"
                     color="#EA4335"
                     fontWeight="bold"
                     _hover={{ bg: "#F9BDB6" }}
                     variant="ghost"
                     onClick={() => handleDeleteExam(exam.MaCuocThi)}
-                  >
-                    Xóa
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xóa kỳ thi"
+                  />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
-      </Flex>
+      </Box>
     </Flex>
   );
 };

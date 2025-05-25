@@ -12,8 +12,12 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel, isLoading }) => (
   <Modal isOpen={isOpen} onClose={onCancel} isCentered>
     <ModalOverlay />
     <ModalContent>
-      <ModalHeader>Xác nhận trả lời</ModalHeader>
-      <ModalBody>Bạn có chắc chắn muốn gửi câu trả lời này?</ModalBody>
+      <ModalHeader color="textPrimary" fontWeight="bold">
+        Xác nhận trả lời
+      </ModalHeader>
+      <ModalBody color="textSecondary">
+        Bạn có chắc chắn muốn gửi câu trả lời này?
+      </ModalBody>
       <ModalFooter>
         <Button
           isLoading={isLoading}

@@ -1,5 +1,5 @@
 import {
-  Box,
+  // Box,
   Flex,
   Table,
   Thead,
@@ -106,14 +106,14 @@ const ExamQuestion = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
     </Center>
   ) : (
     <Flex
       minH="100vh"
       direction="column"
       align="center"
-      bg="#F2F4F8"
+      bg="background"
       pt={8}
       fontFamily="Inter, sans-serif"
     >
@@ -122,18 +122,19 @@ const ExamQuestion = () => {
         maxW="1200px"
         justify="space-between"
         align="center"
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        mb={8}
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
-            fontSize="20px"
+            fontSize="xl"
             mb={2}
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Câu hỏi {tenChuong}
@@ -141,15 +142,13 @@ const ExamQuestion = () => {
         </Center>
         <Flex justify="flex-end">
           <Button
-            bg="#4A90E2"
-            color="#fff"
-            borderRadius="999px"
+            colorScheme="brand"
+            borderRadius="md"
             px={8}
             py={2}
-            fontWeight="bold"
-            fontSize="16px"
-            boxShadow="0 2px 8px rgba(74,144,226,0.08)"
-            _hover={{ bg: "#357ABD" }}
+            fontWeight="semibold"
+            fontSize="md"
+            boxShadow="md"
             onClick={() =>
               navigate(`${location.pathname}/create-question`, {
                 state: {
@@ -159,6 +158,10 @@ const ExamQuestion = () => {
                 },
               })
             }
+            _active={{
+              transform: "scale(0.98)",
+              bgColor: "brand.600",
+            }}
           >
             Tạo câu hỏi
           </Button>
@@ -175,31 +178,26 @@ const ExamQuestion = () => {
         w="100%"
         maxW="1200px"
         direction="column"
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={6}
         py={6}
         mt={8}
       >
-        <Table
-          variant="simple"
-          bg="transparent"
-          borderRadius="12px"
-          overflow="hidden"
-        >
-          <Thead bg="#F2F4F8">
+        <Table variant="simple" size="md">
+          <Thead bg="background">
             <Tr>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 STT
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Câu hỏi
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Mức độ
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Ngày tạo
               </Th>
               <Th textAlign="center"></Th>
@@ -209,57 +207,53 @@ const ExamQuestion = () => {
           </Thead>
           <Tbody>
             {questionData.map((q, idx) => (
-              <Tr
-                key={q.MaCauHoi}
-                _hover={{ bg: "#F2F4F8" }}
-                fontSize="15px"
-                borderRadius="12px"
-                transition="background 0.2s"
-              >
-                <Td color="#1C1C1C">{idx + 1}</Td>
-                <Td color="#1C1C1C" whiteSpace="pre-wrap" w="50%">
+              <Tr key={q.MaCauHoi} _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">{idx + 1}</Td>
+                <Td color="textPrimary" whiteSpace="pre-wrap" w="50%">
                   {q.NoiDung}
                 </Td>
-                <Td color="#1C1C1C">{q.MucDo}</Td>
-                <Td color="#1C1C1C">{q.NgayTao}</Td>
+                <Td color="textPrimary">{q.MucDo}</Td>
+                <Td color="textPrimary">{q.NgayTao}</Td>
                 <Td textAlign="center">
                   <IconButton
                     icon={<FaEye />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#E3F0FC"
                     color="#4A90E2"
                     fontWeight="bold"
                     _hover={{ bg: "#B3D6F7" }}
                     variant="ghost"
                     onClick={() => handleNavigateQuestion(q, "view")}
+                    aria-label="Xem chi tiết"
                   />
                 </Td>
                 <Td textAlign="center">
                   <IconButton
                     icon={<FaEdit />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FFF7E0"
                     color="#FBBC05"
                     fontWeight="bold"
                     _hover={{ bg: "#FFE6A1" }}
                     variant="ghost"
                     onClick={() => handleNavigateQuestion(q, "edit")}
+                    aria-label="Sửa câu hỏi"
                   />
                 </Td>
                 <Td textAlign="center">
                   <IconButton
                     icon={<FaTrash />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FDE8E6"
                     color="#EA4335"
                     fontWeight="bold"
                     _hover={{ bg: "#F9BDB6" }}
                     variant="ghost"
-                    ml={2}
                     onClick={() => handleDeleteQuestion(q.MaCauHoi)}
+                    aria-label="Xóa câu hỏi"
                   />
                 </Td>
               </Tr>

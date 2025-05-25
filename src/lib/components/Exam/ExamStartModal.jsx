@@ -91,23 +91,22 @@ const ExamStartModal = ({ isOpen, onClose, maCuocThi, mode = "exam" }) => {
       <ModalOverlay />
       <ModalContent
         bg="surface"
-        borderRadius="12px"
-        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        borderRadius="md"
+        boxShadow="md"
         fontFamily="Inter, sans-serif"
-        px={{ base: 2, md: 6 }}
-        py={2}
+        p={6}
         maxW="480px"
       >
         <ModalHeader
           fontWeight="bold"
           textAlign="center"
           textTransform="uppercase"
-          color="textPrimary"
-          fontSize="20px"
+          color="brand.500"
+          fontSize="xl"
           borderBottom="1px solid"
           borderColor="border"
-          borderTopRadius="12px"
-          pb={3}
+          borderTopRadius="md"
+          pb={4}
         >
           Thông tin cuộc thi
         </ModalHeader>
@@ -115,8 +114,8 @@ const ExamStartModal = ({ isOpen, onClose, maCuocThi, mode = "exam" }) => {
           top={3}
           right={3}
           borderRadius="full"
-          bg="gray.100"
-          _hover={{ bg: "gray.200" }}
+          bg="background"
+          _hover={{ bg: "gray.100" }}
         />
         <ModalBody px={0} py={4}>
           {loading ? (
@@ -125,100 +124,124 @@ const ExamStartModal = ({ isOpen, onClose, maCuocThi, mode = "exam" }) => {
             </Box>
           ) : (
             <Box px={{ base: 0, md: 2 }}>
-              <Flex gap={6} mb={4} wrap="wrap">
+              <Flex gap={4} mb={4} wrap="wrap">
                 <Flex direction="column" gap={2} flex={1} minW="200px">
-                  <Text fontWeight="bold" color="textSecondary" fontSize="15px">
+                  <Text
+                    fontWeight="semibold"
+                    color="text.secondary"
+                    fontSize="sm"
+                  >
                     Tên cuộc thi
                   </Text>
                   <Box
-                    bg="#F2F4F8"
-                    borderRadius="12px"
+                    bg="background"
+                    borderRadius="md"
                     px={3}
                     py={2}
-                    color="textPrimary"
+                    color="text.primary"
                     fontWeight="medium"
-                    boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                    boxShadow="sm"
                   >
                     {examDetail.ten_cuoc_thi}
                   </Box>
-                  <Text fontWeight="bold" color="textSecondary" fontSize="15px">
+                  <Text
+                    fontWeight="semibold"
+                    color="text.secondary"
+                    fontSize="sm"
+                  >
                     Môn học
                   </Text>
                   <Box
-                    bg="#F2F4F8"
-                    borderRadius="12px"
+                    bg="background"
+                    borderRadius="md"
                     px={3}
                     py={2}
-                    color="textPrimary"
+                    color="text.primary"
                     fontWeight="medium"
-                    boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                    boxShadow="sm"
                   >
                     {examDetail.ten_hoc_phan}
                   </Box>
-                  <Text fontWeight="bold" color="textSecondary" fontSize="15px">
+                  <Text
+                    fontWeight="semibold"
+                    color="text.secondary"
+                    fontSize="sm"
+                  >
                     Lớp học phần
                   </Text>
                   <Box
-                    bg="#F2F4F8"
-                    borderRadius="12px"
+                    bg="background"
+                    borderRadius="md"
                     px={3}
                     py={2}
-                    color="textPrimary"
+                    color="text.primary"
                     fontWeight="medium"
-                    boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                    boxShadow="sm"
                   >
                     {examDetail.ten_lop_hoc_phan}
                   </Box>
                 </Flex>
                 <Flex direction="column" gap={2} flex={1} minW="200px">
-                  <Text fontWeight="bold" color="textSecondary" fontSize="15px">
+                  <Text
+                    fontWeight="semibold"
+                    color="text.secondary"
+                    fontSize="sm"
+                  >
                     Thời gian bắt đầu
                   </Text>
                   <Box
-                    bg="#F2F4F8"
-                    borderRadius="12px"
+                    bg="background"
+                    borderRadius="md"
                     px={3}
                     py={2}
-                    color="textPrimary"
+                    color="text.primary"
                     fontWeight="medium"
-                    boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                    boxShadow="sm"
                   >
                     {examDetail.thoi_gian_bat_dau}
                   </Box>
-                  <Text fontWeight="bold" color="textSecondary" fontSize="15px">
+                  <Text
+                    fontWeight="semibold"
+                    color="text.secondary"
+                    fontSize="sm"
+                  >
                     Thời gian kết thúc
                   </Text>
                   <Box
-                    bg="#F2F4F8"
-                    borderRadius="12px"
+                    bg="background"
+                    borderRadius="md"
                     px={3}
                     py={2}
-                    color="textPrimary"
+                    color="text.primary"
                     fontWeight="medium"
-                    boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                    boxShadow="sm"
                   >
                     {examDetail.thoi_gian_ket_thuc}
                   </Box>
-                  <Text fontWeight="bold" color="textSecondary" fontSize="15px">
+                  <Text
+                    fontWeight="semibold"
+                    color="text.secondary"
+                    fontSize="sm"
+                  >
                     Trạng thái
                   </Text>
                   <Box
-                    bg="#F2F4F8"
-                    borderRadius="12px"
+                    bg="background"
+                    borderRadius="md"
                     px={3}
                     py={2}
-                    color="textPrimary"
+                    color="text.primary"
                     fontWeight="medium"
-                    boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                    boxShadow="sm"
                   >
                     {examDetail.trang_thai}
                   </Box>
                   {mode !== "practice" && (
                     <>
                       <Text
-                        fontWeight="bold"
-                        color="textSecondary"
-                        fontSize="15px"
+                        fontWeight="semibold"
+                        color="text.secondary"
+                        fontSize="sm"
                       >
                         Mật khẩu
                       </Text>
@@ -228,41 +251,34 @@ const ExamStartModal = ({ isOpen, onClose, maCuocThi, mode = "exam" }) => {
                           placeholder="Nhập mật khẩu"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          borderRadius="12px"
-                          bg="#F2F4F8"
-                          fontSize="15px"
-                          boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+                          borderRadius="md"
                           borderColor="border"
-                          color="textPrimary"
-                          _placeholder={{ color: "textSecondary" }}
+                          bg="background"
+                          color="text.primary"
                           _focus={{
-                            borderColor: "primary",
-                            boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                            borderColor: "brand.500",
+                            boxShadow: "0 0 0 1px #4A90E2",
                           }}
                         />
-                        {error && (
-                          <FormErrorMessage color="error">
-                            {error}
-                          </FormErrorMessage>
-                        )}
+                        <FormErrorMessage>{error}</FormErrorMessage>
                       </FormControl>
                     </>
                   )}
                 </Flex>
               </Flex>
-              <Flex justify="center" mt={4}>
+              <Flex justify="flex-end" mt={6}>
                 <Button
-                  colorScheme={mode === "practice" ? "primary" : "success"}
+                  colorScheme="brand"
                   onClick={handleStart}
                   isLoading={loading}
-                  px={10}
-                  fontWeight="bold"
-                  borderRadius="12px"
-                  fontSize="16px"
-                  boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-                  _hover={{ filter: "brightness(0.95)" }}
+                  borderRadius="md"
+                  px={8}
+                  py={2}
+                  fontWeight="semibold"
+                  fontSize="md"
+                  boxShadow="md"
                 >
-                  {mode === "practice" ? "Luyện thi" : "Thi"}
+                  {mode === "practice" ? "Bắt đầu luyện thi" : "Vào thi"}
                 </Button>
               </Flex>
             </Box>

@@ -11,6 +11,8 @@ import {
   Divider,
   useToast,
   Center,
+  IconButton,
+  Textarea,
 } from "@chakra-ui/react";
 import QuestionLevelBox from "./QuestionLevelBox";
 import { createQuestion, getQuestionSuggestion } from "../../service/question";
@@ -147,7 +149,7 @@ const CreateQuestion = () => {
       minH="100vh"
       direction="column"
       align="center"
-      bg="#F2F4F8"
+      bg="background"
       pt={8}
       fontFamily="Inter, sans-serif"
     >
@@ -157,18 +159,18 @@ const CreateQuestion = () => {
         justify="space-between"
         align="center"
         mb={8}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
-            fontSize="20px"
+            fontSize="xl"
             mb={2}
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Tạo câu hỏi chương {maChuong}
@@ -180,10 +182,10 @@ const CreateQuestion = () => {
         maxW="1200px"
         direction="column"
         gap={4}
-        mb={2}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        mb={4}
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
@@ -197,7 +199,7 @@ const CreateQuestion = () => {
                   h="40px"
                   mx="auto"
                   borderRadius="full"
-                  bg={step >= index ? "#4A90E2" : "#E0E0E0"}
+                  bg={step >= index ? "brand.500" : "gray.300"}
                   color="white"
                   display="flex"
                   alignItems="center"
@@ -207,7 +209,7 @@ const CreateQuestion = () => {
                 >
                   {index + 1}
                 </Box>
-                <Text fontSize="sm" color="#5F6368">
+                <Text fontSize="sm" color="textSecondary">
                   {label}
                 </Text>
               </Box>
@@ -216,8 +218,8 @@ const CreateQuestion = () => {
         </Flex>
 
         {/* BƯỚC 1: CHỌN MỨC ĐỘ */}
-        <Box bg="#F2F4F8" p={6} borderRadius="12px" w="100%" mb={4}>
-          <Text fontWeight="bold" mb={2}>
+        <Box bg="background" p={6} borderRadius="md" w="100%" mb={4}>
+          <Text fontWeight="semibold" mb={2} fontSize="md" color="textPrimary">
             Chọn mức độ:
           </Text>
           <Select
@@ -226,10 +228,15 @@ const CreateQuestion = () => {
             mb={4}
             maxW="200px"
             isDisabled={step > 0}
-            borderRadius="12px"
-            bg="#FFFFFF"
+            borderRadius="md"
+            bg="surface"
             fontWeight="medium"
-            color="#1C1C1C"
+            color="textPrimary"
+            borderColor="border"
+            _focus={{
+              borderColor: "brand.500",
+              boxShadow: "outline",
+            }}
           >
             {LEVELS.map((lv) => (
               <option key={lv.value} value={lv.value}>
@@ -239,382 +246,473 @@ const CreateQuestion = () => {
           </Select>
           {step === 0 && (
             <Button
-              bg="#4A90E2"
-              color="#fff"
-              borderRadius="999px"
+              colorScheme="brand"
+              borderRadius="md"
               px={8}
-              fontWeight="bold"
-              fontSize="16px"
-              boxShadow="0 2px 8px rgba(74,144,226,0.08)"
-              _hover={{ bg: "#357ABD" }}
+              fontWeight="semibold"
+              fontSize="md"
+              boxShadow="md"
               onClick={handleLevelConfirm}
             >
-              Tạo câu hỏi
+              Xác nhận
             </Button>
           )}
         </Box>
 
-        {/* BƯỚC 2: NHẬP CÂU HỎI */}
-        <Box bg="#F2F4F8" p={6} borderRadius="12px" w="100%" mb={4}>
-          <Text fontWeight="bold" mb={2}>
-            Câu hỏi
-          </Text>
-          <Input
-            placeholder="Nhập nội dung câu hỏi"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            isDisabled={step > 1}
-            mb={2}
-            borderRadius="12px"
-            bg="#FFFFFF"
-            fontWeight="medium"
-            color="#1C1C1C"
-          />
-          {step === 1 && (
-            <Flex justify="flex-end" gap={2}>
+        {/* BƯỚC 2: CÂU HỎI */}
+        {step >= 1 && (
+          <Box bg="background" p={6} borderRadius="md" w="100%" mb={4}>
+            <Flex justify="space-between" align="center" mb={2}>
+              <Text fontWeight="semibold" fontSize="md" color="textPrimary">
+                Câu hỏi:
+              </Text>
+              {step === 1 && (
+                <Button
+                  size="sm"
+                  colorScheme="brand"
+                  variant="outline"
+                  onClick={async () => {
+                    const res = await fetchSuggestion({
+                      noi_dung_cau_hoi: question,
+                      muc_do: level.toLowerCase(),
+                    });
+                    if (res) {
+                      setQuestion(res.content);
+                    }
+                  }}
+                >
+                  Tạo lại
+                </Button>
+              )}
+            </Flex>
+            <Textarea
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Nhập nội dung câu hỏi..."
+              rows={4}
+              mb={4}
+              isDisabled={step > 1}
+              borderRadius="md"
+              bg="surface"
+              fontSize="sm"
+              boxShadow="sm"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "brand.500",
+                boxShadow: "outline",
+              }}
+            />
+            {step === 1 && (
               <Button
-                bg="#FBBC05"
-                color="#fff"
-                borderRadius="999px"
-                fontWeight="bold"
-                _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
-                mt={2}
-                isLoading={loading}
-                onClick={async () => {
-                  const suggestion = await fetchSuggestion({
-                    MucDo: level.toLowerCase(),
-                  });
-                  if (suggestion && suggestion.content) {
-                    setQuestion(suggestion.content);
-                  }
-                }}
-              >
-                Tạo lại
-              </Button>
-              <Button
-                bg="#34A853"
-                color="#fff"
-                borderRadius="999px"
-                fontWeight="bold"
-                _hover={{ bg: "#1e7e34" }}
-                mt={2}
+                colorScheme="brand"
+                borderRadius="md"
+                px={8}
+                fontWeight="semibold"
+                fontSize="md"
+                boxShadow="md"
                 onClick={handleQuestionConfirm}
-                isDisabled={!question}
               >
                 Xác nhận
               </Button>
-            </Flex>
-          )}
-        </Box>
+            )}
+          </Box>
+        )}
 
-        {/* BƯỚC 3: NHẬP TRẢ LỜI */}
-        <Box bg="#F2F4F8" p={6} borderRadius="12px" w="100%" mb={4}>
-          <Text fontWeight="bold" mb={2}>
-            Câu trả lời
-          </Text>
-          <Input
-            placeholder="Nhập nội dung đáp án"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            isDisabled={step > 2}
-            mb={2}
-            borderRadius="12px"
-            bg="#FFFFFF"
-            fontWeight="medium"
-            color="#1C1C1C"
-          />
-          {step === 2 && (
-            <Flex justify="flex-end" gap={2}>
+        {/* BƯỚC 3: TRẢ LỜI */}
+        {step >= 2 && (
+          <Box bg="background" p={6} borderRadius="md" w="100%" mb={4}>
+            <Flex justify="space-between" align="center" mb={2}>
+              <Text fontWeight="semibold" fontSize="md" color="textPrimary">
+                Trả lời:
+              </Text>
+              {step === 2 && (
+                <Button
+                  size="sm"
+                  colorScheme="brand"
+                  variant="outline"
+                  onClick={async () => {
+                    const res = await fetchSuggestion({
+                      noi_dung_cau_hoi: question,
+                      dap_an: answer,
+                      muc_do: level.toLowerCase(),
+                    });
+                    if (res) {
+                      setAnswer(res.content);
+                    }
+                  }}
+                >
+                  Tạo lại
+                </Button>
+              )}
+            </Flex>
+            <Textarea
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+              placeholder="Nhập nội dung câu trả lời..."
+              rows={4}
+              mb={4}
+              isDisabled={step > 2}
+              borderRadius="md"
+              bg="surface"
+              fontSize="sm"
+              boxShadow="sm"
+              borderColor="border"
+              color="textPrimary"
+              _placeholder={{ color: "textSecondary" }}
+              _focus={{
+                borderColor: "brand.500",
+                boxShadow: "outline",
+              }}
+            />
+            {step === 2 && (
               <Button
-                bg="#FBBC05"
-                color="#fff"
-                borderRadius="999px"
-                fontWeight="bold"
-                _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
-                mt={2}
-                isLoading={loading}
-                onClick={async () => {
-                  const suggestion = await fetchSuggestion({
-                    MucDo: level.toLowerCase(),
-                    CauHoi: question,
-                  });
-                  if (suggestion && suggestion.content) {
-                    setAnswer(suggestion.content);
-                  }
-                }}
-              >
-                Tạo lại
-              </Button>
-              <Button
-                bg="#34A853"
-                color="#fff"
-                borderRadius="999px"
-                fontWeight="bold"
-                _hover={{ bg: "#1e7e34" }}
-                mt={2}
+                colorScheme="brand"
+                borderRadius="md"
+                px={8}
+                fontWeight="semibold"
+                fontSize="md"
+                boxShadow="md"
                 onClick={handleAnswerConfirm}
-                isDisabled={!answer}
               >
                 Xác nhận
               </Button>
-            </Flex>
-          )}
-        </Box>
+            )}
+          </Box>
+        )}
 
         {/* BƯỚC 4: TÁCH Ý VÀ CÂU HỎI PHỤ */}
-        <VStack align="stretch" spacing={4} w="100%">
-          {step >= 3 &&
-            ideas.map((item, idx) => (
-              <Box
-                key={idx}
-                bg="#F2F4F8"
-                p={5}
-                borderRadius="12px"
-                border="1px solid #E0E0E0"
-              >
-                <Text fontWeight="bold" mb={2}>
-                  Tách ý {idx + 1}
-                </Text>
-                <Input
-                  placeholder={`Tách ý ${idx + 1}`}
-                  value={item.idea}
-                  onChange={(e) => {
-                    const updated = [...ideas];
-                    updated[idx].idea = e.target.value;
-                    setIdeas(updated);
-                  }}
-                  isDisabled={item.confirmed}
-                  mb={2}
-                  borderRadius="12px"
-                  bg="#FFFFFF"
-                  fontWeight="medium"
-                  color="#1C1C1C"
-                />
-                <Flex justify="flex-end" gap={2}>
-                  <Button
-                    bg="#FBBC05"
-                    color="#fff"
-                    borderRadius="999px"
-                    fontWeight="bold"
-                    _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
-                    size="sm"
-                    mb={2}
-                    isLoading={loading}
-                    onClick={async () => {
-                      const suggestion = await fetchSuggestion({
-                        MucDo: level.toLowerCase(),
-                        CauHoi: question,
-                        DapAn: answer,
-                      });
-                      if (suggestion && suggestion.content) {
-                        const updated = [...ideas];
-                        updated[idx].idea = suggestion.content;
-                        setIdeas(updated);
-                      }
-                    }}
-                  >
-                    Tạo lại
-                  </Button>
-                  <Button
-                    bg="#34A853"
-                    color="#fff"
-                    borderRadius="999px"
-                    fontWeight="bold"
-                    _hover={{ bg: "#1e7e34" }}
-                    size="sm"
-                    onClick={() => {
-                      const updated = [...ideas];
-                      updated[idx].confirmed = true;
-                      setIdeas(updated);
-                    }}
-                    isDisabled={!item.idea || item.confirmed}
-                    mb={2}
-                  >
-                    Xác nhận
-                  </Button>
-                </Flex>
-
-                {canShowSubQuestion(item) && (
-                  <Box mt={2}>
-                    <Text mb={1}>Câu hỏi phụ {idx + 1}</Text>
-                    <Input
-                      placeholder={`Câu hỏi phụ ${idx + 1}`}
-                      value={item.subQuestion}
-                      onChange={(e) => {
-                        const updated = [...ideas];
-                        updated[idx].subQuestion = e.target.value;
-                        setIdeas(updated);
-                      }}
-                      isDisabled={item.subQuestionConfirmed}
-                      mb={2}
-                      borderRadius="12px"
-                      bg="#FFFFFF"
-                      fontWeight="medium"
-                      color="#1C1C1C"
-                    />
-                    <Flex justify="flex-end" gap={2}>
-                      <Button
-                        bg="#FBBC05"
-                        color="#fff"
-                        borderRadius="999px"
-                        fontWeight="bold"
-                        _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
-                        size="sm"
-                        mb={2}
-                        isLoading={loading}
-                        onClick={async () => {
-                          const suggestion = await fetchSuggestion({
-                            MucDo: level.toLowerCase(),
-                            CauHoi: question,
-                            DapAn: answer,
-                            YChinh: item.idea,
-                          });
-                          if (suggestion && suggestion.content) {
-                            const updated = [...ideas];
-                            updated[idx].subQuestion = suggestion.content;
-                            setIdeas(updated);
-                          }
-                        }}
-                      >
-                        Tạo lại
-                      </Button>
-                      <Button
-                        bg="#34A853"
-                        color="#fff"
-                        borderRadius="999px"
-                        fontWeight="bold"
-                        _hover={{ bg: "#1e7e34" }}
-                        size="sm"
-                        onClick={() => {
-                          const updated = [...ideas];
-                          updated[idx].subQuestionConfirmed = true;
-                          setIdeas(updated);
-                        }}
-                        isDisabled={
-                          !item.subQuestion || item.subQuestionConfirmed
-                        }
-                        mb={2}
-                      >
-                        Xác nhận
-                      </Button>
-                    </Flex>
-                  </Box>
-                )}
-
-                {canShowSubAnswer(item) && (
-                  <Box mt={2}>
-                    <Text mb={1}>Trả lời phụ {idx + 1}</Text>
-                    <Input
-                      placeholder={`Trả lời phụ ${idx + 1}`}
-                      value={item.subAnswer}
-                      onChange={(e) => {
-                        const updated = [...ideas];
-                        updated[idx].subAnswer = e.target.value;
-                        setIdeas(updated);
-                      }}
-                      isDisabled={item.subAnswerConfirmed}
-                      mb={2}
-                      borderRadius="12px"
-                      bg="#FFFFFF"
-                      fontWeight="medium"
-                      color="#1C1C1C"
-                    />
-                    <Flex justify="flex-end" gap={2}>
-                      <Button
-                        bg="#FBBC05"
-                        color="#fff"
-                        borderRadius="999px"
-                        fontWeight="bold"
-                        _hover={{ bg: "#FFE6A1", color: "#1C1C1C" }}
-                        size="sm"
-                        mb={2}
-                        isLoading={loading}
-                        onClick={async () => {
-                          const suggestion = await fetchSuggestion({
-                            MucDo: level.toLowerCase(),
-                            CauHoi: question,
-                            DapAn: answer,
-                            YChinh: item.idea,
-                            CauHoiBoSung: item.subQuestion,
-                          });
-                          if (suggestion && suggestion.content) {
-                            const updated = [...ideas];
-                            updated[idx].subAnswer = suggestion.content;
-                            setIdeas(updated);
-                          }
-                        }}
-                      >
-                        Tạo lại
-                      </Button>
-                      <Button
-                        bg="#34A853"
-                        color="#fff"
-                        borderRadius="999px"
-                        fontWeight="bold"
-                        _hover={{ bg: "#1e7e34" }}
-                        size="sm"
-                        onClick={() => {
-                          const updated = [...ideas];
-                          updated[idx].subAnswerConfirmed = true;
-                          setIdeas(updated);
-                          setShowNextIdea(true);
-                        }}
-                        isDisabled={!item.subAnswer || item.subAnswerConfirmed}
-                        mb={2}
-                      >
-                        Xác nhận
-                      </Button>
-                    </Flex>
-                  </Box>
-                )}
-              </Box>
-            ))}
-
-          {step >= 3 && showNextIdea && ideas.every(canShowAddIdeaButton) && (
-            <Button
-              bg="#4A90E2"
-              color="#fff"
-              borderRadius="999px"
-              px={8}
-              fontWeight="bold"
-              fontSize="16px"
-              boxShadow="0 2px 8px rgba(74,144,226,0.08)"
-              _hover={{ bg: "#357ABD" }}
-              onClick={handleAddIdea}
-              w="200px"
-              alignSelf="center"
+        {step >= 3 && (
+          <Box bg="background" p={6} borderRadius="md" w="100%" mb={4}>
+            <Text
+              fontWeight="semibold"
+              fontSize="md"
+              color="textPrimary"
+              mb={4}
             >
-              Thêm ý
-            </Button>
-          )}
+              Tách ý và tạo câu hỏi phụ:
+            </Text>
+            <VStack
+              divider={<Divider borderColor="border" />}
+              spacing={6}
+              align="stretch"
+            >
+              {ideas.map((item, index) => (
+                <Box key={index}>
+                  <Flex justify="space-between" align="center" mb={2}>
+                    <Text
+                      fontWeight="semibold"
+                      fontSize="sm"
+                      color="textSecondary"
+                    >
+                      Ý chính {index + 1}:
+                    </Text>
+                    {step === 3 && !item.confirmed && (
+                      <Button
+                        size="sm"
+                        colorScheme="brand"
+                        variant="outline"
+                        onClick={async () => {
+                          const res = await fetchSuggestion({
+                            noi_dung_cau_hoi: question,
+                            dap_an: answer,
+                            y_chinh: ideas.map((i) => i.idea),
+                            muc_do: level.toLowerCase(),
+                          });
+                          if (res) {
+                            setIdeas((prev) =>
+                              prev.map((ideaItem, idx) =>
+                                idx === index
+                                  ? { ...ideaItem, idea: res.content }
+                                  : ideaItem
+                              )
+                            );
+                          }
+                        }}
+                        isLoading={loading}
+                      >
+                        Tạo lại
+                      </Button>
+                    )}
+                  </Flex>
+                  <Textarea
+                    value={item.idea}
+                    onChange={(e) =>
+                      setIdeas((prev) =>
+                        prev.map((ideaItem, idx) =>
+                          idx === index
+                            ? { ...ideaItem, idea: e.target.value }
+                            : ideaItem
+                        )
+                      )
+                    }
+                    placeholder="Nhập ý chính..."
+                    rows={2}
+                    mb={2}
+                    isDisabled={item.confirmed || loading}
+                    borderRadius="md"
+                    bg="surface"
+                    fontSize="sm"
+                    boxShadow="sm"
+                    borderColor="border"
+                    color="textPrimary"
+                    _placeholder={{ color: "textSecondary" }}
+                    _focus={{
+                      borderColor: "brand.500",
+                      boxShadow: "outline",
+                    }}
+                  />
+                  {step === 3 && !item.confirmed && (
+                    <Button
+                      size="sm"
+                      colorScheme="brand"
+                      borderRadius="md"
+                      px={6}
+                      fontWeight="semibold"
+                      fontSize="sm"
+                      boxShadow="sm"
+                      onClick={() =>
+                        setIdeas((prev) =>
+                          prev.map((ideaItem, idx) =>
+                            idx === index
+                              ? { ...ideaItem, confirmed: true }
+                              : ideaItem
+                          )
+                        )
+                      }
+                      isDisabled={!item.idea.trim()}
+                    >
+                      Xác nhận ý chính
+                    </Button>
+                  )}
 
-          {step >= 3 && (
-            <>
-              <Divider
-                borderColor="#E0E0E0"
-                borderWidth={2}
-                borderRadius="12px"
-                my={4}
-              />
+                  {/* Câu hỏi phụ */}
+                  {canShowSubQuestion(item) && (
+                    <Box mt={4}>
+                      <Flex justify="space-between" align="center" mb={2}>
+                        <Text
+                          fontWeight="semibold"
+                          fontSize="sm"
+                          color="textSecondary"
+                        >
+                          Câu hỏi phụ {index + 1}:
+                        </Text>
+                        {step === 3 && !item.subQuestionConfirmed && (
+                          <Button
+                            size="sm"
+                            colorScheme="brand"
+                            variant="outline"
+                            onClick={async () => {
+                              const res = await fetchSuggestion({
+                                noi_dung_cau_hoi: question,
+                                dap_an: answer,
+                                y_chinh: [item.idea],
+                                cau_hoi_bo_sung: item.subQuestion,
+                                muc_do: level.toLowerCase(),
+                              });
+                              if (res) {
+                                setIdeas((prev) =>
+                                  prev.map((ideaItem, idx) =>
+                                    idx === index
+                                      ? {
+                                          ...ideaItem,
+                                          subQuestion: res.content,
+                                        }
+                                      : ideaItem
+                                  )
+                                );
+                              }
+                            }}
+                            isLoading={loading}
+                          >
+                            Tạo lại
+                          </Button>
+                        )}
+                      </Flex>
+                      <Textarea
+                        value={item.subQuestion}
+                        onChange={(e) => {
+                          const updated = [...ideas];
+                          updated[index].subQuestion = e.target.value;
+                          setIdeas(updated);
+                        }}
+                        placeholder="Nhập câu hỏi phụ..."
+                        rows={2}
+                        mb={2}
+                        isDisabled={item.subQuestionConfirmed || loading}
+                        borderRadius="md"
+                        bg="surface"
+                        fontSize="sm"
+                        boxShadow="sm"
+                        borderColor="border"
+                        color="textPrimary"
+                        _placeholder={{ color: "textSecondary" }}
+                        _focus={{
+                          borderColor: "brand.500",
+                          boxShadow: "outline",
+                        }}
+                      />
+                      {step === 3 && !item.subQuestionConfirmed && (
+                        <Button
+                          size="sm"
+                          colorScheme="brand"
+                          borderRadius="md"
+                          px={6}
+                          fontWeight="semibold"
+                          fontSize="sm"
+                          boxShadow="sm"
+                          onClick={() => {
+                            const updated = [...ideas];
+                            updated[index].subQuestionConfirmed = true;
+                            setIdeas(updated);
+                          }}
+                          isDisabled={!item.subQuestion.trim()}
+                        >
+                          Xác nhận câu hỏi phụ
+                        </Button>
+                      )}
+                    </Box>
+                  )}
+
+                  {/* Trả lời phụ */}
+                  {canShowSubAnswer(item) && (
+                    <Box mt={4}>
+                      <Flex justify="space-between" align="center" mb={2}>
+                        <Text
+                          fontWeight="semibold"
+                          fontSize="sm"
+                          color="textSecondary"
+                        >
+                          Trả lời phụ {index + 1}:
+                        </Text>
+                        {step === 3 && !item.subAnswerConfirmed && (
+                          <Button
+                            size="sm"
+                            colorScheme="brand"
+                            variant="outline"
+                            onClick={async () => {
+                              const res = await fetchSuggestion({
+                                noi_dung_cau_hoi: question,
+                                dap_an: answer,
+                                y_chinh: [item.idea],
+                                cau_hoi_bo_sung: item.subQuestion,
+                                dap_an_bo_sung: item.subAnswer,
+                                muc_do: level.toLowerCase(),
+                              });
+                              if (res) {
+                                setIdeas((prev) =>
+                                  prev.map((ideaItem, idx) =>
+                                    idx === index
+                                      ? { ...ideaItem, subAnswer: res.content }
+                                      : ideaItem
+                                  )
+                                );
+                              }
+                            }}
+                            isLoading={loading}
+                          >
+                            Tạo lại
+                          </Button>
+                        )}
+                      </Flex>
+                      <Textarea
+                        value={item.subAnswer}
+                        onChange={(e) => {
+                          const updated = [...ideas];
+                          updated[index].subAnswer = e.target.value;
+                          setIdeas(updated);
+                        }}
+                        placeholder="Nhập trả lời phụ..."
+                        rows={2}
+                        mb={2}
+                        isDisabled={item.subAnswerConfirmed || loading}
+                        borderRadius="md"
+                        bg="surface"
+                        fontSize="sm"
+                        boxShadow="sm"
+                        borderColor="border"
+                        color="textPrimary"
+                        _placeholder={{ color: "textSecondary" }}
+                        _focus={{
+                          borderColor: "brand.500",
+                          boxShadow: "outline",
+                        }}
+                      />
+                      {step === 3 && !item.subAnswerConfirmed && (
+                        <Button
+                          size="sm"
+                          colorScheme="brand"
+                          borderRadius="md"
+                          px={6}
+                          fontWeight="semibold"
+                          fontSize="sm"
+                          boxShadow="sm"
+                          onClick={() => {
+                            const updated = [...ideas];
+                            updated[index].subAnswerConfirmed = true;
+                            setIdeas(updated);
+                            setShowNextIdea(true);
+                          }}
+                          isDisabled={!item.subAnswer.trim()}
+                        >
+                          Xác nhận trả lời phụ
+                        </Button>
+                      )}
+                    </Box>
+                  )}
+                </Box>
+              ))}
+              {step === 3 && ideas.every(canShowAddIdeaButton) && (
+                <Center mt={4}>
+                  <Button
+                    colorScheme="teal"
+                    borderRadius="full"
+                    px={8}
+                    fontWeight="semibold"
+                    fontSize="md"
+                    boxShadow="md"
+                    onClick={handleAddIdea}
+                  >
+                    ＋ Thêm ý chính
+                  </Button>
+                </Center>
+              )}
+            </VStack>
+          </Box>
+        )}
+
+        <Flex justify="flex-end" w="100%" maxW="1200px" mb={8}>
+          {step >= 3 &&
+            ideas.every(
+              (item) =>
+                item.confirmed &&
+                item.subQuestionConfirmed &&
+                item.subAnswerConfirmed
+            ) && (
               <Button
-                bg="#34A853"
-                color="#fff"
-                borderRadius="999px"
+                colorScheme="green"
+                borderRadius="md"
                 px={8}
-                fontWeight="bold"
-                fontSize="16px"
-                boxShadow="0 2px 8px rgba(52,168,83,0.08)"
-                _hover={{ bg: "#1e7e34" }}
+                fontWeight="semibold"
+                fontSize="md"
+                boxShadow="md"
                 onClick={handleSave}
-                w="200px"
-                alignSelf="center"
                 isLoading={loading}
+                isDisabled={
+                  ideas.length === 0 ||
+                  ideas.some(
+                    (item) =>
+                      !item.idea.trim() ||
+                      !item.subQuestion.trim() ||
+                      !item.subAnswer.trim()
+                  )
+                }
               >
-                Lưu
+                Lưu câu hỏi
               </Button>
-            </>
-          )}
-        </VStack>
+            )}
+        </Flex>
       </Flex>
     </Flex>
   );

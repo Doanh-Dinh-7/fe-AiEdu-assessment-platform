@@ -14,6 +14,7 @@ import {
   Heading,
   useToast,
   Checkbox,
+  VStack,
 } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Select } from "chakra-react-select";
@@ -323,350 +324,387 @@ const ExamForm = () => {
   };
 
   return (
-    <Flex
-      minH="100vh"
-      direction="column"
-      bg="background"
-      align="center"
-      py={8}
-      fontFamily="Inter, sans-serif"
-    >
-      <Box
-        bg="surface"
+    <Box minH="100vh" bg="background" py={8} px={4}>
+      <Flex
         w="100%"
-        maxW="900px"
+        maxW="1200px"
+        mx="auto"
+        direction="column"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         p={8}
-        borderRadius="12px"
-        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+        fontFamily="Inter, sans-serif"
       >
         <Heading
-          fontSize="20px"
-          mb={4}
-          textAlign="center"
-          textTransform="uppercase"
-          color="primary"
           fontWeight="bold"
+          fontSize="xl"
+          textAlign="center"
+          mb={8}
+          color="brand.500"
         >
-          {mode === "edit" ? "Sửa " : "Tạo "}bài thi
+          {mode === "create" ? "Tạo mới" : "Chỉnh sửa"} kỳ thi
         </Heading>
         {step === 1 && (
-          <Flex direction="column" gap={4}>
-            <Input
-              placeholder="Tên cuộc thi"
-              value={TenCuocThi}
-              onChange={(e) => setTenCuocThi(e.target.value)}
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontSize="15px"
-              boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-              borderColor="border"
-              color="textPrimary"
-              _placeholder={{ color: "textSecondary" }}
-              _focus={{
-                borderColor: "primary",
-                boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
-              }}
-            />
-            <Flex gap={3}>
-              <Box flex={1}>
-                <Text mb={1}>Thời gian bắt đầu</Text>
-                <Input
-                  type="datetime-local"
-                  value={ThoiGianBatDau}
-                  onChange={(e) => setThoiGianBatDau(e.target.value)}
-                  borderRadius="12px"
-                  bg="#F2F4F8"
-                  fontSize="15px"
-                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-                  borderColor="border"
-                  color="textPrimary"
-                  _placeholder={{ color: "textSecondary" }}
-                  _focus={{
-                    borderColor: "primary",
-                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
-                  }}
-                />
-              </Box>
-              <Box flex={1}>
-                <Text mb={1}>Thời gian kết thúc</Text>
-                <Input
-                  type="datetime-local"
-                  value={ThoiGianKetThuc}
-                  onChange={(e) => setThoiGianKetThuc(e.target.value)}
-                  borderRadius="12px"
-                  bg="#F2F4F8"
-                  fontSize="15px"
-                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-                  borderColor="border"
-                  color="textPrimary"
-                  _placeholder={{ color: "textSecondary" }}
-                  _focus={{
-                    borderColor: "primary",
-                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
-                  }}
-                />
-              </Box>
-            </Flex>
+          <Flex direction="column" gap={6}>
             <Box>
-              <Text mb={1}>Chọn học phần</Text>
+              <Text fontWeight="bold" mb={2} color="text.secondary">
+                Chọn học phần
+              </Text>
               <Select
-                options={courses.map((c) => ({
-                  label: c.TenHocPhan,
-                  value: c.MaHocPhan,
+                options={courses.map((course) => ({
+                  label: course.TenHocPhan,
+                  value: course.MaHocPhan,
                 }))}
+                placeholder="Chọn học phần"
                 value={selectedCourse}
-                onChange={(option) => setSelectedCourse(option)}
+                onChange={setSelectedCourse}
                 isClearable
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    borderRadius: 12,
-                    background: "#F2F4F8",
-                    fontSize: 15,
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                    borderColor: "#E0E0E0",
-                    color: "#1C1C1C",
-                    minHeight: 44,
+                isDisabled={mode === "edit"}
+                focusBorderColor="brand.500"
+                chakraStyles={{
+                  control: (provided) => ({
+                    ...provided,
+                    borderRadius: "md",
+                    borderColor: "border",
+                    bg: "background",
+                    _hover: { borderColor: "brand.500" },
+                    _focus: {
+                      borderColor: "brand.500",
+                      boxShadow: "0 0 0 1px #4A90E2",
+                    },
                   }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: "#5F6368",
+                  placeholder: (provided) => ({
+                    ...provided,
+                    color: "text.secondary",
                   }),
-                  multiValue: (base) => ({
-                    ...base,
-                    borderRadius: 8,
-                    background: "#e6eaf7",
-                    color: "#1C1C1C",
+                  singleValue: (provided) => ({
+                    ...provided,
+                    color: "text.primary",
+                  }),
+                  menuList: (provided) => ({
+                    ...provided,
+                    bg: "surface",
+                    boxShadow: "md",
+                    borderRadius: "md",
+                  }),
+                  option: (provided, state) => ({
+                    ...provided,
+                    bg: state.isSelected ? "brand.100" : "surface",
+                    color: state.isSelected ? "brand.700" : "text.primary",
+                    _hover: { bg: "brand.50", color: "brand.600" },
                   }),
                 }}
               />
             </Box>
+
             <Box>
-              <Text mb={1}>Chọn lớp học phần</Text>
+              <Text fontWeight="bold" mb={2} color="text.secondary">
+                Chọn lớp học phần
+              </Text>
               <Select
-                isMulti
-                options={filteredClasses.map((c) => ({
-                  label: c.TenLopHocPhan,
-                  value: c.MaLopHocPhan,
+                options={filteredClasses.map((cls) => ({
+                  label: cls.TenLopHocPhan,
+                  value: cls.MaLopHocPhan,
                 }))}
+                placeholder="Chọn lớp học phần"
                 value={selectedClasses}
-                onChange={(options) => setSelectedClasses(options || [])}
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    borderRadius: 12,
-                    background: "#F2F4F8",
-                    fontSize: 15,
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                    borderColor: "#E0E0E0",
-                    color: "#1C1C1C",
-                    minHeight: 44,
+                onChange={setSelectedClasses}
+                isMulti
+                closeMenuOnSelect={false}
+                isDisabled={!selectedCourse || mode === "edit"}
+                focusBorderColor="brand.500"
+                chakraStyles={{
+                  control: (provided) => ({
+                    ...provided,
+                    borderRadius: "md",
+                    borderColor: "border",
+                    bg: "background",
+                    _hover: { borderColor: "brand.500" },
+                    _focus: {
+                      borderColor: "brand.500",
+                      boxShadow: "0 0 0 1px #4A90E2",
+                    },
                   }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: "#5F6368",
+                  placeholder: (provided) => ({
+                    ...provided,
+                    color: "text.secondary",
                   }),
-                  multiValue: (base) => ({
-                    ...base,
-                    borderRadius: 8,
-                    background: "#e6eaf7",
-                    color: "#1C1C1C",
+                  multiValue: (provided) => ({
+                    ...provided,
+                    bg: "brand.100",
+                    borderRadius: "md",
+                  }),
+                  multiValueLabel: (provided) => ({
+                    ...provided,
+                    color: "brand.700",
+                    fontWeight: "medium",
+                  }),
+                  multiValueRemove: (provided) => ({
+                    ...provided,
+                    color: "brand.700",
+                    _hover: { bg: "brand.200", color: "brand.800" },
+                  }),
+                  menuList: (provided) => ({
+                    ...provided,
+                    bg: "surface",
+                    boxShadow: "md",
+                    borderRadius: "md",
+                  }),
+                  option: (provided, state) => ({
+                    ...provided,
+                    bg: state.isSelected ? "brand.100" : "surface",
+                    color: state.isSelected ? "brand.700" : "text.primary",
+                    _hover: { bg: "brand.50", color: "brand.600" },
                   }),
                 }}
               />
             </Box>
-            <Checkbox
-              isChecked={trangThai === "có"}
-              onChange={(e) => setTrangThai(e.target.checked ? "có" : "không")}
-            >
-              Trạng thái hoạt động
-            </Checkbox>
-            <Flex justify="flex-end" mt={6} gap={4}>
-              <Button
-                colorScheme="primary"
-                borderRadius="12px"
-                fontWeight="bold"
-                fontSize="16px"
-                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-                onClick={handleNextStep}
-                isLoading={loading}
+
+            <Box>
+              <Text fontWeight="bold" mb={2} color="text.secondary">
+                Tên cuộc thi
+              </Text>
+              <Input
+                placeholder="Nhập tên cuộc thi"
+                value={TenCuocThi}
+                onChange={(e) => setTenCuocThi(e.target.value)}
+                borderRadius="md"
+                borderColor="border"
+                bg="background"
+                color="text.primary"
+                _focus={{
+                  borderColor: "brand.500",
+                  boxShadow: "0 0 0 1px #4A90E2",
+                }}
+              />
+            </Box>
+
+            <Box>
+              <Text fontWeight="bold" mb={2} color="text.secondary">
+                Thời gian bắt đầu
+              </Text>
+              <Input
+                type="datetime-local"
+                value={ThoiGianBatDau}
+                onChange={(e) => setThoiGianBatDau(e.target.value)}
+                borderRadius="md"
+                borderColor="border"
+                bg="background"
+                color="text.primary"
+                _focus={{
+                  borderColor: "brand.500",
+                  boxShadow: "0 0 0 1px #4A90E2",
+                }}
+              />
+            </Box>
+
+            <Box>
+              <Text fontWeight="bold" mb={2} color="text.secondary">
+                Thời gian kết thúc
+              </Text>
+              <Input
+                type="datetime-local"
+                value={ThoiGianKetThuc}
+                onChange={(e) => setThoiGianKetThuc(e.target.value)}
+                borderRadius="md"
+                borderColor="border"
+                bg="background"
+                color="text.primary"
+                _focus={{
+                  borderColor: "brand.500",
+                  boxShadow: "0 0 0 1px #4A90E2",
+                }}
+              />
+            </Box>
+
+            <Box>
+              <Text fontWeight="bold" mb={2} color="text.secondary">
+                Trạng thái luyện thi
+              </Text>
+              <Checkbox
+                isChecked={trangThai === "có"}
+                onChange={(e) =>
+                  setTrangThai(e.target.checked ? "có" : "không")
+                }
+                colorScheme="brand"
               >
-                Xác nhận
+                Cho phép luyện thi
+              </Checkbox>
+            </Box>
+
+            <Flex justify="flex-end">
+              <Button colorScheme="brand" onClick={handleNextStep}>
+                Tiếp tục
               </Button>
             </Flex>
           </Flex>
         )}
         {step === 2 && (
-          <Flex direction="column" gap={4}>
-            <Text
-              fontWeight="bold"
-              mb={2}
-              mt={4}
-              color="primary"
-              fontSize="17px"
-            >
-              Cấu trúc đề thi
-            </Text>
-            <Table
-              size="sm"
-              mb={2}
-              bg="surface"
-              borderRadius="12px"
-              boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-              overflow="hidden"
-            >
-              <Thead bg="#F2F4F8">
-                <Tr>
-                  <Th color="primary">Chương</Th>
-                  <Th color="primary">Mức độ</Th>
-                  <Th color="primary">Số lượng câu hỏi</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {cauTrucDeThi.map((row, idx) => (
-                  <Tr key={row.MaChuong + row.MucDo} _hover={{ bg: "gray.50" }}>
-                    <Td color="textPrimary">{row.TenChuong}</Td>
-                    <Td color="textPrimary">{row.MucDo}</Td>
-                    <Td>
-                      <Input
-                        type="number"
-                        min={0}
-                        value={row.SoLuongCauHoi}
-                        onChange={(e) =>
-                          handleCauTrucChange(idx, e.target.value)
-                        }
-                        w="80px"
-                        borderRadius="12px"
-                        bg="#F2F4F8"
-                        fontSize="15px"
-                        boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-                        borderColor="border"
-                        color="textPrimary"
-                        _placeholder={{ color: "textSecondary" }}
-                        _focus={{
-                          borderColor: "primary",
-                          boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
-                        }}
-                      />
-                    </Td>
+          <Flex direction="column" gap={6}>
+            <Box>
+              <Heading size="md" mb={4} color="brand.500">
+                Cấu trúc đề thi
+              </Heading>
+              <Table variant="simple" size="sm">
+                <Thead bg="background">
+                  <Tr>
+                    <Th color="text.secondary">Chương</Th>
+                    <Th color="text.secondary">Mức độ</Th>
+                    <Th color="text.secondary">Số lượng câu hỏi</Th>
                   </Tr>
-                ))}
-              </Tbody>
-            </Table>
-            <Text
-              fontWeight="bold"
-              mb={2}
-              mt={4}
-              color="primary"
-              fontSize="17px"
-            >
-              Thiết lập điểm cho từng loại câu hỏi <i>(Bắt buộc)</i>
-            </Text>
-            <Flex gap={3}>
-              <Box flex={1}>
-                <Text mb={1}>Điểm câu dễ</Text>
-                <Input
-                  type="number"
-                  value={DiemCauDe}
-                  onChange={(e) => setDiemCauDe(e.target.value)}
-                  borderRadius="12px"
-                  bg="#F2F4F8"
-                  fontSize="15px"
-                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-                  borderColor="border"
-                  color="textPrimary"
-                  _placeholder={{ color: "textSecondary" }}
-                  _focus={{
-                    borderColor: "primary",
-                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
-                  }}
-                />
-              </Box>
-              <Box flex={1}>
-                <Text mb={1}>Điểm câu trung bình</Text>
-                <Input
-                  type="number"
-                  value={DiemCauTrungBinh}
-                  onChange={(e) => setDiemCauTrungBinh(e.target.value)}
-                  borderRadius="12px"
-                  bg="#F2F4F8"
-                  fontSize="15px"
-                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-                  borderColor="border"
-                  color="textPrimary"
-                  _placeholder={{ color: "textSecondary" }}
-                  _focus={{
-                    borderColor: "primary",
-                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
-                  }}
-                />
-              </Box>
-              <Box flex={1}>
-                <Text mb={1}>Điểm câu khó</Text>
-                <Input
-                  type="number"
-                  value={DiemCauKho}
-                  onChange={(e) => setDiemCauKho(e.target.value)}
-                  borderRadius="12px"
-                  bg="#F2F4F8"
-                  fontSize="15px"
-                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-                  borderColor="border"
-                  color="textPrimary"
-                  _placeholder={{ color: "textSecondary" }}
-                  _focus={{
-                    borderColor: "primary",
-                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
-                  }}
-                />
-              </Box>
-              <Box flex={1}>
-                <Text mb={1}>Điểm câu bổ sung</Text>
-                <Input
-                  type="number"
-                  value={DiemCauBoSung}
-                  onChange={(e) => setDiemCauBoSung(e.target.value)}
-                  borderRadius="12px"
-                  bg="#F2F4F8"
-                  fontSize="15px"
-                  boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-                  borderColor="border"
-                  color="textPrimary"
-                  _placeholder={{ color: "textSecondary" }}
-                  _focus={{
-                    borderColor: "primary",
-                    boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
-                  }}
-                />
-              </Box>
-            </Flex>
-            <Flex justify="flex-end" mt={6} gap={4}>
-              <Button
-                colorScheme="gray"
-                borderRadius="12px"
-                fontWeight="bold"
-                fontSize="16px"
-                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-                onClick={() => setStep(1)}
-              >
+                </Thead>
+                <Tbody>
+                  {cauTrucDeThi.map((item, index) => (
+                    <Tr key={index} _hover={{ bg: "background" }}>
+                      <Td color="text.primary">{item.TenChuong}</Td>
+                      <Td color="text.primary">{item.MucDo}</Td>
+                      <Td>
+                        <Input
+                          type="number"
+                          value={item.SoLuongCauHoi}
+                          onChange={(e) =>
+                            handleCauTrucChange(
+                              index,
+                              parseInt(e.target.value) || 0
+                            )
+                          }
+                          min={0}
+                          size="sm"
+                          width="70px"
+                          textAlign="center"
+                          borderRadius="md"
+                          borderColor="border"
+                          bg="background"
+                          color="text.primary"
+                          _focus={{
+                            borderColor: "brand.500",
+                            boxShadow: "0 0 0 1px #4A90E2",
+                          }}
+                        />
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
+
+            <Box>
+              <Heading size="md" mb={4} color="brand.500">
+                Điểm cho từng mức độ
+              </Heading>
+              <VStack align="stretch" spacing={4}>
+                <Flex align="center" gap={4}>
+                  <Text fontWeight="bold" color="text.secondary" w="150px">
+                    Điểm câu Dễ:
+                  </Text>
+                  <Input
+                    type="number"
+                    value={DiemCauDe}
+                    onChange={(e) =>
+                      setDiemCauDe(parseFloat(e.target.value) || 0)
+                    }
+                    min={0}
+                    size="md"
+                    width="100px"
+                    borderRadius="md"
+                    borderColor="border"
+                    bg="background"
+                    color="text.primary"
+                    _focus={{
+                      borderColor: "brand.500",
+                      boxShadow: "0 0 0 1px #4A90E2",
+                    }}
+                  />
+                </Flex>
+                <Flex align="center" gap={4}>
+                  <Text fontWeight="bold" color="text.secondary" w="150px">
+                    Điểm câu Trung bình:
+                  </Text>
+                  <Input
+                    type="number"
+                    value={DiemCauTrungBinh}
+                    onChange={(e) =>
+                      setDiemCauTrungBinh(parseFloat(e.target.value) || 0)
+                    }
+                    min={0}
+                    size="md"
+                    width="100px"
+                    borderRadius="md"
+                    borderColor="border"
+                    bg="background"
+                    color="text.primary"
+                    _focus={{
+                      borderColor: "brand.500",
+                      boxShadow: "0 0 0 1px #4A90E2",
+                    }}
+                  />
+                </Flex>
+                <Flex align="center" gap={4}>
+                  <Text fontWeight="bold" color="text.secondary" w="150px">
+                    Điểm câu Khó:
+                  </Text>
+                  <Input
+                    type="number"
+                    value={DiemCauKho}
+                    onChange={(e) =>
+                      setDiemCauKho(parseFloat(e.target.value) || 0)
+                    }
+                    min={0}
+                    size="md"
+                    width="100px"
+                    borderRadius="md"
+                    borderColor="border"
+                    bg="background"
+                    color="text.primary"
+                    _focus={{
+                      borderColor: "brand.500",
+                      boxShadow: "0 0 0 1px #4A90E2",
+                    }}
+                  />
+                </Flex>
+                <Flex align="center" gap={4}>
+                  <Text fontWeight="bold" color="text.secondary" w="150px">
+                    Điểm câu bổ sung:
+                  </Text>
+                  <Input
+                    type="number"
+                    value={DiemCauBoSung}
+                    onChange={(e) =>
+                      setDiemCauBoSung(parseFloat(e.target.value) || 0)
+                    }
+                    min={0}
+                    size="md"
+                    width="100px"
+                    borderRadius="md"
+                    borderColor="border"
+                    bg="background"
+                    color="text.primary"
+                    _focus={{
+                      borderColor: "brand.500",
+                      boxShadow: "0 0 0 1px #4A90E2",
+                    }}
+                  />
+                </Flex>
+              </VStack>
+            </Box>
+
+            <Flex justify="space-between">
+              <Button colorScheme="gray" onClick={() => setStep(1)}>
                 Quay lại
               </Button>
               <Button
-                colorScheme="primary"
-                borderRadius="12px"
-                fontWeight="bold"
-                fontSize="16px"
-                boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+                colorScheme="brand"
                 onClick={handleCreateOrUpdateExam}
                 isLoading={loading}
               >
-                {mode === "edit" ? "Cập nhật" : "Tạo"}
+                {mode === "create" ? "Tạo bài thi" : "Cập nhật"}
               </Button>
             </Flex>
           </Flex>
         )}
-      </Box>
-    </Flex>
+      </Flex>
+    </Box>
   );
 };
 

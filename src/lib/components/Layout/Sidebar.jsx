@@ -50,19 +50,19 @@ const Sidebar = () => {
       p={4}
       transition="width 0.2s"
       boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-      borderRadius="12px"
+      borderRadius="md"
       fontFamily="Inter, sans-serif"
     >
       <VStack spacing={4} align="stretch" w="100%">
         <IconButton
-          icon={<FaBars color="#4A90E2" />}
+          icon={<FaBars color="brand.500" />}
           aria-label="Toggle sidebar"
           onClick={() => setIsCollapsed(!isCollapsed)}
           mb={4}
           bg="surface"
-          color="primary"
-          _hover={{ bg: "primary", color: "white" }}
-          borderRadius="12px"
+          color="brand.500"
+          _hover={{ bg: "brand.500", color: "white" }}
+          borderRadius="md"
           boxShadow="0 2px 6px rgba(0,0,0,0.08)"
         />
 
@@ -74,18 +74,18 @@ const Sidebar = () => {
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaBook color="#4A90E2" />}
+                leftIcon={<FaBook color="brand.500" />}
                 bg="surface"
                 color="textPrimary"
                 w="100%"
                 h="50px"
                 fontWeight="medium"
-                borderRadius="12px"
+                borderRadius="md"
                 boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                 justifyContent={isCollapsed ? "center" : "flex-start"}
                 onClick={() => navigate("/exam-bank")}
-                _hover={{ bg: "primary", color: "white" }}
-                _active={{ bg: "primary", color: "white" }}
+                _hover={{ bg: "brand.500", color: "white" }}
+                _active={{ bg: "brand.500", color: "white" }}
               >
                 {!isCollapsed && "Ngân hàng đề thi"}
               </Button>
@@ -97,18 +97,18 @@ const Sidebar = () => {
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaUsers color="#4A90E2" />}
+                leftIcon={<FaUsers color="brand.500" />}
                 bg="surface"
                 color="textPrimary"
                 w="100%"
                 h="50px"
                 fontWeight="medium"
-                borderRadius="12px"
+                borderRadius="md"
                 boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                 justifyContent={isCollapsed ? "center" : "flex-start"}
                 onClick={() => navigate("/class")}
-                _hover={{ bg: "primary", color: "white" }}
-                _active={{ bg: "primary", color: "white" }}
+                _hover={{ bg: "brand.500", color: "white" }}
+                _active={{ bg: "brand.500", color: "white" }}
               >
                 {!isCollapsed && "Quản lý lớp học phần"}
               </Button>
@@ -120,18 +120,18 @@ const Sidebar = () => {
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaFileAlt color="#4A90E2" />}
+                leftIcon={<FaFileAlt color="brand.500" />}
                 bg="surface"
                 color="textPrimary"
                 w="100%"
                 h="50px"
                 fontWeight="medium"
-                borderRadius="12px"
+                borderRadius="md"
                 boxShadow="0 2px 6px rgba(0,0,0,0.08)"
                 justifyContent={isCollapsed ? "center" : "flex-start"}
                 onClick={() => navigate("/exam-management")}
-                _hover={{ bg: "primary", color: "white" }}
-                _active={{ bg: "primary", color: "white" }}
+                _hover={{ bg: "brand.500", color: "white" }}
+                _active={{ bg: "brand.500", color: "white" }}
               >
                 {!isCollapsed && "Quản lý kỳ thi"}
               </Button>
@@ -142,18 +142,18 @@ const Sidebar = () => {
         {vaiTro === "student" && (
           <Tooltip label="Cuộc thi" placement="right" isDisabled={!isCollapsed}>
             <Button
-              leftIcon={<FaFileAlt color="#4A90E2" />}
+              leftIcon={<FaFileAlt color="brand.500" />}
               bg="surface"
               color="textPrimary"
               w="100%"
               h="50px"
               fontWeight="medium"
-              borderRadius="12px"
+              borderRadius="md"
               boxShadow="0 2px 6px rgba(0,0,0,0.08)"
               justifyContent={isCollapsed ? "center" : "flex-start"}
               onClick={() => navigate("/exams")}
-              _hover={{ bg: "primary", color: "white" }}
-              _active={{ bg: "primary", color: "white" }}
+              _hover={{ bg: "brand.500", color: "white" }}
+              _active={{ bg: "brand.500", color: "white" }}
             >
               {!isCollapsed && "Cuộc thi"}
             </Button>
@@ -167,12 +167,12 @@ const Sidebar = () => {
           bg="surface"
           w="100%"
           h="60px"
-          rightIcon={<FaChevronDown color="#4A90E2" />}
+          rightIcon={<FaChevronDown color="brand.500" />}
           color="textPrimary"
           fontWeight="bold"
-          borderRadius="12px"
+          borderRadius="md"
           boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-          _hover={{ bg: "primary", color: "white" }}
+          _hover={{ bg: "brand.500", color: "white" }}
         >
           <HStack>
             <Avatar
@@ -198,13 +198,13 @@ const Sidebar = () => {
         </MenuButton>
         <MenuList
           bg="surface"
-          borderRadius="12px"
+          borderRadius="md"
           boxShadow="0 2px 6px rgba(0,0,0,0.08)"
         >
           <MenuItem
-            color="red"
-            _hover={{ bg: "red", color: "white" }}
-            borderRadius="12px"
+            color="error.500"
+            _hover={{ bg: "error.500", color: "white" }}
+            borderRadius="md"
             onClick={handleLogout}
           >
             Đăng Xuất

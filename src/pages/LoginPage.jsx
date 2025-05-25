@@ -53,7 +53,7 @@ const LoginPage = () => {
         spacing={6}
         p={{ base: 4, md: 10 }}
         bg="surface"
-        borderRadius="12px"
+        borderRadius="md"
         boxShadow="0 2px 6px rgba(0,0,0,0.08)"
         minW={{ base: "90vw", md: "400px" }}
         maxW="400px"
@@ -62,7 +62,7 @@ const LoginPage = () => {
         <Heading
           size="lg"
           textTransform="uppercase"
-          color="primary"
+          color="brand.500"
           fontWeight="bold"
           textAlign="center"
           letterSpacing={1}
@@ -70,55 +70,43 @@ const LoginPage = () => {
           Đăng nhập
         </Heading>
         <FormControl>
-          <FormLabel color="textSecondary" fontWeight="bold">
+          <FormLabel color="textSecondary" fontWeight="medium">
             Tài khoản
           </FormLabel>
           <Input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            borderRadius="12px"
-            bg="#F2F4F8"
-            fontSize="15px"
-            boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-            borderColor="border"
-            color="textPrimary"
             _placeholder={{ color: "textSecondary" }}
             _focus={{
-              borderColor: "primary",
+              borderColor: "brand.500",
               boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
             }}
           />
         </FormControl>
         <FormControl>
-          <FormLabel color="textSecondary" fontWeight="bold">
+          <FormLabel color="textSecondary" fontWeight="medium">
             Mật khẩu
           </FormLabel>
           <Input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            borderRadius="12px"
-            bg="#F2F4F8"
-            fontSize="15px"
-            boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-            borderColor="border"
-            color="textPrimary"
             _placeholder={{ color: "textSecondary" }}
             _focus={{
-              borderColor: "primary",
+              borderColor: "brand.500",
               boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
             }}
           />
         </FormControl>
         <Button
-          colorScheme="primary"
+          colorScheme="brand"
           width="full"
-          borderRadius="12px"
-          fontWeight="bold"
-          fontSize="16px"
+          borderRadius="md"
+          fontWeight="medium"
+          fontSize="md"
           boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-          mt={2}
+          mt={4}
           onClick={handleLogin}
         >
           Đăng nhập

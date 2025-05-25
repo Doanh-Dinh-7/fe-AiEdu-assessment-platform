@@ -20,7 +20,7 @@ const SidebarTaking = ({
 }) => (
   <Box
     bg="surface"
-    borderRadius="12px"
+    borderRadius="md"
     p={4}
     minW="260px"
     maxW="260px"
@@ -28,34 +28,34 @@ const SidebarTaking = ({
     display="flex"
     flexDirection="column"
     justifyContent="space-between"
-    boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+    boxShadow="md"
     fontFamily="Inter, sans-serif"
   >
     <div>
       <Text
         mb={4}
         fontWeight="bold"
-        fontSize="18px"
+        fontSize="lg"
         textTransform="uppercase"
-        color="primary"
+        color="brand.500"
       >
         Bài thi {examName}
       </Text>
 
-      <Text fontWeight="bold" mb={2} color="textSecondary">
+      <Text fontWeight="medium" mb={2} color="textSecondary">
         Thời gian còn lại:{" "}
         <Box
           as="span"
-          bg="#e6eaf7"
+          bg="warning.100"
           px={2}
           borderRadius="md"
-          color="primary"
+          color="warning.500"
           fontWeight="bold"
         >
           {formatTime(timeLeft)}
         </Box>
       </Text>
-      <Text fontWeight="bold" mb={2} color="textSecondary">
+      <Text fontWeight="medium" mb={2} color="textSecondary">
         Các câu hỏi
       </Text>
       <Flex gap={2} flexWrap="wrap">
@@ -65,17 +65,25 @@ const SidebarTaking = ({
             size="sm"
             bg={
               answered[idx]
-                ? "#7CF17C"
+                ? "success.100"
                 : current === idx
-                ? "primary"
-                : "#e6eaf7"
+                ? "brand.500"
+                : "gray.100"
             }
-            color={answered[idx] ? "#222" : current === idx ? "white" : "#222"}
-            fontWeight="bold"
-            borderRadius="12px"
+            color={
+              answered[idx]
+                ? "text.primary"
+                : current === idx
+                ? "white"
+                : "text.primary"
+            }
+            fontWeight="medium"
+            borderRadius="md"
             onClick={() => onSelect(idx)}
-            boxShadow="0 2px 6px rgba(0,0,0,0.04)"
-            _hover={{ bg: current === idx ? "primary" : "#dbeafe" }}
+            boxShadow="sm"
+            _hover={{
+              bg: current === idx ? "brand.600" : "gray.200",
+            }}
           >
             câu {idx + 1}
           </Button>
@@ -85,17 +93,11 @@ const SidebarTaking = ({
     {!isConfirming && (
       <Button
         mt={6}
-        variant="ghost"
+        variant="link"
+        colorScheme="error"
         onClick={onFinish}
         w="100%"
-        bg="transparent"
-        color="error"
-        fontWeight="bold"
-        border="none"
-        boxShadow="none"
-        textDecoration="underline"
-        borderRadius="12px"
-        _hover={{ color: "error", bg: "#ffeaea" }}
+        fontWeight="medium"
       >
         Nộp bài
       </Button>

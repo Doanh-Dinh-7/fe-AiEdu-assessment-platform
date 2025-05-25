@@ -13,6 +13,7 @@ import {
   Textarea,
   Center,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import QuestionLevelBox from "./QuestionLevelBox";
 import { useLocation, useParams } from "react-router-dom";
@@ -48,11 +49,27 @@ const QuestionDetail = () => {
   const questionRef = useAutoResizeTextarea(question);
   const answerRef = useAutoResizeTextarea(answer);
 
+  const [loading, setLoading] = useState(false);
+
+  if (loading) {
+    return (
+      <Center minH="200px">
+        <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
+      </Center>
+    );
+  }
+
   // Nếu không có dữ liệu thì báo lỗi
   if (!questionDetailData) {
     return (
-      <Box minH="100vh" bg="#F2F4F8" p={8} fontFamily="Inter, sans-serif">
-        <Text color="red.500">Không tìm thấy dữ liệu câu hỏi.</Text>
+      <Box
+        minH="100vh"
+        bg="background"
+        p={8}
+        fontFamily="Inter, sans-serif"
+        color="textPrimary"
+      >
+        <Text color="error.500">Không tìm thấy dữ liệu câu hỏi.</Text>
       </Box>
     );
   }
@@ -62,7 +79,7 @@ const QuestionDetail = () => {
       minH="100vh"
       direction="column"
       align="center"
-      bg="#F2F4F8"
+      bg="background"
       pt={8}
       fontFamily="Inter, sans-serif"
     >
@@ -72,18 +89,18 @@ const QuestionDetail = () => {
         justify="space-between"
         align="center"
         mb={8}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
-            fontSize="20px"
+            fontSize="xl"
             mb={2}
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Chi tiết câu hỏi {maCauHoi}
@@ -96,15 +113,20 @@ const QuestionDetail = () => {
         direction="column"
         gap={4}
         mb={2}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <QuestionLevelBox easy={easy} medium={medium} hard={hard} />
         <Box w="100%" mt={4}>
-          <Text fontWeight="bold" mb={1}>
+          <Text
+            fontWeight="semibold"
+            mb={1}
+            color="textSecondary"
+            fontSize="sm"
+          >
             Câu hỏi:
           </Text>
           <Textarea
@@ -113,13 +135,27 @@ const QuestionDetail = () => {
             isReadOnly={!isEdit}
             resize="vertical"
             ref={questionRef}
-            borderRadius="12px"
-            bg="#F2F4F8"
-            color="#1C1C1C"
+            borderRadius="md"
+            bg="background"
+            color="textPrimary"
             fontWeight="medium"
+            fontSize="sm"
+            boxShadow="sm"
+            borderColor="border"
+            _placeholder={{ color: "textSecondary" }}
+            _focus={{
+              borderColor: "brand.500",
+              boxShadow: "outline",
+            }}
           />
 
-          <Text fontWeight="bold" mt={4} mb={1}>
+          <Text
+            fontWeight="semibold"
+            mt={4}
+            mb={1}
+            color="textSecondary"
+            fontSize="sm"
+          >
             Đáp án:
           </Text>
           <Textarea
@@ -128,59 +164,63 @@ const QuestionDetail = () => {
             isReadOnly={!isEdit}
             resize="vertical"
             ref={answerRef}
-            borderRadius="12px"
-            bg="#F2F4F8"
-            color="#1C1C1C"
+            borderRadius="md"
+            bg="background"
+            color="textPrimary"
             fontWeight="medium"
+            fontSize="sm"
+            boxShadow="sm"
+            borderColor="border"
+            _placeholder={{ color: "textSecondary" }}
+            _focus={{
+              borderColor: "brand.500",
+              boxShadow: "outline",
+            }}
           />
         </Box>
+        {isEdit && (
+          <Flex justify="flex-end" w="100%" mt={4}>
+            <Button colorScheme="green" borderRadius="md" px={8}>
+              Lưu
+            </Button>
+          </Flex>
+        )}
       </Flex>
       <Flex
         w="100%"
         maxW="1200px"
         direction="column"
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={6}
         py={6}
         mt={8}
       >
-        <Table
-          variant="simple"
-          bg="transparent"
-          borderRadius="12px"
-          overflow="hidden"
-        >
-          <Thead bg="#F2F4F8">
+        <Table variant="simple" size="md">
+          <Thead bg="background">
             <Tr>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 STT
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Ý chính
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Điểm số
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Câu hỏi bổ sung
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Đáp án câu bổ sung
               </Th>
             </Tr>
           </Thead>
           <Tbody>
             {keyPoints.map((row, index) => (
-              <Tr
-                key={row?.MaID || index}
-                _hover={{ bg: "#F2F4F8" }}
-                fontSize="15px"
-                borderRadius="12px"
-                transition="background 0.2s"
-              >
-                <Td color="#1C1C1C">{index + 1}</Td>
+              <Tr key={row?.MaID || index} _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">{index + 1}</Td>
                 <Td>
                   <Textarea
                     defaultValue={row?.NoiDung || ""}
@@ -190,10 +230,18 @@ const QuestionDetail = () => {
                       target.style.height = "auto";
                       target.style.height = `${target.scrollHeight}px`;
                     }}
-                    borderRadius="12px"
-                    bg="#F2F4F8"
-                    color="#1C1C1C"
+                    borderRadius="md"
+                    bg="background"
+                    color="textPrimary"
                     fontWeight="medium"
+                    fontSize="sm"
+                    boxShadow="sm"
+                    borderColor="border"
+                    _placeholder={{ color: "textSecondary" }}
+                    _focus={{
+                      borderColor: "brand.500",
+                      boxShadow: "outline",
+                    }}
                   />
                 </Td>
                 <Td>
@@ -202,10 +250,18 @@ const QuestionDetail = () => {
                     defaultValue={row?.TyLeDiem || 0}
                     min={0}
                     isReadOnly={!isEdit}
-                    borderRadius="12px"
-                    bg="#F2F4F8"
-                    color="#1C1C1C"
+                    borderRadius="md"
+                    bg="background"
+                    color="textPrimary"
                     fontWeight="medium"
+                    fontSize="sm"
+                    boxShadow="sm"
+                    borderColor="border"
+                    _placeholder={{ color: "textSecondary" }}
+                    _focus={{
+                      borderColor: "brand.500",
+                      boxShadow: "outline",
+                    }}
                   />
                 </Td>
                 <Td colSpan={2}>
@@ -227,10 +283,18 @@ const QuestionDetail = () => {
                               target.style.height = "auto";
                               target.style.height = `${target.scrollHeight}px`;
                             }}
-                            borderRadius="12px"
-                            bg="#F2F4F8"
-                            color="#1C1C1C"
+                            borderRadius="md"
+                            bg="background"
+                            color="textPrimary"
                             fontWeight="medium"
+                            fontSize="sm"
+                            boxShadow="sm"
+                            borderColor="border"
+                            _placeholder={{ color: "textSecondary" }}
+                            _focus={{
+                              borderColor: "brand.500",
+                              boxShadow: "outline",
+                            }}
                           />
                         </Box>
                         <Box flex={1}>
@@ -242,10 +306,18 @@ const QuestionDetail = () => {
                               target.style.height = "auto";
                               target.style.height = `${target.scrollHeight}px`;
                             }}
-                            borderRadius="12px"
-                            bg="#F2F4F8"
-                            color="#1C1C1C"
+                            borderRadius="md"
+                            bg="background"
+                            color="textPrimary"
                             fontWeight="medium"
+                            fontSize="sm"
+                            boxShadow="sm"
+                            borderColor="border"
+                            _placeholder={{ color: "textSecondary" }}
+                            _focus={{
+                              borderColor: "brand.500",
+                              boxShadow: "outline",
+                            }}
                           />
                         </Box>
                       </Flex>
@@ -260,22 +332,6 @@ const QuestionDetail = () => {
             ))}
           </Tbody>
         </Table>
-        {isEdit && (
-          <Flex justify="flex-end" mt={4}>
-            <Button
-              bg="#4A90E2"
-              color="#fff"
-              borderRadius="999px"
-              px={8}
-              fontWeight="bold"
-              fontSize="16px"
-              boxShadow="0 2px 8px rgba(74,144,226,0.08)"
-              _hover={{ bg: "#357ABD" }}
-            >
-              Lưu
-            </Button>
-          </Flex>
-        )}
       </Flex>
     </Flex>
   );

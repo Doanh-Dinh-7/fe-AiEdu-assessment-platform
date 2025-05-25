@@ -12,15 +12,6 @@ import {
   finishedExamTaking,
 } from "../../lib/service/examTaking";
 
-// const mockQuestions = [
-//   {
-//     id: 1,
-//     text: "Tại sao người như tôi lại không có người yêu, tôi tệ như vậy sao =))))",
-//   },
-//   { id: 2, text: "Câu hỏi 2" },
-//   { id: 3, text: "Câu hỏi 3" },
-// ];
-
 function formatTime(sec) {
   const m = String(Math.floor(sec / 60)).padStart(2, "0");
   const s = String(sec % 60).padStart(2, "0");
@@ -105,19 +96,6 @@ const ExamTaking = () => {
     currentSupplement,
     lastCheckResult,
   ]);
-
-  // useEffect(() => {
-  //   setMessages(
-  //     mockQuestions.map((q) => [
-  //       {
-  //         sender: "bot",
-  //         text: q.text,
-  //         time: formatTime(0),
-  //       },
-  //     ])
-  //   );
-  //   setAnswered(Array(mockQuestions.length).fill(false));
-  // }, []);
 
   useEffect(() => {
     if (!started || finished) return;
@@ -376,105 +354,92 @@ const ExamTaking = () => {
   return (
     <Flex
       bg="background"
-      align="center"
+      direction={{ base: "column", md: "row" }}
       minH="100vh"
-      fontFamily="Inter, sans-serif"
+      gap={4}
+      p="3"
     >
-      <SidebarTaking
-        questions={questions}
-        current={current}
-        answered={answered}
-        timeLeft={timeLeft}
-        onSelect={setCurrent}
-        examName={examName}
-        onFinish={handleFinish}
-      />
-      <Box flex={1} px={8}>
-        {!started ? (
-          <Flex justify="center" align="center" h="60vh">
+      {!finished && (
+        <SidebarTaking
+          questions={questions}
+          current={current}
+          answered={answered}
+          timeLeft={timeLeft}
+          onSelect={setCurrent}
+          examName={examName}
+          onFinish={handleFinish}
+                  />
+      )}
+
+      {!started ? (
+        <Flex
+          flex="1"
+          p={{ base: 1, md: 3 }}
+          justify="center"
+          alignItems="center"
+        >
+          <Flex justify="center" align="center" h="100%" w="100%">
             <Button
-              colorScheme="primary"
-              size="lg"
-              fontWeight="bold"
-              fontSize="20px"
+              colorScheme="brand"
+              size="xl"
+              fontWeight="medium"
+              fontSize="xl"
               p={8}
-              borderRadius="12px"
-              boxShadow="0 2px 6px rgba(0,0,0,0.08)"
               onClick={handleStartExam}
               isLoading={loadingExam}
+              borderRadius="md"
             >
               BẮT ĐẦU
             </Button>
           </Flex>
-        ) : questions.length === 0 ? (
-          <Box
-            textAlign="center"
-            w="100%"
-            mt={10}
-            fontSize="18px"
-            color="textSecondary"
-          >
-            Đang tải dữ liệu đề thi...
-          </Box>
-        ) : (
-          <>
-            <Box
-              bg="surface"
-              borderRadius="12px"
-              boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-              p={{ base: 2, md: 6 }}
-              mb={6}
-              minH="320px"
-              maxW="900px"
-              mx="auto"
-            >
-              <ChatArea
-                messages={messages[current] || []}
-                onSend={handleSend}
-                input={input}
-                setInput={setInput}
-                disabled={finished || loadingCheck}
-                placeholder={
-                  isSupplement && currentSupplement
-                    ? currentSupplement.NoiDung
-                    : questions[current]?.text
-                }
-              />
-            </Box>
-            {/* Hiển thị kết quả chấm điểm từng ý chính nếu có */}
-            {/* {lastCheckResult && lastCheckResult.ChiTietKetQua && (
-              <Box mt={4} bg="surface" borderRadius="12px" p={4} boxShadow="0 2px 6px rgba(0,0,0,0.08)">
-                <Text fontWeight="bold" mb={2} color="primary" fontSize="16px">
-                  Kết quả chấm ý chính:
-                </Text>
-                <Table size="sm" variant="simple">
-                  <Tbody>
-                    <Tr>
-                      <Th color="textPrimary">Ý chính</Th>
-                      <Th color="textPrimary">Điểm số</Th>
-                      <Th color="textPrimary">Điểm tối đa</Th>
-                      <Th color="textPrimary">Độ chính xác</Th>
-                      <Th color="textPrimary">Đáp án</Th>
-                    </Tr>
-                    {lastCheckResult.ChiTietKetQua.map((item, idx) => (
-                      <Tr key={idx} _hover={{ bg: "gray.50" }}>
-                        <Td>{item.YChinh}</Td>
-                        <Td>{item.DiemSo}</Td>
-                        <Td>{item.DiemToiDa}</Td>
-                        <Td>{item.DoChinhXac}</Td>
-                        <Td>{item.NoiDungDapAn}</Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-                <Text mt={2} fontWeight="bold" color="success" fontSize="15px">
-                  Tổng điểm: {lastCheckResult.TongDiem} / {lastCheckResult.TongDiemToiDa} (Tỷ lệ: {lastCheckResult.TyLeDiem})
-                </Text>
-              </Box>
-            )} */}
-          </>
-        )}
-      </Box>
+        </Flex>
+      ) : finished ? (
+        <ResultTable examHistory={resultData} />
+      ) : (
+        <ChatArea
+          messages={messages[current] || []}
+          onSend={handleSend}
+          input={input}
+          setInput={setInput}
+          disabled={loadingCheck}
+          maCuocThi={maCuocThi}
+          showHint={false}
+          isHintDisabled={true}
+          hintText=""
+        />
+      )}
+      {/* Hiển thị kết quả chấm điểm từng ý chính nếu có */}
+      {/* {lastCheckResult && lastCheckResult.ChiTietKetQua && (
+        <Box mt={4} bg="surface" borderRadius="12px" p={4} boxShadow="0 2px 6px rgba(0,0,0,0.08)">
+          <Text fontWeight="bold" mb={2} color="primary" fontSize="16px">
+            Kết quả chấm ý chính:
+          </Text>
+          <Table size="sm" variant="simple">
+            <Tbody>
+              <Tr>
+                <Th color="textPrimary">Ý chính</Th>
+                <Th color="textPrimary">Điểm số</Th>
+                <Th color="textPrimary">Điểm tối đa</Th>
+                <Th color="textPrimary">Độ chính xác</Th>
+                <Th color="textPrimary">Đáp án</Th>
+              </Tr>
+              {lastCheckResult.ChiTietKetQua.map((item, idx) => (
+                <Tr key={idx} _hover={{ bg: "gray.50" }}>
+                  <Td>{item.YChinh}</Td>
+                  <Td>{item.DiemSo}</Td>
+                  <Td>{item.DiemToiDa}</Td>
+                  <Td>{item.DoChinhXac}</Td>
+                  <Td>{item.NoiDungDapAn}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+          <Text mt={2} fontWeight="bold" color="success" fontSize="15px">
+            Tổng điểm: {lastCheckResult.TongDiem} / {lastCheckResult.TongDiemToiDa} (Tỷ lệ: {lastCheckResult.TyLeDiem})
+          </Text>
+        </Box>
+      )} */}
+
       <ConfirmModal
         isOpen={showConfirm}
         onConfirm={handleConfirm}

@@ -12,6 +12,7 @@ import {
   Thead,
   Tr,
   Text,
+  IconButton,
 } from "@chakra-ui/react";
 import { FaEye } from "react-icons/fa";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -93,7 +94,7 @@ const ExamResult = () => {
       direction="column"
       align="center"
       py={8}
-      bg="#F2F4F8"
+      bg="background"
       fontFamily="Inter, sans-serif"
     >
       <Flex
@@ -103,61 +104,61 @@ const ExamResult = () => {
         direction="column"
         mb={8}
         gap={4}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={6}
         py={5}
       >
         <Center flex={1}>
           <Heading
             fontWeight="bold"
-            fontSize="20px"
+            fontSize="xl"
             textAlign="center"
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Kết quả bài thi
           </Heading>
         </Center>
 
-        <Flex wrap="wrap" gap={6} mb={6} w="90%" maxW="1100px">
+        <Flex wrap="wrap" gap={6} mb={6} w="100%" maxW="1200px">
           <Flex direction="column" gap={2} flex={1} minW="250px">
-            <Text fontWeight="bold" color="#5F6368">
+            <Text fontWeight="bold" color="text.secondary">
               Tên cuộc thi
             </Text>
             <Input
               value={examInfo.TenCuocThi || ""}
               isReadOnly
-              bg="#F2F4F8"
-              borderRadius="12px"
+              bg="background"
+              borderRadius="md"
               fontWeight="medium"
-              color="#1C1C1C"
+              color="text.primary"
             />
-            <Text fontWeight="bold" color="#5F6368">
+            <Text fontWeight="bold" color="text.secondary">
               Môn học
             </Text>
             <Input
               value={examInfo.HocPhan?.TenHocPhan || ""}
               isReadOnly
-              bg="#F2F4F8"
-              borderRadius="12px"
+              bg="background"
+              borderRadius="md"
               fontWeight="medium"
-              color="#1C1C1C"
+              color="text.primary"
             />
-            <Text fontWeight="bold" color="#5F6368">
+            <Text fontWeight="bold" color="text.secondary">
               Hình thức thi
             </Text>
             <Input
               value={examInfo.HocPhan?.HinhThucThi || ""}
               isReadOnly
-              bg="#F2F4F8"
-              borderRadius="12px"
+              bg="background"
+              borderRadius="md"
               fontWeight="medium"
-              color="#1C1C1C"
+              color="text.primary"
             />
-            <Text fontWeight="bold" color="#5F6368">
+            <Text fontWeight="bold" color="text.secondary">
               Các chương
             </Text>
             <Input
@@ -166,36 +167,36 @@ const ExamResult = () => {
                 ""
               }
               isReadOnly
-              bg="#F2F4F8"
-              borderRadius="12px"
+              bg="background"
+              borderRadius="md"
               fontWeight="medium"
-              color="#1C1C1C"
+              color="text.primary"
             />
           </Flex>
           <Flex direction="column" gap={2} flex={1} minW="250px">
-            <Text fontWeight="bold" color="#5F6368">
+            <Text fontWeight="bold" color="text.secondary">
               Thời gian bắt đầu
             </Text>
             <Input
               value={examInfo.ThoiGianBatDau || ""}
               isReadOnly
-              bg="#F2F4F8"
-              borderRadius="12px"
+              bg="background"
+              borderRadius="md"
               fontWeight="medium"
-              color="#1C1C1C"
+              color="text.primary"
             />
-            <Text fontWeight="bold" color="#5F6368">
+            <Text fontWeight="bold" color="text.secondary">
               Thời gian kết thúc
             </Text>
             <Input
               value={examInfo.ThoiGianKetThuc || ""}
               isReadOnly
-              bg="#F2F4F8"
-              borderRadius="12px"
+              bg="background"
+              borderRadius="md"
               fontWeight="medium"
-              color="#1C1C1C"
+              color="text.primary"
             />
-            <Text fontWeight="bold" color="#5F6368">
+            <Text fontWeight="bold" color="text.secondary">
               Lớp học phần
             </Text>
             <Input
@@ -205,21 +206,21 @@ const ExamResult = () => {
                 ) || ""
               }
               isReadOnly
-              bg="#F2F4F8"
-              borderRadius="12px"
+              bg="background"
+              borderRadius="md"
               fontWeight="medium"
-              color="#1C1C1C"
+              color="text.primary"
             />
-            <Text fontWeight="bold" color="#5F6368">
+            <Text fontWeight="bold" color="text.secondary">
               Số lượng sinh viên
             </Text>
             <Input
               value={examInfo.SoLuongSinhVien || ""}
               isReadOnly
-              bg="#F2F4F8"
-              borderRadius="12px"
+              bg="background"
+              borderRadius="md"
               fontWeight="medium"
-              color="#1C1C1C"
+              color="text.primary"
             />
           </Flex>
         </Flex>
@@ -227,62 +228,56 @@ const ExamResult = () => {
       <Box
         w="100%"
         maxW="1200px"
-        bg="#FFFFFF"
-        borderRadius="12px"
+        bg="surface"
+        borderRadius="md"
         p={6}
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        boxShadow="md"
       >
-        <Table size="md" variant="simple" borderRadius="12px" overflow="hidden">
-          <Thead bg="#F2F4F8">
+        <Table variant="simple" size="md" borderRadius="md" overflow="hidden">
+          <Thead bg="background">
             <Tr>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="text.secondary">
                 STT
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="text.secondary">
                 Mã sinh viên
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="text.secondary">
                 Tên sinh viên
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="text.secondary">
                 Tổng điểm
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="text.secondary">
                 Trạng thái
               </Th>
-              <Th></Th>
+              <Th textAlign="center"></Th>
             </Tr>
           </Thead>
           <Tbody>
-            {examInfo.DanhSachKetQua?.map((row, idx) => (
-              <Tr
-                key={row.MaSinhVien}
-                _hover={{ bg: "#F2F4F8" }}
-                fontSize="15px"
-                borderRadius="12px"
-                transition="background 0.2s"
-              >
-                <Td color="#1C1C1C">{idx + 1}</Td>
-                <Td color="#1C1C1C">{row.MaSinhVien}</Td>
-                <Td color="#1C1C1C">{row.TenSinhVien}</Td>
-                <Td color="#1C1C1C">{row.TongDiem}</Td>
-                <Td color="#1C1C1C">{row.TrangThai}</Td>
-                <Td>
-                  <Button
-                    leftIcon={<FaEye />}
+            {examInfo.DanhSachSinhVien?.map((student, idx) => (
+              <Tr key={student.MaSinhVien} _hover={{ bg: "background" }}>
+                <Td color="text.primary">{idx + 1}</Td>
+                <Td color="text.primary">{student.MaSinhVien}</Td>
+                <Td color="text.primary">{student.TenSinhVien}</Td>
+                <Td color="text.primary">{student.TongDiem}</Td>
+                <Td color="text.primary">{student.TrangThai}</Td>
+                <Td textAlign="center">
+                  <IconButton
+                    icon={<FaEye />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#E3F0FC"
                     color="#4A90E2"
                     fontWeight="bold"
                     _hover={{ bg: "#B3D6F7" }}
                     variant="ghost"
                     onClick={() =>
-                      navigate(`${location.pathname}/${row.MaSinhVien}`)
+                      navigate(`${location.pathname}/${student.MaSinhVien}`)
                     }
-                  >
-                    Chi tiết
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xem chi tiết kết quả"
+                  />
                 </Td>
               </Tr>
             ))}

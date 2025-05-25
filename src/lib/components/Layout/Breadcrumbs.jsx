@@ -36,7 +36,7 @@ const Breadcrumbs = ({ disableBreadcrumb = false }) => {
       fontWeight="medium"
       fontSize="md"
       bg="surface"
-      borderRadius="8px"
+      borderRadius="md"
       boxShadow="0 1px 4px rgba(0,0,0,0.04)"
       px={3}
       py={2}
@@ -127,13 +127,13 @@ const Breadcrumbs = ({ disableBreadcrumb = false }) => {
                   : "primary"
               }
               _hover={{
-                color: "#357ABD",
+                color: "brand.600",
                 textDecoration: "underline",
                 bg: "background",
               }}
               pointerEvents={disableBreadcrumb ? "none" : undefined}
               bg="surface"
-              borderRadius="8px"
+              borderRadius="md"
               px={2}
               py={1}
               fontFamily="Inter, sans-serif"

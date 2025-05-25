@@ -11,6 +11,8 @@ import {
   Center,
   useToast,
   Spinner,
+  Box,
+  IconButton,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -94,14 +96,14 @@ const ExamDocuments = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="#4A90E2" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
     </Center>
   ) : (
     <Flex
       minH="100vh"
       direction="column"
       align="center"
-      bg="#F2F4F8"
+      bg="background"
       pt={8}
       fontFamily="Inter, sans-serif"
     >
@@ -111,63 +113,58 @@ const ExamDocuments = () => {
         justify="space-between"
         align="center"
         mb={8}
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={8}
         py={5}
       >
         <Center flex={1}>
           <Heading
-            fontSize="20px"
+            fontSize="xl"
             mb={2}
             textTransform="uppercase"
-            color="#4A90E2"
+            color="brand.500"
             letterSpacing={1}
           >
             Danh sách tài liệu chương
           </Heading>
         </Center>
         <Button
-          bg="#4A90E2"
-          color="#fff"
-          borderRadius="999px"
+          colorScheme="brand"
+          borderRadius="md"
           px={8}
-          fontWeight="bold"
-          fontSize="16px"
-          boxShadow="0 2px 8px rgba(74,144,226,0.08)"
-          _hover={{ bg: "#357ABD" }}
+          fontWeight="semibold"
+          fontSize="md"
+          boxShadow="md"
           onClick={() => setIsOpen(true)}
+          _active={{
+            transform: "scale(0.98)",
+            bgColor: "brand.600",
+          }}
         >
           Thêm tài liệu
         </Button>
       </Flex>
-      <Flex
+      <Box
         w="100%"
         maxW="1200px"
-        direction="column"
-        bg="#FFFFFF"
-        borderRadius="12px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.08)"
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
         px={6}
         py={6}
       >
-        <Table
-          variant="simple"
-          size="md"
-          bg="transparent"
-          borderRadius="12px"
-          overflow="hidden"
-        >
-          <Thead bg="#F2F4F8">
+        <Table variant="simple" size="md">
+          <Thead bg="background">
             <Tr>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 STT
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Tài liệu
               </Th>
-              <Th fontWeight="bold" fontSize="15px" color="#1C1C1C">
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Ngày tạo
               </Th>
               <Th textAlign="center"></Th>
@@ -175,37 +172,30 @@ const ExamDocuments = () => {
           </Thead>
           <Tbody>
             {docs.map((doc, idx) => (
-              <Tr
-                key={doc.MaTaiLieu}
-                _hover={{ bg: "#F2F4F8" }}
-                fontSize="15px"
-                borderRadius="12px"
-                transition="background 0.2s"
-              >
-                <Td color="#1C1C1C">{idx + 1}</Td>
-                <Td color="#1C1C1C">{doc.TenTaiLieu}</Td>
-                <Td color="#1C1C1C">{doc.NgayTao}</Td>
+              <Tr key={doc.MaTaiLieu} _hover={{ bg: "gray.50" }}>
+                <Td color="textPrimary">{idx + 1}</Td>
+                <Td color="textPrimary">{doc.TenTaiLieu}</Td>
+                <Td color="textPrimary">{doc.NgayTao}</Td>
                 <Td textAlign="center">
-                  <Button
-                    leftIcon={<FaTrash />}
+                  <IconButton
+                    icon={<FaTrash />}
                     size="sm"
-                    borderRadius="999px"
+                    borderRadius="full"
                     bg="#FDE8E6"
                     color="#EA4335"
                     fontWeight="bold"
                     _hover={{ bg: "#F9BDB6" }}
                     variant="ghost"
-                    ml={2}
                     onClick={() => handleDeleteDocument(doc.MaTaiLieu)}
-                  >
-                    Xóa
-                  </Button>
+                    boxShadow="sm"
+                    aria-label="Xóa tài liệu"
+                  />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
-      </Flex>
+      </Box>
 
       {/* Modal thêm tài liệu */}
       <AddDocumentModal

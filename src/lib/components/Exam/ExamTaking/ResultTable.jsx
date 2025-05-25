@@ -1,34 +1,35 @@
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Text } from "@chakra-ui/react";
+import { Box, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
+import PropTypes from "prop-types";
 
 const ResultTable = ({ examHistory }) => {
   if (!examHistory || !examHistory.CauHoi) return null;
   return (
     <Box
       bg="surface"
-      borderRadius="12px"
+      borderRadius="md"
       p={4}
-      boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+      boxShadow="md"
       fontFamily="Inter, sans-serif"
     >
-      <Table size="md" variant="simple" border="1px solid #E0E0E0">
-        <Thead bg="#F2F4F8">
+      <Table size="md" variant="simple">
+        <Thead bg="background">
           <Tr>
-            <Th color="primary" fontWeight="bold" fontSize="15px">
+            <Th color="brand.500" fontWeight="bold" fontSize="sm">
               STT
             </Th>
-            <Th color="primary" fontWeight="bold" fontSize="15px">
+            <Th color="brand.500" fontWeight="bold" fontSize="sm">
               Câu hỏi
             </Th>
-            <Th color="primary" fontWeight="bold" fontSize="15px">
+            <Th color="brand.500" fontWeight="bold" fontSize="sm">
               Câu trả lời
             </Th>
-            <Th color="primary" fontWeight="bold" fontSize="15px">
+            <Th color="brand.500" fontWeight="bold" fontSize="sm">
               Điểm
             </Th>
-            <Th color="primary" fontWeight="bold" fontSize="15px">
+            <Th color="brand.500" fontWeight="bold" fontSize="sm">
               Điểm tối đa
             </Th>
-            <Th color="primary" fontWeight="bold" fontSize="15px">
+            <Th color="brand.500" fontWeight="bold" fontSize="sm">
               Tỷ lệ điểm
             </Th>
           </Tr>
@@ -50,17 +51,17 @@ const ResultTable = ({ examHistory }) => {
               <Td color="textPrimary">{(q.TyLeDiem * 100).toFixed(2)}%</Td>
             </Tr>
           ))}
-          <Tr fontWeight="bold" bg="#F2F4F8">
+          <Tr fontWeight="bold" bg="background">
             <Td colSpan={3} textAlign="right" color="textSecondary">
               Tổng điểm
             </Td>
-            <Td color="success">
+            <Td color="success.500">
               {examHistory.CauHoi.reduce(
                 (sum, q) => sum + (q.TongDiem || 0),
                 0
               )}
             </Td>
-            <Td color="success">
+            <Td color="success.500">
               {examHistory.CauHoi.reduce(
                 (sum, q) => sum + (q.MaCauBoSung ? 0 : q.TongDiemToiDa || 0),
                 0
@@ -73,5 +74,21 @@ const ResultTable = ({ examHistory }) => {
     </Box>
   );
 };
+
+// ResultTable.propTypes = {
+//   examHistory: PropTypes.shape({
+//     CauHoi: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         MaCauHoi: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+//         MaCauBoSung: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+//         NoiDungCauHoi: PropTypes.string,
+//         CauTraLoi: PropTypes.string,
+//         TongDiem: PropTypes.number,
+//         TongDiemToiDa: PropTypes.number,
+//         TyLeDiem: PropTypes.number,
+//       })
+//     ),
+//   }),
+// };
 
 export default ResultTable;

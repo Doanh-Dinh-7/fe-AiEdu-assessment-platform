@@ -13,6 +13,8 @@ import {
   Flex,
   IconButton,
   useToast,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { useState, useContext } from "react";
@@ -85,25 +87,95 @@ const AddDocumentModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Thêm tài liệu</ModalHeader>
-        <ModalCloseButton />
+      <ModalContent
+        bg="surface"
+        borderRadius="md"
+        boxShadow="md"
+        fontFamily="Inter, sans-serif"
+        maxW="400px"
+        p={6}
+      >
+        <ModalHeader
+          fontWeight="bold"
+          textAlign="center"
+          textTransform="uppercase"
+          color="brand.500"
+          fontSize="xl"
+          borderBottom="1px solid"
+          borderColor="border"
+          borderTopRadius="md"
+          pb={3}
+        >
+          Thêm tài liệu
+        </ModalHeader>
+        <ModalCloseButton
+          top={4}
+          right={4}
+          borderRadius="full"
+          bg="gray.100"
+          _hover={{ bg: "gray.200" }}
+        />
         <ModalBody>
-          <Input
-            type="file"
-            accept=".doc, .docx, .pdf"
-            multiple
-            onChange={handleFileChange}
-            mb={4}
-          />
+          <FormControl mb={4}>
+            <FormLabel
+              color="textSecondary"
+              fontWeight="semibold"
+              fontSize="sm"
+            >
+              Chọn tài liệu (.doc, .docx, .pdf)
+            </FormLabel>
+            <Input
+              type="file"
+              accept=".doc, .docx, .pdf"
+              multiple
+              onChange={handleFileChange}
+              mb={2}
+              pt={1}
+              _active={{ borderColor: "transparent" }}
+              _focus={{ borderColor: "transparent" }}
+              sx={{
+                "::file-selector-button": {
+                  height: "2.5rem",
+                  mr: 4,
+                  py: 2,
+                  px: 4,
+                  borderRadius: "md",
+                  border: "1px solid",
+                  borderColor: "border",
+                  bg: "background",
+                  fontWeight: "semibold",
+                  color: "textPrimary",
+                  boxShadow: "sm",
+                  _hover: { bg: "gray.100" },
+                },
+              }}
+            />
+          </FormControl>
 
           {selectedFiles.length > 0 ? (
-            <Box borderWidth="1px" borderRadius="md" p={3}>
+            <Box
+              borderWidth="1px"
+              borderRadius="md"
+              p={3}
+              borderColor="border"
+              bg="background"
+            >
               {selectedFiles.map((file) => (
-                <Flex key={file.name} justify="space-between" mb={2}>
+                <Flex
+                  key={file.name}
+                  justify="space-between"
+                  align="center"
+                  mb={2}
+                  p={2}
+                  bg="surface"
+                  borderRadius="md"
+                  boxShadow="sm"
+                >
                   <Box>
-                    <Text fontWeight="medium">{file.name}</Text>
-                    <Text fontSize="sm" color="gray.500">
+                    <Text fontWeight="medium" fontSize="sm" color="textPrimary">
+                      {file.name}
+                    </Text>
+                    <Text fontSize="xs" color="textSecondary">
                       {(file.size / 1024).toFixed(2)} KB
                     </Text>
                   </Box>
@@ -114,26 +186,31 @@ const AddDocumentModal = ({
                     variant="ghost"
                     colorScheme="red"
                     onClick={() => handleRemoveFile(file.name)}
+                    borderRadius="full"
                   />
                 </Flex>
               ))}
             </Box>
           ) : (
-            <Text fontSize="sm" color="gray.500">
+            <Text fontSize="sm" color="textSecondary">
               Chưa có tài liệu nào được chọn.
             </Text>
           )}
         </ModalBody>
         <ModalFooter>
           <Button
-            colorScheme="blue"
+            colorScheme="brand"
             mr={3}
             onClick={handleAddFilesChapter}
             isDisabled={selectedFiles.length === 0}
+            borderRadius="md"
+            fontWeight="semibold"
+            fontSize="md"
+            boxShadow="md"
           >
             Xác nhận
           </Button>
-          <Button variant="ghost" onClick={onClose}>
+          <Button variant="ghost" onClick={onClose} borderRadius="md">
             Hủy
           </Button>
         </ModalFooter>

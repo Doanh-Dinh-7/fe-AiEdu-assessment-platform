@@ -115,7 +115,7 @@ const ClassForm = () => {
 
   return loading ? (
     <Center minH="200px">
-      <Spinner size="xl" thickness="4px" speed="0.65s" color="primary" />
+      <Spinner size="xl" thickness="4px" speed="0.65s" color="brand.500" />
     </Center>
   ) : (
     <Flex
@@ -123,7 +123,7 @@ const ClassForm = () => {
       direction="column"
       bg="background"
       align="center"
-      py={7}
+      py={8}
       fontFamily="Inter, sans-serif"
     >
       <Box
@@ -131,16 +131,16 @@ const ClassForm = () => {
         maxW="700px"
         bg="surface"
         p={8}
-        borderRadius="12px"
-        boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-        mx={2}
+        borderRadius="md"
+        boxShadow="md"
+        mx={4}
       >
         <Heading
-          fontSize="20px"
+          fontSize="xl"
           textAlign="center"
           textTransform="uppercase"
           mb={6}
-          color="primary"
+          color="brand.500"
           fontWeight="bold"
         >
           {mode === "edit" ? "Cập nhật" : "Tạo"} lớp học phần
@@ -148,7 +148,12 @@ const ClassForm = () => {
 
         <Flex direction="column" gap={4}>
           <Flex direction="column">
-            <Text fontWeight="bold" mb={1} color="textSecondary">
+            <Text
+              fontWeight="semibold"
+              mb={1}
+              color="textSecondary"
+              fontSize="sm"
+            >
               Tên lớp học phần
             </Text>
             <Input
@@ -156,22 +161,27 @@ const ClassForm = () => {
               placeholder="VD: Quản trị học 48K21.2"
               value={formData.TenLopHocPhan}
               onChange={handleChange}
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontSize="15px"
-              boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
               borderColor="border"
               color="textPrimary"
               _placeholder={{ color: "textSecondary" }}
               _focus={{
-                borderColor: "primary",
-                boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                borderColor: "brand.500",
+                boxShadow: "outline",
               }}
             />
           </Flex>
 
           <Flex direction="column">
-            <Text fontWeight="bold" mb={1} color="textSecondary">
+            <Text
+              fontWeight="semibold"
+              mb={1}
+              color="textSecondary"
+              fontSize="sm"
+            >
               Thời gian học
             </Text>
             <Input
@@ -179,22 +189,27 @@ const ClassForm = () => {
               placeholder="VD: 123 T6"
               value={formData.ThoiGianHoc}
               onChange={handleChange}
-              borderRadius="12px"
-              bg="#F2F4F8"
-              fontSize="15px"
-              boxShadow="0 2px 6px rgba(0,0,0,0.04)"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
               borderColor="border"
               color="textPrimary"
               _placeholder={{ color: "textSecondary" }}
               _focus={{
-                borderColor: "primary",
-                boxShadow: "0 2px 6px rgba(74,144,226,0.10)",
+                borderColor: "brand.500",
+                boxShadow: "outline",
               }}
             />
           </Flex>
 
           <Flex direction="column">
-            <Text fontWeight="bold" mb={1} color="textSecondary">
+            <Text
+              fontWeight="semibold"
+              mb={1}
+              color="textSecondary"
+              fontSize="sm"
+            >
               Học phần
             </Text>
             <Select
@@ -214,23 +229,68 @@ const ClassForm = () => {
               styles={{
                 control: (base) => ({
                   ...base,
-                  borderRadius: 12,
-                  background: "#F2F4F8",
-                  fontSize: 15,
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                  borderColor: "#E0E0E0",
-                  color: "#1C1C1C",
-                  minHeight: 44,
+                  borderRadius: "var(--chakra-radii-md)",
+                  background: "var(--chakra-colors-background)",
+                  fontSize: "var(--chakra-fontSizes-sm)",
+                  boxShadow: "var(--chakra-shadows-sm)",
+                  borderColor: "var(--chakra-colors-border)",
+                  color: "var(--chakra-colors-textPrimary)",
+                  minHeight: "2.75rem", // Corresponds to the default Input height
+                  _focus: {
+                    borderColor: "var(--chakra-colors-brand-500)",
+                    boxShadow: "var(--chakra-shadows-outline)",
+                  },
                 }),
                 placeholder: (base) => ({
                   ...base,
-                  color: "#5F6368",
+                  color: "var(--chakra-colors-textSecondary)",
                 }),
                 multiValue: (base) => ({
                   ...base,
-                  borderRadius: 8,
-                  background: "#e6eaf7",
-                  color: "#1C1C1C",
+                  borderRadius: "var(--chakra-radii-md)",
+                  background: "var(--chakra-colors-brand-100)", // Use a light brand color
+                  color: "var(--chakra-colors-textPrimary)",
+                }),
+                multiValueLabel: (base) => ({
+                  ...base,
+                  color: "var(--chakra-colors-textPrimary)",
+                  fontWeight: "var(--chakra-fontWeights-semibold)",
+                }),
+                multiValueRemove: (base) => ({
+                  ...base,
+                  color: "var(--chakra-colors-textSecondary)",
+                  ":hover": {
+                    color: "var(--chakra-colors-textPrimary)",
+                  },
+                }),
+                option: (base, { isSelected }) => ({
+                  ...base,
+                  fontSize: "var(--chakra-fontSizes-sm)",
+                  background: isSelected
+                    ? "var(--chakra-colors-brand-200)"
+                    : "",
+                  color: "var(--chakra-colors-textPrimary)",
+                  ":hover": {
+                    background: isSelected
+                      ? "var(--chakra-colors-brand-300)"
+                      : "var(--chakra-colors-gray-100)",
+                  },
+                }),
+                singleValue: (base) => ({
+                  ...base,
+                  fontSize: "var(--chakra-fontSizes-sm)",
+                  color: "var(--chakra-colors-textPrimary)",
+                }),
+                input: (base) => ({
+                  ...base,
+                  fontSize: "var(--chakra-fontSizes-sm)",
+                  color: "var(--chakra-colors-textPrimary)",
+                }),
+                menuList: (base) => ({
+                  ...base,
+                  borderRadius: "var(--chakra-radii-md)",
+                  boxShadow: "var(--chakra-shadows-md)",
+                  padding: "var(--chakra-space-2)",
                 }),
               }}
             />
@@ -239,11 +299,11 @@ const ClassForm = () => {
 
         <Flex justify="flex-end" mt={6}>
           <Button
-            colorScheme="primary"
-            borderRadius="12px"
-            fontWeight="bold"
-            fontSize="16px"
-            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            colorScheme="brand"
+            borderRadius="md"
+            fontWeight="semibold"
+            fontSize="md"
+            boxShadow="md"
             onClick={handleSave}
           >
             {mode === "edit" ? "Cập nhật" : "Lưu"}

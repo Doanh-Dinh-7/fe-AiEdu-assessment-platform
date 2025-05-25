@@ -215,57 +215,61 @@ const ExamPractice = () => {
   // }
 
   return (
-    <Flex bg="#F5F9FF" align="center">
-      {/* <SidebarTaking
-        questions={questions}
-        current={current}
-        answered={answered}
-        timeLeft={timeLeft}
-        onSelect={setCurrent}
-      /> */}
-      <Box flex={1} px={8} mt={6}>
-        {!started ? (
-          <Flex justify="center" align="center" h="60vh">
-            <Button
-              colorScheme="blue"
-              size="xl"
-              fontWeight="bold"
-              fontSize="xl"
-              p={8}
-              onClick={handleStartPractice}
-              isLoading={loading}
-            >
-              BẮT ĐẦU LUYỆN THI
-            </Button>
-          </Flex>
-        ) : (
-          <>
-            <ChatArea
-              messages={messages[current] || []}
-              onSend={handleSend}
-              input={input}
-              setInput={setInput}
-              disabled={finished}
-              onShowHint={() => setShowHint(true)}
-              isHintDisabled={showHint}
-              showHint={showHint}
-              hintText={questions[current]?.hint || ""}
-              isPracticeMode={true}
-              maCuocThi={maCuocThi}
-            />
+    <Flex
+      bg="background"
+      align="stretch"
+      direction="column"
+      minH="100vh"
+      fontFamily="Inter, sans-serif"
+    >
+      {started && !finished && (
+        <Button
+          colorScheme="red"
+          borderRadius="md"
+          fontWeight="semibold"
+          position="fixed"
+          top={8}
+          left={8}
+          zIndex={10}
+          onClick={handleFinish}
+          boxShadow="md"
+        >
+          Kết thúc
+        </Button>
+      )}
 
-            <Button
-              bg="blue.300"
-              size="lg"
-              onClick={handleFinish}
-              mt={10}
-              mb={6}
-            >
-              Kết thúc
-            </Button>
-          </>
-        )}
-      </Box>
+      {!started ? (
+        <Flex flex="1" justify="center" align="center" p={{ base: 4, md: 8 }}>
+          <Button
+            colorScheme="brand"
+            size="xl"
+            fontWeight="semibold"
+            fontSize="xl"
+            p={8}
+            onClick={handleStartPractice}
+            isLoading={loading}
+            borderRadius="md"
+            boxShadow="md"
+          >
+            BẮT ĐẦU LUYỆN THI
+          </Button>
+        </Flex>
+      ) : (
+        <ChatArea
+          messages={messages[current] || []}
+          onSend={handleSend}
+          input={input}
+          setInput={setInput}
+          disabled={finished}
+          onShowHint={() => setShowHint(true)}
+          isHintDisabled={showHint}
+          showHint={showHint}
+          hintText={questions[current]?.hint || ""}
+          isPracticeMode={true}
+          maCuocThi={maCuocThi}
+        />
+      )}
+
       <FinishModal
         isOpen={showFinish}
         onConfirm={handleFinishConfirm}
