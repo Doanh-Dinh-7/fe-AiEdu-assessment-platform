@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 // import SidebarTaking from "../../lib/components/Exam/ExamTaking/SidebarTaking";
 import FinishModal from "../../lib/components/Exam/ExamTaking/FinishModal";
@@ -64,7 +64,9 @@ const ExamPractice = () => {
           setMessages(parsed);
           return;
         }
-      } catch {}
+      } catch {
+        console.log("Không thể parse messages từ localStorage, khởi tạo lại.");
+      }
     }
     // Nếu không có thì khởi tạo như cũ
     setMessages(

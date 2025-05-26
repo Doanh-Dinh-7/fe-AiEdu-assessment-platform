@@ -8,11 +8,11 @@ import {
   Th,
   Td,
   Heading,
-  Button,
   useToast,
   Spinner,
   Box,
   IconButton,
+  Badge,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
@@ -116,6 +116,9 @@ const Exam = () => {
                 Tên bài thi
               </Th>
               <Th fontWeight="bold" fontSize="sm" color="textSecondary">
+                Loại
+              </Th>
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Giờ thi
               </Th>
               <Th fontWeight="bold" fontSize="sm" color="textSecondary">
@@ -144,6 +147,19 @@ const Exam = () => {
               <Tr key={exam.ma_cuoc_thi} _hover={{ bg: "gray.50" }}>
                 <Td color="textPrimary">{idx + 1}</Td>
                 <Td color="textPrimary">{exam.ten_cuoc_thi}</Td>
+                <Td color="textPrimary">
+                  <Badge
+                    colorScheme={
+                      exam.hinh_thuc_thi === "vấn đáp" ? "accent" : "brand"
+                    }
+                    px={2}
+                    py={1}
+                    borderRadius="md"
+                    fontSize="xs"
+                  >
+                    {exam.hinh_thuc_thi}
+                  </Badge>
+                </Td>
                 <Td color="textPrimary">
                   {exam.thoi_gian_bat_dau
                     ? new Date(exam.thoi_gian_bat_dau).toLocaleTimeString(

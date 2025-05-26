@@ -76,3 +76,78 @@ export const deleteQuestion = async (MaCauHoi) => {
     console.log("Lỗi khi xóa câu hỏi:", error);
   }
 };
+
+export const updateQuestion = async (MaCauHoi, questionData) => {
+  try {
+    const res = await fetch(CHAT_URL + "/topic/question/" + MaCauHoi, {
+      method: "PATCH", // Nếu API cần gửi dữ liệu, hãy đặt method PATCH
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(questionData),
+    });
+    const data = await checkResponse(res);
+
+    return data;
+  } catch (error) {
+    console.log("Lỗi khi cập nhật câu hỏi:", error);
+  }
+};
+
+export const updateAnswer = async (MaDapAn, questionData) => {
+  try {
+    const res = await fetch(CHAT_URL + "/topic/answer/" + MaDapAn, {
+      method: "PATCH", // Nếu API cần gửi dữ liệu, hãy đặt method PATCH
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(questionData),
+    });
+    const data = await checkResponse(res);
+
+    return data;
+  } catch (error) {
+    console.log("Lỗi khi cập nhật câu hỏi:", error);
+  }
+};
+
+export const updateIdeas = async (MaYChinh, questionData) => {
+  try {
+    const res = await fetch(CHAT_URL + "/topic/answer_detail/" + MaYChinh, {
+      method: "PATCH", // Nếu API cần gửi dữ liệu, hãy đặt method PATCH
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(questionData),
+    });
+    const data = await checkResponse(res);
+
+    return data;
+  } catch (error) {
+    console.log("Lỗi khi cập nhật câu hỏi:", error);
+  }
+};
+
+export const updateSubQnA = async (MaCauBoSung, questionData) => {
+  try {
+    const res = await fetch(
+      CHAT_URL + "/topic/supplementary_info/" + MaCauBoSung,
+      {
+        method: "PATCH", // Nếu API cần gửi dữ liệu, hãy đặt method PATCH
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(questionData),
+      }
+    );
+    const data = await checkResponse(res);
+
+    return data;
+  } catch (error) {
+    console.log("Lỗi khi cập nhật câu hỏi:", error);
+  }
+};

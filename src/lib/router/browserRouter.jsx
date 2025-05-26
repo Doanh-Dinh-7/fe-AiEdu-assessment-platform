@@ -24,6 +24,7 @@ import ExamResultDetail from "../components/ExamManagement/ExamResultDetail";
 import Exam from "../../pages/Student/Exam";
 import ExamTaking from "../../pages/Student/ExamTaking";
 import ExamPractice from "../../pages/Student/ExamPractice";
+import ExamEssay from "../../pages/Student/ExamEssay";
 
 import RoleProtectedRoute from "../components/Auth/RoleProtectedRoute";
 
@@ -73,6 +74,7 @@ const studentRoutes = {
     { path: "/exams", element: <Exam /> },
     { path: "/exams/taking/:maCuocThi", element: <ExamTaking /> },
     { path: "/exams/practice/:maCuocThi", element: <ExamPractice /> },
+    { path: "/exams/essay/:maCuocThi", element: <ExamEssay /> },
   ],
 };
 

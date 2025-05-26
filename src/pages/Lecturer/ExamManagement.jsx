@@ -12,6 +12,7 @@ import {
   Spinner,
   Box,
   IconButton,
+  Badge,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
@@ -165,6 +166,9 @@ const ExamManagement = () => {
                 Tên bài thi
               </Th>
               <Th fontWeight="bold" fontSize="sm" color="textSecondary">
+                Loại
+              </Th>
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Giờ thi
               </Th>
               <Th fontWeight="bold" fontSize="sm" color="textSecondary">
@@ -181,6 +185,19 @@ const ExamManagement = () => {
               <Tr key={exam.MaCuocThi} _hover={{ bg: "gray.50" }}>
                 <Td color="textPrimary">{idx + 1}</Td>
                 <Td color="textPrimary">{exam.TenCuocThi}</Td>
+                <Td color="textPrimary">
+                  <Badge
+                    colorScheme={
+                      exam.HinhThucThi === "vấn đáp" ? "accent" : "brand"
+                    }
+                    px={2}
+                    py={1}
+                    borderRadius="md"
+                    fontSize="xs"
+                  >
+                    {exam.HinhThucThi}
+                  </Badge>
+                </Td>
                 <Td color="textPrimary">
                   {exam.ThoiGianBatDau
                     ? new Date(exam.ThoiGianBatDau).toLocaleTimeString(

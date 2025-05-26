@@ -1,6 +1,24 @@
 import { BASE_URL, CHAT_URL } from "../config/config";
 import { checkResponse } from "./jwt";
 
+export const AddChapterDocument = async (MaHocPhan, MaChuong, chapterData) => {
+  try {
+    const res = await fetch(
+      CHAT_URL + "/academic/chapter/" + MaHocPhan + "/" + MaChuong,
+      {
+        method: "POST", // Nếu API cần gửi dữ liệu, hãy đặt method POST
+        credentials: "include",
+        body: chapterData,
+      }
+    );
+    const data = await checkResponse(res);
+
+    return data;
+  } catch (error) {
+    console.log("Lỗi khi thêm chương:", error);
+  }
+};
+
 export const updateChapter = async (MaHocPhan, MaChuong, chapterData) => {
   try {
     const res = await fetch(

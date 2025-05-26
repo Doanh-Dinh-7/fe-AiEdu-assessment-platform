@@ -273,6 +273,14 @@ const ExamBankDetail = () => {
             fontWeight="medium"
             color="#1C1C1C"
           />
+          <Text fontWeight="bold">Hình thức thi</Text>
+          <Badge
+            colorScheme={
+              ThongTinHocPhan.HinhThucThi === "vấn đáp" ? "accent" : "brand"
+            }
+          >
+            {ThongTinHocPhan.HinhThucThi}
+          </Badge>
         </Flex>
         <Flex wrap="wrap" gap={4} align="center">
           <Text fontWeight="bold">Tổng số câu hỏi:</Text>

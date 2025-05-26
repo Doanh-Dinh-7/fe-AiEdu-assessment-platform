@@ -65,7 +65,7 @@ const SidebarTaking = ({
             size="sm"
             bg={
               answered[idx]
-                ? "success.100"
+                ? "accent.100"
                 : current === idx
                 ? "brand.500"
                 : "gray.100"

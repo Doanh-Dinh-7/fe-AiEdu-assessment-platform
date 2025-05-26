@@ -12,6 +12,7 @@ import {
   useToast,
   Box,
   IconButton,
+  Badge,
 } from "@chakra-ui/react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -166,6 +167,9 @@ const ExamBank = () => {
                 Học phần
               </Th>
               <Th fontWeight="bold" fontSize="sm" color="textSecondary">
+                Loại
+              </Th>
+              <Th fontWeight="bold" fontSize="sm" color="textSecondary">
                 Số tín chỉ
               </Th>
               <Th fontWeight="bold" fontSize="sm" color="textSecondary">
@@ -181,6 +185,18 @@ const ExamBank = () => {
               <Tr key={course.MaHocPhan} _hover={{ bg: "gray.50" }}>
                 <Td color="textPrimary">{index + 1}</Td>
                 <Td color="textPrimary">{course.TenHocPhan}</Td>
+                <Td color="textPrimary">
+                  <Badge
+                    colorScheme={course.HinhThucThi === "vấn đáp" ? "accent" : "brand"}
+                    px={2}
+                    py={1}
+                    borderRadius="md"
+                    fontSize="xs"
+                  >
+                    {course.HinhThucThi}
+                  </Badge>
+                </Td>
+
                 <Td color="textPrimary">{course.SoTinChi}</Td>
                 <Td color="textPrimary">{course.NgayTao}</Td>
                 <Td textAlign="center">

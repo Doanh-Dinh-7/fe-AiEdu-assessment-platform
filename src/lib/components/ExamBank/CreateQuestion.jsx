@@ -272,12 +272,11 @@ const CreateQuestion = () => {
                   colorScheme="brand"
                   variant="outline"
                   onClick={async () => {
-                    const res = await fetchSuggestion({
-                      noi_dung_cau_hoi: question,
-                      muc_do: level.toLowerCase(),
+                    const suggestion = await fetchSuggestion({
+                      MucDo: level.toLowerCase(),
                     });
-                    if (res) {
-                      setQuestion(res.content);
+                    if (suggestion && suggestion.content) {
+                      setQuestion(suggestion.content);
                     }
                   }}
                 >
@@ -333,13 +332,12 @@ const CreateQuestion = () => {
                   colorScheme="brand"
                   variant="outline"
                   onClick={async () => {
-                    const res = await fetchSuggestion({
-                      noi_dung_cau_hoi: question,
-                      dap_an: answer,
-                      muc_do: level.toLowerCase(),
+                    const suggestion = await fetchSuggestion({
+                      CauHoi: question,
+                      MucDo: level.toLowerCase(),
                     });
-                    if (res) {
-                      setAnswer(res.content);
+                    if (suggestion && suggestion.content) {
+                      setAnswer(suggestion.content);
                     }
                   }}
                 >
@@ -414,20 +412,15 @@ const CreateQuestion = () => {
                         colorScheme="brand"
                         variant="outline"
                         onClick={async () => {
-                          const res = await fetchSuggestion({
-                            noi_dung_cau_hoi: question,
-                            dap_an: answer,
-                            y_chinh: ideas.map((i) => i.idea),
-                            muc_do: level.toLowerCase(),
+                          const suggestion = await fetchSuggestion({
+                            NoiDung: question,
+                            DapAn: answer,
+                            MucDo: level.toLowerCase(),
                           });
-                          if (res) {
-                            setIdeas((prev) =>
-                              prev.map((ideaItem, idx) =>
-                                idx === index
-                                  ? { ...ideaItem, idea: res.content }
-                                  : ideaItem
-                              )
-                            );
+                          if (suggestion && suggestion.content) {
+                            const updated = [...ideas];
+                            updated[index].idea = suggestion.content;
+                            setIdeas(updated);
                           }
                         }}
                         isLoading={loading}
@@ -504,24 +497,16 @@ const CreateQuestion = () => {
                             colorScheme="brand"
                             variant="outline"
                             onClick={async () => {
-                              const res = await fetchSuggestion({
-                                noi_dung_cau_hoi: question,
-                                dap_an: answer,
-                                y_chinh: [item.idea],
-                                cau_hoi_bo_sung: item.subQuestion,
-                                muc_do: level.toLowerCase(),
+                              const suggestion = await fetchSuggestion({
+                                CauHoi: question,
+                                DapAn: answer,
+                                YChinh: [item.idea],
+                                MucDo: level.toLowerCase(),
                               });
-                              if (res) {
-                                setIdeas((prev) =>
-                                  prev.map((ideaItem, idx) =>
-                                    idx === index
-                                      ? {
-                                          ...ideaItem,
-                                          subQuestion: res.content,
-                                        }
-                                      : ideaItem
-                                  )
-                                );
+                              if (suggestion && suggestion.content) {
+                                const updated = [...ideas];
+                                updated[index].subQuestion = suggestion.content;
+                                setIdeas(updated);
                               }
                             }}
                             isLoading={loading}
@@ -592,22 +577,17 @@ const CreateQuestion = () => {
                             colorScheme="brand"
                             variant="outline"
                             onClick={async () => {
-                              const res = await fetchSuggestion({
-                                noi_dung_cau_hoi: question,
-                                dap_an: answer,
-                                y_chinh: [item.idea],
-                                cau_hoi_bo_sung: item.subQuestion,
-                                dap_an_bo_sung: item.subAnswer,
-                                muc_do: level.toLowerCase(),
+                              const suggestion = await fetchSuggestion({
+                                CauHoi: question,
+                                DapAn: answer,
+                                YChinh: [item.idea],
+                                CauHoiBoSung: item.subQuestion,
+                                MucDo: level.toLowerCase(),
                               });
-                              if (res) {
-                                setIdeas((prev) =>
-                                  prev.map((ideaItem, idx) =>
-                                    idx === index
-                                      ? { ...ideaItem, subAnswer: res.content }
-                                      : ideaItem
-                                  )
-                                );
+                              if (suggestion && suggestion.content) {
+                                const updated = [...ideas];
+                                updated[index].subAnswer = suggestion.content;
+                                setIdeas(updated);
                               }
                             }}
                             isLoading={loading}

@@ -62,7 +62,11 @@ const ExamStartModal = ({ isOpen, onClose, maCuocThi, mode = "exam" }) => {
       const res = await joinExam(maCuocThi, { mat_khau: password });
       if (res) {
         onClose();
-        navigate(`${location.pathname}/taking/${maCuocThi}`);
+        if (examDetail?.hinh_thuc_thi === "tự luận") {
+          navigate(`${location.pathname}/essay/${maCuocThi}`);
+        } else {
+          navigate(`${location.pathname}/taking/${maCuocThi}`);
+        }
       } else {
         setError("Mật khẩu không hợp lệ");
       }
@@ -95,7 +99,7 @@ const ExamStartModal = ({ isOpen, onClose, maCuocThi, mode = "exam" }) => {
         boxShadow="md"
         fontFamily="Inter, sans-serif"
         p={6}
-        maxW="480px"
+        maxW="50vw"
       >
         <ModalHeader
           fontWeight="bold"
@@ -179,6 +183,24 @@ const ExamStartModal = ({ isOpen, onClose, maCuocThi, mode = "exam" }) => {
                     boxShadow="sm"
                   >
                     {examDetail.ten_lop_hoc_phan}
+                  </Box>
+                  <Text
+                    fontWeight="semibold"
+                    color="text.secondary"
+                    fontSize="sm"
+                  >
+                    Hình thức thi
+                  </Text>
+                  <Box
+                    bg="background"
+                    borderRadius="md"
+                    px={3}
+                    py={2}
+                    color="text.primary"
+                    fontWeight="medium"
+                    boxShadow="sm"
+                  >
+                    {examDetail.hinh_thuc_thi}
                   </Box>
                 </Flex>
                 <Flex direction="column" gap={2} flex={1} minW="200px">

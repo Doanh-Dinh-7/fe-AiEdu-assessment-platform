@@ -15,22 +15,19 @@ import {
   useToast,
   FormControl,
   FormLabel,
+  Select,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { ProgressContext } from "../Layout/ProgressContext";
+import { AddChapterDocument } from "../../service/chapter";
 
-const AddDocumentModal = ({
-  isOpen,
-  onClose,
-  maHocPhan,
-  maChuong,
-  updateChapter,
-}) => {
+const AddDocumentModal = ({ isOpen, onClose, maHocPhan, maChuong }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const toast = useToast();
   const { setShowProgress } = useContext(ProgressContext);
+  const [selectedLanguage, setSelectedLanguage] = useState("vietnamese");
 
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -52,11 +49,13 @@ const AddDocumentModal = ({
     selectedFiles.forEach((file) => {
       filesData.append("files", file);
     });
+    filesData.append("language", selectedLanguage);
+
     try {
       onClose();
       setShowProgress(true);
       localStorage.setItem("showProgress", "true");
-      const data = await updateChapter(maHocPhan, maChuong, filesData);
+      const data = await AddChapterDocument(maHocPhan, maChuong, filesData);
       if (!data) {
         throw new Error("Failed to update chapter");
       }
@@ -122,6 +121,33 @@ const AddDocumentModal = ({
               fontWeight="semibold"
               fontSize="sm"
             >
+              Ngôn ngữ
+            </FormLabel>
+            <Select
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+              placeholder="Chọn ngôn ngữ"
+              borderRadius="md"
+              bg="background"
+              fontSize="sm"
+              boxShadow="sm"
+              borderColor="border"
+              color="textPrimary"
+              _focus={{
+                borderColor: "brand.500",
+                boxShadow: "outline",
+              }}
+            >
+              <option value="vietnamese">Tiếng Việt</option>
+              <option value="english">Tiếng Anh</option>
+            </Select>
+          </FormControl>
+          <FormControl mb={4}>
+            <FormLabel
+              color="textSecondary"
+              fontWeight="semibold"
+              fontSize="sm"
+            >
               Chọn tài liệu (.doc, .docx, .pdf)
             </FormLabel>
             <Input
@@ -167,7 +193,8 @@ const AddDocumentModal = ({
                   align="center"
                   mb={2}
                   p={2}
-                  bg="surface"
+                  bg="accent.100"
+                  _hover={{ bg: "accent.200" }}
                   borderRadius="md"
                   boxShadow="sm"
                 >
@@ -198,6 +225,9 @@ const AddDocumentModal = ({
           )}
         </ModalBody>
         <ModalFooter>
+          <Button variant="ghost" onClick={onClose} borderRadius="md">
+            Hủy
+          </Button>
           <Button
             colorScheme="brand"
             mr={3}
@@ -209,9 +239,6 @@ const AddDocumentModal = ({
             boxShadow="md"
           >
             Xác nhận
-          </Button>
-          <Button variant="ghost" onClick={onClose} borderRadius="md">
-            Hủy
           </Button>
         </ModalFooter>
       </ModalContent>

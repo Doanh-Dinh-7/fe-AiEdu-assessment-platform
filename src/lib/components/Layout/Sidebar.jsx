@@ -74,7 +74,7 @@ const Sidebar = () => {
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaBook color="brand.500" />}
+                leftIcon={<FaBook color="#4A90E2" />}
                 bg="surface"
                 color="textPrimary"
                 w="100%"
@@ -97,7 +97,7 @@ const Sidebar = () => {
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaUsers color="brand.500" />}
+                leftIcon={<FaUsers color="#4A90E2" />}
                 bg="surface"
                 color="textPrimary"
                 w="100%"
@@ -120,7 +120,7 @@ const Sidebar = () => {
               isDisabled={!isCollapsed}
             >
               <Button
-                leftIcon={<FaFileAlt color="brand.500" />}
+                leftIcon={<FaFileAlt color="#4A90E2" />}
                 bg="surface"
                 color="textPrimary"
                 w="100%"
@@ -142,7 +142,7 @@ const Sidebar = () => {
         {vaiTro === "student" && (
           <Tooltip label="Cuộc thi" placement="right" isDisabled={!isCollapsed}>
             <Button
-              leftIcon={<FaFileAlt color="brand.500" />}
+              leftIcon={<FaFileAlt color="#4A90E2" />}
               bg="surface"
               color="textPrimary"
               w="100%"
@@ -167,7 +167,7 @@ const Sidebar = () => {
           bg="surface"
           w="100%"
           h="60px"
-          rightIcon={<FaChevronDown color="brand.500" />}
+          rightIcon={<FaChevronDown color="#4A90E2" />}
           color="textPrimary"
           fontWeight="bold"
           borderRadius="md"

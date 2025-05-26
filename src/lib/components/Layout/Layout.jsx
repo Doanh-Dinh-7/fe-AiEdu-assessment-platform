@@ -114,10 +114,11 @@ const Layout = () => {
             <Progress
               size="md"
               isIndeterminate
-              colorScheme="primary"
+              colorScheme="accent"
+              bg="brand.100"
               borderRadius="md"
             />
-            <Box textAlign="center" mt={2} color="primary" fontWeight="bold">
+            <Box textAlign="center" mt={2} fontWeight="bold">
               Đang mã hoá tài liệu, vui lòng chờ...
             </Box>
           </Box>

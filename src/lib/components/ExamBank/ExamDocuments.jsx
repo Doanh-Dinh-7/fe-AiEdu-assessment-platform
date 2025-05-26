@@ -130,11 +130,13 @@ const ExamDocuments = () => {
             Danh sách tài liệu chương
           </Heading>
         </Center>
-        <Button
+        <IconButton
+          icon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
           colorScheme="brand"
-          borderRadius="md"
+          borderRadius="full"
           px={8}
-          fontWeight="semibold"
+          py={2}
+          fontWeight="bold"
           fontSize="md"
           boxShadow="md"
           onClick={() => setIsOpen(true)}
@@ -142,9 +144,9 @@ const ExamDocuments = () => {
             transform: "scale(0.98)",
             bgColor: "brand.600",
           }}
-        >
-          Thêm tài liệu
-        </Button>
+          variant="ghost"
+          aria-label="Thêm"
+        />
       </Flex>
       <Box
         w="100%"
@@ -204,7 +206,6 @@ const ExamDocuments = () => {
         maHocPhan={maHocPhan}
         maChuong={maChuong}
         setIsOpen={setIsOpen}
-        updateChapter={updateChapter}
       />
     </Flex>
   );

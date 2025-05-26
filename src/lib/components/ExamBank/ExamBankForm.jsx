@@ -11,6 +11,7 @@ import {
   FormControl,
   Spinner,
   Box,
+  Select,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createCourse, updateCourse } from "../../service/course";
@@ -31,7 +32,7 @@ const ExamBankForm = () => {
     SoTinChi: defaultData.SoTinChi || 3,
     SoChuong: defaultData.SoChuong || 3,
     TongSoCau: defaultData.TongSoCau || 100,
-    HinhThucThi: defaultData.HinhThucThi || "Vấn đáp",
+    HinhThucThi: defaultData.HinhThucThi || "vấn đáp",
     BacDaoTao: defaultData.BacDaoTao || "Chính quy",
   });
 
@@ -256,7 +257,7 @@ const ExamBankForm = () => {
             <Text fontWeight="semibold" fontSize="sm" color="textSecondary">
               Hình thức thi:
             </Text>
-            <Input
+            <Select
               name="HinhThucThi"
               value={formData.HinhThucThi}
               onChange={handleChange}
@@ -268,12 +269,14 @@ const ExamBankForm = () => {
               boxShadow="sm"
               borderColor="border"
               color="textPrimary"
-              _placeholder={{ color: "textSecondary" }}
               _focus={{
                 borderColor: "brand.500",
                 boxShadow: "outline",
               }}
-            />
+            >
+              <option value="vấn đáp">Vấn đáp</option>
+              <option value="tự luận">Tự luận</option>
+            </Select>
             <Text fontWeight="semibold" fontSize="sm" color="textSecondary">
               Bậc đào tạo:
             </Text>

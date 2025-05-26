@@ -13,6 +13,7 @@ import {
   Spinner,
   IconButton,
   useToast,
+  Badge,
 } from "@chakra-ui/react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useState, useEffect } from "react";
@@ -141,12 +142,24 @@ const ExamQuestion = () => {
           </Heading>
         </Center>
         <Flex justify="flex-end">
-          <Button
+          {/* <Button
             colorScheme="brand"
             borderRadius="md"
             px={8}
             py={2}
             fontWeight="semibold"
+            fontSize="md"
+            boxShadow="md"
+          >
+            Tạo câu hỏi
+          </Button> */}
+          <IconButton
+            icon={<span style={{ fontSize: 18, marginRight: 4 }}>＋</span>}
+            colorScheme="brand"
+            borderRadius="full"
+            px={8}
+            py={2}
+            fontWeight="bold"
             fontSize="md"
             boxShadow="md"
             onClick={() =>
@@ -162,9 +175,9 @@ const ExamQuestion = () => {
               transform: "scale(0.98)",
               bgColor: "brand.600",
             }}
-          >
-            Tạo câu hỏi
-          </Button>
+            variant="ghost"
+            aria-label="Thêm"
+          />
         </Flex>
       </Flex>
 
@@ -212,7 +225,23 @@ const ExamQuestion = () => {
                 <Td color="textPrimary" whiteSpace="pre-wrap" w="50%">
                   {q.NoiDung}
                 </Td>
-                <Td color="textPrimary">{q.MucDo}</Td>
+                <Td color="textPrimary">
+                  <Badge
+                    colorScheme={
+                      q.MucDo === "dễ"
+                        ? "green"
+                        : q.MucDo === "trung bình"
+                        ? "blue"
+                        : "red"
+                    }
+                    px={2}
+                    py={1}
+                    borderRadius="md"
+                    fontSize="xs"
+                  >
+                    {q.MucDo}
+                  </Badge>
+                </Td>
                 <Td color="textPrimary">{q.NgayTao}</Td>
                 <Td textAlign="center">
                   <IconButton
