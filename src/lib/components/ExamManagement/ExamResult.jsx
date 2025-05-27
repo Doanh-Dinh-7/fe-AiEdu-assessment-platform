@@ -255,7 +255,7 @@ const ExamResult = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {examInfo.DanhSachSinhVien?.map((student, idx) => (
+            {examInfo.DanhSachKetQua?.map((student, idx) => (
               <Tr key={student.MaSinhVien} _hover={{ bg: "background" }}>
                 <Td color="text.primary">{idx + 1}</Td>
                 <Td color="text.primary">{student.MaSinhVien}</Td>
