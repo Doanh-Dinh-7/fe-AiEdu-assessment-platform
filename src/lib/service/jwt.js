@@ -1,4 +1,4 @@
-import { BASE_URL, CHAT_URL } from "../config/config";
+import { CHAT_URL } from "../config/config";
 
 export const login = async (username, password) => {
   try {
@@ -18,6 +18,27 @@ export const login = async (username, password) => {
   } catch (error) {
     console.log("error", error);
   }
+};
+
+export const register = async (formData) => {
+  const response = await fetch(CHAT_URL + "/account/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    if (errorData.detail === "Tên đăng nhập đã tồn tại") {
+      throw new Error("Tên đăng nhập đã tồn tại");
+    } else {
+      throw new Error("Đăng ký thất bại!");
+    }
+  }
+
+  const data = await response.json();
+  return data;
 };
 
 export const logout = async () => {
@@ -52,4 +73,19 @@ export const checkResponse = async (response) => {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
   return response.json();
+};
+
+export const testAddStudent = async (maData, maLopHocPhan) => {
+  const response = await fetch(
+    CHAT_URL + "/academic/test/class/" + maLopHocPhan,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(maData),
+    }
+  );
+
+  const data = await response.json();
+  return data;
 };

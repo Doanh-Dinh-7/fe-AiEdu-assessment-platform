@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import HomePage from "../../pages/HomePage";
-import LoginPage from "../../pages/LoginPage";
+import AuthPage from "../../pages/Auth/AuthPage";
 
 import ExamBank from "../../pages/Lecturer/ExamBank";
 import ExamBankDetail from "../components/ExamBank/ExamBankDetail";
@@ -91,6 +91,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: <AuthPage />,
   },
 ]);

@@ -21,7 +21,7 @@ export default defineConfig({
     strictPort: true,
     cors: true,
     allowedHosts: [
-      "patrol-guyana-cleaners-lamp.trycloudflare.com",
+      "competitions-ky-syria-campbell.trycloudflare.com",
       '*'
     ] // Thêm địa chỉ ngrok cụ thể
   }

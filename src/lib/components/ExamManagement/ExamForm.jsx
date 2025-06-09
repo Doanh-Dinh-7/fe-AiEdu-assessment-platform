@@ -416,7 +416,7 @@ const ExamForm = () => {
                 onChange={setSelectedClasses}
                 isMulti
                 closeMenuOnSelect={false}
-                isDisabled={!selectedCourse || mode === "edit"}
+                isDisabled={!selectedCourse}
                 focusBorderColor="brand.500"
                 chakraStyles={{
                   control: (provided) => ({
@@ -497,12 +497,15 @@ const ExamForm = () => {
                 value={
                   HinhThucThi
                     ? {
-                        label: HinhThucThi === "vấn đáp" ? "Vấn đáp" : "Tự luận",
+                        label:
+                          HinhThucThi === "vấn đáp" ? "Vấn đáp" : "Tự luận",
                         value: HinhThucThi,
                       }
                     : null
                 }
-                onChange={(option) => setHinhThucThi(option?.value || "vấn đáp")}
+                onChange={(option) =>
+                  setHinhThucThi(option?.value || "vấn đáp")
+                }
                 isClearable={false}
                 focusBorderColor="brand.500"
                 chakraStyles={{

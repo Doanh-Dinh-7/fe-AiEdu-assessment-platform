@@ -11,6 +11,7 @@ import {
   Text,
   IconButton,
   Tooltip,
+  Flex,
 } from "@chakra-ui/react";
 import {
   FaChevronDown,
@@ -18,8 +19,9 @@ import {
   FaUsers,
   FaFileAlt,
   FaBars,
+  FaStar,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../service/jwt";
 import { useState } from "react";
 
@@ -161,56 +163,85 @@ const Sidebar = () => {
         )}
       </VStack>
 
-      <Menu>
-        <MenuButton
-          as={Button}
-          bg="surface"
-          w="100%"
-          h="60px"
-          rightIcon={<FaChevronDown color="#4A90E2" />}
-          color="textPrimary"
-          fontWeight="bold"
-          borderRadius="md"
-          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-          _hover={{ bg: "brand.500", color: "white" }}
+      <Flex direction="column" gap="5" w="100%">
+        <Tooltip
+          label="Đánh giá Trải nghiệm hệ thống"
+          placement="right"
+          isDisabled={!isCollapsed}
         >
-          <HStack>
-            <Avatar
-              size="sm"
-              bg="gray.200"
-              name={maTaiKhoan}
-              color="textPrimary"
-            />
-            <Box textAlign="left" isTruncated>
-              <Text
-                fontWeight="bold"
-                color="textPrimary"
-                fontSize="md"
-                isTruncated
-              >
-                {maTaiKhoan}
-              </Text>
-              <Text fontSize="sm" color="textSecondary">
-                {vaiTro === "lecturer" ? "Giảng viên" : "Sinh viên"}
-              </Text>
-            </Box>
-          </HStack>
-        </MenuButton>
-        <MenuList
-          bg="surface"
-          borderRadius="md"
-          boxShadow="0 2px 6px rgba(0,0,0,0.08)"
-        >
-          <MenuItem
-            color="error.500"
-            _hover={{ bg: "error.500", color: "white" }}
+          <Button
+            as={Link}
+            to="https://docs.google.com/forms/d/1aWpAGuPDoL8xtpDYXqTgR1hZxQZWvKxUPSUgnWz0hrM/viewform?edit_requested=true"
+            target="_blank"
+            leftIcon={<FaStar color="#FBBC05" />}
+            w="100%"
+            h="50px"
+            fontWeight="medium"
             borderRadius="md"
-            onClick={handleLogout}
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            justifyContent={isCollapsed ? "center" : "flex-start"}
+            bg="#FFF7E0"
+            color="#FBBC05"
+            _hover={{ bg: "#FFE6A1" }}
           >
-            Đăng Xuất
-          </MenuItem>
-        </MenuList>
-      </Menu>
+            {!isCollapsed && (
+              <Text whiteSpace="normal" textAlign="center">
+                Đánh giá
+                <br />
+                Trải nghiệm hệ thống
+              </Text>
+            )}
+          </Button>
+        </Tooltip>
+        <Menu>
+          <MenuButton
+            as={Button}
+            bg="surface"
+            rightIcon={<FaChevronDown color="#4A90E2" />}
+            color="textPrimary"
+            fontWeight="bold"
+            borderRadius="md"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+            _hover={{ bg: "brand.500", color: "white" }}
+            height="10vh"
+          >
+            <HStack>
+              <Avatar
+                size="sm"
+                bg="gray.200"
+                name={maTaiKhoan}
+                color="textPrimary"
+              />
+              <Box textAlign="left" isTruncated>
+                <Text
+                  fontWeight="bold"
+                  color="textPrimary"
+                  fontSize="md"
+                  isTruncated
+                >
+                  {maTaiKhoan}
+                </Text>
+                <Text fontSize="sm" color="textSecondary">
+                  {vaiTro === "lecturer" ? "Giảng viên" : "Sinh viên"}
+                </Text>
+              </Box>
+            </HStack>
+          </MenuButton>
+          <MenuList
+            bg="surface"
+            borderRadius="md"
+            boxShadow="0 2px 6px rgba(0,0,0,0.08)"
+          >
+            <MenuItem
+              color="error.500"
+              _hover={{ bg: "error.500", color: "white" }}
+              onClick={handleLogout}
+            >
+              Đăng Xuất
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </Flex>
     </Box>
   );
 };
