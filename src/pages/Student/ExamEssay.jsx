@@ -21,7 +21,7 @@ import SidebarTaking from "../../lib/components/Exam/ExamTaking/SidebarTaking";
 import FinishModal from "../../lib/components/Exam/ExamTaking/FinishModal";
 import {
   getExamTakingDetail,
-  finishedExamTaking,
+  finishedExamEssay,
 } from "../../lib/service/examTaking"; // Cần tạo API finishedExamTakingEssay
 
 // Hàm formatTime không được sử dụng trong giao diện hiện tại của ExamEssay
@@ -152,7 +152,7 @@ const ExamEssay = () => {
           CauTraLoi: answers[q.id] || "",
         }));
 
-        const res = await finishedExamTaking(maCuocThi, answersData); // Sử dụng API chung hoặc API riêng cho tự luận
+        const res = await finishedExamEssay(maCuocThi, answersData); // Sử dụng API chung hoặc API riêng cho tự luận
         console.log("Exam finished response:", res);
 
         setResultData(res);

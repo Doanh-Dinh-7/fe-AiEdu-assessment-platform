@@ -57,3 +57,28 @@ export const finishedExamTaking = async (MaCuocThi) => {
     console.log("Lỗi khi hoàn thành cuộc thi:", error);
   }
 };
+
+export const finishedExamEssay = async (MaCuocThi, answers) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // Mặc định 5 phút
+  try {
+    const res = await fetch(
+      CHAT_URL + `/exam/process/${MaCuocThi}/essay_submit`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ answers }), // Gửi đúng format
+        signal: controller.signal,
+      }
+    );
+    clearTimeout(timeoutId); // Hủy timeout
+    const data = await checkResponse(res);
+
+    return data.data;
+  } catch (error) {
+    console.log("Lỗi khi hoàn thành cuộc thi:", error);
+  }
+};

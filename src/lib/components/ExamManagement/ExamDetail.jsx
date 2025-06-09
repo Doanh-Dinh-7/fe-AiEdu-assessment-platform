@@ -236,7 +236,9 @@ const ExamDetail = () => {
                 transition="background 0.2s"
               >
                 <Td color="text.primary">Khó</Td>
-                <Td color="text.primary">{examDetail.NoiDiemCauKho}</Td>
+                <Td color="text.primary">
+                  {examDetail.NoiDungDiem?.[0]?.DiemCauKho}
+                </Td>
               </Tr>
               <Tr
                 _hover={{ bg: "background" }}

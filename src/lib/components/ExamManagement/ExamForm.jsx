@@ -77,6 +77,7 @@ const ExamForm = () => {
   const [ThoiGianBatDau, setThoiGianBatDau] = useState("");
   const [ThoiGianKetThuc, setThoiGianKetThuc] = useState("");
   const [trangThai, setTrangThai] = useState("có");
+  const [HinhThucThi, setHinhThucThi] = useState("vấn đáp");
 
   // Bước 2: Cấu trúc đề thi và điểm
   const [cauTrucDeThi, setCauTrucDeThi] = useState([]);
@@ -154,6 +155,7 @@ const ExamForm = () => {
               : ""
           );
           setTrangThai(data.TrangThai || "có");
+          setHinhThucThi(data.HinhThucThi || "vấn đáp");
           setSelectedCourse(
             data.MaHocPhan
               ? {
@@ -204,6 +206,7 @@ const ExamForm = () => {
     if (
       !selectedCourse ||
       !TenCuocThi ||
+      !HinhThucThi ||
       !ThoiGianBatDau ||
       !ThoiGianKetThuc ||
       selectedClasses.length === 0
@@ -281,6 +284,7 @@ const ExamForm = () => {
             SoLuongCauHoi: Number(c.SoLuongCauHoi),
           })),
         trang_thai: trangThai,
+        HinhThucThi,
         DiemCauDe: Number(DiemCauDe),
         DiemCauTrungBinh: Number(DiemCauTrungBinh),
         DiemCauKho: Number(DiemCauKho),
@@ -476,6 +480,63 @@ const ExamForm = () => {
                 _focus={{
                   borderColor: "brand.500",
                   boxShadow: "0 0 0 1px #4A90E2",
+                }}
+              />
+            </Box>
+
+            <Box>
+              <Text fontWeight="bold" mb={2} color="text.secondary">
+                Hình thức thi
+              </Text>
+              <Select
+                options={[
+                  { label: "Vấn đáp", value: "vấn đáp" },
+                  { label: "Tự luận", value: "tự luận" },
+                ]}
+                placeholder="Chọn hình thức thi"
+                value={
+                  HinhThucThi
+                    ? {
+                        label: HinhThucThi === "vấn đáp" ? "Vấn đáp" : "Tự luận",
+                        value: HinhThucThi,
+                      }
+                    : null
+                }
+                onChange={(option) => setHinhThucThi(option?.value || "vấn đáp")}
+                isClearable={false}
+                focusBorderColor="brand.500"
+                chakraStyles={{
+                  control: (provided) => ({
+                    ...provided,
+                    borderRadius: "md",
+                    borderColor: "border",
+                    bg: "background",
+                    _hover: { borderColor: "brand.500" },
+                    _focus: {
+                      borderColor: "brand.500",
+                      boxShadow: "0 0 0 1px #4A90E2",
+                    },
+                  }),
+                  placeholder: (provided) => ({
+                    ...provided,
+                    color: "text.secondary",
+                  }),
+                  singleValue: (provided) => ({
+                    ...provided,
+                    color: "text.primary",
+                  }),
+                  menuList: (provided) => ({
+                    ...provided,
+                    bg: "surface",
+                    boxShadow: "md",
+                    borderRadius: "md",
+                  }),
+                  option: (provided, state) => ({
+                    ...provided,
+                    bg: state.isSelected ? "brand.100" : "surface",
+                    color: state.isSelected ? "brand.700" : "text.primary",
+                    _hover: { bg: "brand.50", color: "brand.600" },
+                  }),
                 }}
               />
             </Box>

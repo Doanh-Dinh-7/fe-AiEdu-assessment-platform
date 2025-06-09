@@ -413,7 +413,7 @@ const CreateQuestion = () => {
                         variant="outline"
                         onClick={async () => {
                           const suggestion = await fetchSuggestion({
-                            NoiDung: question,
+                            CauHoi: question,
                             DapAn: answer,
                             MucDo: level.toLowerCase(),
                           });
@@ -500,7 +500,7 @@ const CreateQuestion = () => {
                               const suggestion = await fetchSuggestion({
                                 CauHoi: question,
                                 DapAn: answer,
-                                YChinh: [item.idea],
+                                YChinh: item.idea,
                                 MucDo: level.toLowerCase(),
                               });
                               if (suggestion && suggestion.content) {
@@ -580,7 +580,7 @@ const CreateQuestion = () => {
                               const suggestion = await fetchSuggestion({
                                 CauHoi: question,
                                 DapAn: answer,
-                                YChinh: [item.idea],
+                                YChinh: item.idea,
                                 CauHoiBoSung: item.subQuestion,
                                 MucDo: level.toLowerCase(),
                               });

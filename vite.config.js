@@ -21,7 +21,7 @@ export default defineConfig({
     strictPort: true,
     cors: true,
     allowedHosts: [
-      "theoretical-almost-motherboard-passport.trycloudflare.com",
+      "patrol-guyana-cleaners-lamp.trycloudflare.com",
       '*'
     ] // Thêm địa chỉ ngrok cụ thể
   }
